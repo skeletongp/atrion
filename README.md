@@ -1,3 +1,4 @@
+<div>
 ## INTRODUCCIÓN
 
 <p align="justify">
@@ -9,3 +10,6 @@ Atrion es un sistema de facturación pensado para negocios que tienen varias suc
 
 <b> <u>Clientes </u></b>: Dar mantenimiento al registro de cliente, lo que incluye: añadir nuevos clientes, dar de baja a los clientes (softdelete), editar informaciones de los clientes, consultar datos relevantes, relacionar con otras entidades y aplicar análisis de datos para CRM.
 
+
+
+</div>
