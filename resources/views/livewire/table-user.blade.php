@@ -71,8 +71,7 @@
                 </tbody>
             </table>
         </div>
-        {{$is_active}}
-
+        
     </div>
     <div class="lg:w-1/2 mx-auto my-3">
         {{ $users->links() }}

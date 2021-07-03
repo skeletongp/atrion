@@ -1,4 +1,3 @@
-<div>
 ## INTRODUCCIÓN
 
 <p align="justify">
@@ -6,10 +5,10 @@ Atrion es un sistema de facturación pensado para negocios que tienen varias suc
 </p>
 
 ### Funciones
+<p align="justify">
 <b> <u>Facturación </u></b>: Generar facturas y cotizaciones, consultar facturas y cotizaciones, manejar las informaciones relacionadas a la facturación de los productos, tales como: disponibilidad, precios, cantidad y demás.
+</p>
 
+<p align="justify">
 <b> <u>Clientes </u></b>: Dar mantenimiento al registro de cliente, lo que incluye: añadir nuevos clientes, dar de baja a los clientes (softdelete), editar informaciones de los clientes, consultar datos relevantes, relacionar con otras entidades y aplicar análisis de datos para CRM.
-
-
-
-</div>
+</p>
