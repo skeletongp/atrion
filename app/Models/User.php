@@ -27,6 +27,7 @@ class User extends Authenticatable
      *
      * @var array
      */
+    protected $table = 'users';
     protected $fillable = [
         'name', 'email', 'password',
     ];
@@ -60,12 +61,13 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
+   
     public function getRouteKeyName()
-{
-    return 'slug';
-}
+    {
+        return 'slug';
+    }
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
+    }
 }

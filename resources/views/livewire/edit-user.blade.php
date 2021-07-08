@@ -1,7 +1,5 @@
 <div>
-
-    <div>
-
+   <div>
         <div class="lg:flex">
             <div class="lg:w-1/2 mx-1 my-2">
                 <x-input_text name="name" label="Nombre" :oldValue="$user->name" placeholder="Ingrese el nombre"
@@ -28,21 +26,26 @@
                 </div>
             </div>
         @else
-        <div class="lg:flex ">
-            
-            <div class="lg:w-1/4 mx-1 my-2">
-                <x-jet-label for="role">Rol:</x-jet-label>
-                <select
-                wire:model.defer="role" 
-                class="border-l-0  border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full"
-                name="role_id" id="role_id">
-                    @foreach ($roles as $rol)
-                        <option value="{{$rol->name}}" {{$role=$rol->name ?'selected':''}}>{{$rol->name}}</option>
+            <div class="lg:flex  mx-auto">
+                <div class="lg:w-1/2 mx-1 my-2">
+                    <x-input_select name="role" label="Rol" placeholder="Asigne un rol" model="role"  >
+                        @foreach ($roles as $rol)
+                        <option value="{{ $rol->name }}" class="{{ $role==$rol->name ?'text-green-500' : '' }}">
+                            {{ $rol->name }}</option>
                     @endforeach
-                </select>
+                    </x-input_select>                    
+                    <x-jet-input-error for="role"></x-jet-input-error>
+                </div>
+                <div class="lg:w-1/2 mx-1 my-2">
+                    <x-input_select name="place_id" label="Sede" placeholder="Asigne una sucursal" model="place_id">
+                        @foreach ($places as $place)
+                            <option value="{{ $place->id }}" class="{{ $user->place_id == $place->id ? 'text-green-500' : '' }}">
+                                {{ $place->name }}</option>
+                        @endforeach
+                    </x-input_select>
+                    <x-jet-input-error for="place_id"></x-jet-input-error>
+                </div>
             </div>
-        </div>
-        
         @endif
         <div class="flex justify-end m-2">
             <x-jet-button wire:click="update">Guardar</x-jet-button>

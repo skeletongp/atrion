@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Place;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +23,15 @@ class DatabaseSeeder extends Seeder
                 RoleSeeder::class
             ]
         );
+        Place::create(
+            [
+                'name'=>'Principal',
+                'location'=>'Sede Central',
+                'phone'=>'000-000-0000',
+                'slug'=>Str::slug('principal'),
+                'is_active'=>1,
+            ]
+            );
         \App\Models\User::factory(15)->create()->each( function ($user)
         {
             $user->assignRole('worker');

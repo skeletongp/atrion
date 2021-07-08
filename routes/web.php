@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::middleware(['auth:sanctum', 'verified'])->get('/', function () {
     return view('dashboard');
-});
+})->name('home');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
@@ -31,3 +31,6 @@ Route::get('/migrate/fresh',function ()
    Artisan::call('migrate:fresh');
    return view('dashboard');
 });
+Route::get('/offline', function () {    
+    return view('modules/laravelpwa/offline');
+    });

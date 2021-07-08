@@ -1,56 +1,91 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        
-        @livewireStyles
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
-        <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}" defer></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-    </head>
-    <body class="font-sans antialiased">
-        <x-jet-banner />
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/menu.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        <div class="min-h-screen bg-gray-100" id="body">
-            @livewire('navigation-menu')
+    @livewireStyles
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                        <div>
-                            {{ $header }}
-                        </div>
-                        <div class="flex  text-gray-900 uppercase font-bold items-center" items-center>
-                           <a href="{{route('users.show',Auth::user())}}"> <img src="{{Auth::user()->profile_photo_url}}" alt="" class="w-12 h-12 rounded-full mr-2"></a>
-                            <span class="hidden lg:block">{{ Auth::user()->name }}</span>
+    <!-- Scripts -->
+    <script src="{{ mix('js/app.js') }}" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+    @laravelPWA
+
+</head>
+
+<body class="font-sans antialiased h-screen">
+    <x-jet-banner />
+
+    <div class=" mx-auto bg-gray-100" id="body">
+
+        @livewire('navigation-menu')
+
+        <!-- Page Heading -->
+        @if (isset($header))
+            <header class="bg-white shadow fixed w-full top-0 left-0 " style="z-index: 60">
+                <div class="mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                    <div class="lg:ml-56 w-full uppercase">
+                        {{ $header }}
+                    </div>
+                    {{-- Funciones del perfil --}}
+                    <div class="flex  text-gray-900 uppercase font-bold items-center space-x-2">
+                        <a href="{{ route('user.show', Auth::user()) }}" class="profile-photo w-12 h-12 rounded-full">
+                            <img src="{{ Auth::user()->profile_photo_url }}" alt=""
+                                class=" rounded-full mr-2 profile-photo">
+                        </a>
+                        <span class="hidden lg:block">{{ Auth::user()->name }}</span>
+                        <div class="fixed -top-8 right-2 lg:right-auto opacity-0 div-perfil px-2 py-1 z-20 bg-white rounded-md">
+                            <a href="{{ route('user.show', Auth::user()) }}"><span class="fas fa-user"></span>
+                                Perfil</a><br>
+                            <form method="POST" action="{{ route('logout') }}" id="form2">
+                                @csrf
+                                <a type="submit" id='sub2' class=" text-gray-900 hover:text-gray-900 cursor-pointer">
+                                    <span class=""><i class="fas fa-sign-out-alt  "></i><span
+                                            class="font-bold ml-1">Salir</span></span>
+                                </a>
+                            </form>
                         </div>
                     </div>
-                    
-                </header>
-            @endif
+                </div>
 
-            <!-- Page Content -->
-            <main class="overflow-y-auto" style="max-height: 90vh !important" id="main">
-                {{ $slot }}
-            </main>
-        </div>
+            </header>
+        @endif
 
-        @stack('modals')
+        <!-- Cuerpo de la página -->
+        <main class="bg-gray-900" style="max-height: 100vh !important; min-height:100vh" id="main">
 
-        @livewireScripts
-    </body>
+            <div class="bg-gray-900 w-screen overflow-hidden">
+                <div class=" max-w-screen sm:px-2 lg:pl-8 bg-white py-8 py-24 overflow-y-auto"
+                    style="height: 100vh; max-height:100vh">
+                    <div class="bg-whit shadow-xl sm:rounded-lg max-w-screen-2xl ml-auto lg:mr-12">
+                        {{ $slot }}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    @stack('modals')
+
+    @livewireScripts
+    <script src="{{ mix('js/main.js') }}" defer></script>
+
+</body>
+
 </html>

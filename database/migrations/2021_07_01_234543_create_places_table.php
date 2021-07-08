@@ -19,7 +19,7 @@ class CreatePlacesTable extends Migration
             $table->string('location');
             $table->string('phone');
             $table->string('slug');
-            $table->tinyInteger('is_active');
+            $table->tinyInteger('is_active')->default(1);
             $table->timestamps();
         });
     }

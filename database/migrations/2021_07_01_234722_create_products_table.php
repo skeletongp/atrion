@@ -23,17 +23,15 @@ class CreateProductsTable extends Migration
             $table->string('slug');
             $table->unsignedBigInteger('place_id');
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('provider_id');
-            $table->tinyInteger('is_active');
+            $table->tinyInteger('is_active')->default(1);
+            $table->tinyInteger('is_product')->default(1);
             $table->foreign('place_id')
             ->references('id')
             ->on('places');
             $table->foreign('category_id')
             ->references('id')
             ->on('categories');
-            $table->foreign('provider_id')
-            ->references('id')
-            ->on('providers');
+            
             $table->timestamps();
         });
     }

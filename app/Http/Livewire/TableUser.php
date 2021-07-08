@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Product;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -10,23 +11,26 @@ class TableUser extends Component
 {
     use WithPagination;
     
-    protected $listeners=['render'=>'render'];
     public $search="";
     public $is_active=1, $title='Usuarios activos', $icon="fa-trash text-red-500", $confirm='¿Eliminar usuario?', $button='fa-recycle';
     public function render()
     {
+       
 
-        $users=User::where('is_active','=',$this->is_active)
-        ->where('name','like','%'.$this->search.'%')
-        ->where('email','like','%'.$this->search.'%')
+        $users=User::where(function ($search)
+        {
+            $search->where('name','like','%'.$this->search.'%')
+            ->orWhere('email','like','%'.$this->search.'%');
+        })
+        ->where('is_active','=', $this->is_active)        
         ->paginate(5);
         return view('livewire.table-user', compact('users'));
     }
     public function softdelete(User $user)
     {
-        $user->is_active==1? $user->is_active=0: $user->is_active=1;;
+        $user->is_active==1? $user->is_active=0: $user->is_active=1;
         $user->save();
-        $this->emit('render');
+        $this->render();
     }
     public function toggle()
     {
@@ -40,6 +44,14 @@ class TableUser extends Component
         else{
             $this->reset('is_active','title','icon','confirm', 'button');
            
+        }
+    }
+    public function toggleTitle()
+    {
+        if ($this->title=="Nuevo Usuario") {
+            $this->reset('title');
+        }else{
+            $this->title="Nuevo Usuario";
         }
     }
     public function updatedSearch()

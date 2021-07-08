@@ -1,149 +1,145 @@
-    <div>
-        <div class="min-h-screen min-w-screen hidden div-all ">
+    <div class="select-none">
 
-        </div>
-        <label for="input-menu" id="lb-menu"
-            class="absolute top-3 left-48 lb-menu cursor-pointer flex-1 items-center justify-center lg:hidden"
-            style="z-index:70">
-            <span class="fas fa-times text-2xl text-blue-600" id="sp-menu"></span>
+        <label for="input-menu" id="lb-open"
+            class=" top-3 left-2 lb-open cursor-pointer flex-1 items-center justify-center hidden fixed"
+            style="z-index:80">
+            <span class="fas fa-bars text-2xl text-blue-600" id="sp-menu-open"></span>
+        </label>
+        <label for="input-menu" id="lb-close"
+            class=" top-3 left-52 lb-close cursor-pointer flex-1 items-center justify-center fixed"
+            style="z-index:80">
+            <span class="fas fa-times text-2xl text-blue-600" id="sp-menu-close"></span>
         </label>
         <input type="checkbox" name="input-menu" id="input-menu" class="absolute bottom-16 right-4 hidden" checked>
         <aside class="sidebar {{-- menu-close --}}" id="sidebar">
-            <link rel="stylesheet" href="{{ asset('css/menu.css') }}">
-            <script src="{{ asset('js/menu.js') }}"></script>
+            
             <div id="leftside-navigation" class="nano">
                 <ul class="nano-content">
                     <li class="flex justify-between items-center">
-                        <a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i><span>Panel</span></a>
+                        <a href="{{ route('dashboard') }}"><i class="fas fa-home"></i><span>Panel</span></a>
                     </li>
-                    <li class="sub-menu {{ request()->is('account/*') || request()->is('user/*') ? 'active' : '' }}">
+                    <li class="sub-menu {{ request()->is('account/*') ? 'active' : '' }}">
                         <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>Mi cuenta</span><i
                                 class="arrow fa fa-angle-right pull-right"></i></a>
                         <ul>
-                            <li class="{{ request()->routeIs('users.show') ? 'active' : '' }}"><a
-                                    href="{{ route('users.show', Auth::user()) }}">Perfil de usuario</a>
+                            <li class="{{ request()->routeIs('user.show') ? 'active' : '' }}"><a
+                                    href="{{ route('user.show', Auth::user()) }}"><i class="fas fa-user"></i><span>Mi
+                                        perfil</span></a>
                             </li>
-                            @can('manage.users', User::class)
-                                <li class="{{ request()->routeIs('users.index') ? 'active' : '' }}"><a
-                                        href="{{ route('users.index') }}">Gestionar Usuarios</a>
-                                </li>
-                            @endcan
-
-                            @can('manage.places', User::class)
-                                <li class="{{ request()->is('account/places*') ? 'active' : '' }}"><a
-                                        href="ui-alerts-notifications.html">Gestionar Sucursales</a>
-                                </li>
-                            @endcan
-                            @can('manage.incomes', User::class)
-                                <li class="{{ request()->is('account/incomes*') ? 'active' : '' }}"><a
-                                        href="ui-alerts-notifications.html">Reportes de Ingresos</a>
-                                </li>
-                            @endcan
-                            @can('manage.outcomes', User::class)
-                                <li class="{{ request()->is('account/outcomes*') ? 'active' : '' }}"><a
-                                        href="ui-alerts-notifications.html">Reportes de Gastos</a>
-                                </li>
-                            @endcan
                             <li class="{{ request()->is('account/outcomes*') ? 'active' : '' }}">
                                 <form method="POST" action="{{ route('logout') }}" id="form">
                                     @csrf
 
                                     <a type="submit" id='sub'
                                         class="underline text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
-                                        <span class="">Salir</span>
+                                        <span class=""><i class="fas fa-sign-out-alt"></i><span>Salir</span></span>
                                     </a>
                                 </form>
-                            </li>
-
-
-                        </ul>
-                    </li>
-                    <li class="sub-menu">
-                        <a href="javascript:void(0);"><i class="fa fa-table"></i><span>Facturación</span><i
-                                class="arrow fa fa-angle-right pull-right"></i></a>
-                        <ul>
-                            <li><a href="tables-basic.html">Nueva factura</a>
-                            </li>
-                            <li><a href="tables-basic.html">Nueva cotización</a>
-                            </li>
-                            <li><a href="tables-data.html">Historial de facturación</a>
-                            </li>
-                            <li><a href="tables-data.html">Historial de cotización</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="sub-menu">
-                        <a href="javascript:void(0);"><i class="fa fa fa-tasks"></i><span>Forms</span><i
-                                class="arrow fa fa-angle-right pull-right"></i></a>
-                        <ul>
-                            <li><a href="forms-components.html">Components</a>
-                            </li>
-                            <li><a href="forms-validation.html">Validation</a>
-                            </li>
-                            <li><a href="forms-mask.html">Mask</a>
-                            </li>
-                            <li><a href="forms-wizard.html">Wizard</a>
-                            </li>
-                            <li><a href="forms-multiple-file.html">Multiple File Upload</a>
-                            </li>
-                            <li><a href="forms-wysiwyg.html">WYSIWYG Editor</a>
                             </li>
                         </ul>
                     </li>
                     <li class="sub-menu ">
-                        <a href="javascript:void(0);"><i class="fa fa-envelope"></i><span>Mail</span><i
+                        <a href="javascript:void(0);"><i class="fa fa-table"></i><span>Facturación</span><i
                                 class="arrow fa fa-angle-right pull-right"></i></a>
                         <ul>
-                            <li class="active"><a href="mail-inbox.html">Inbox</a>
+                            <li><a href="tables-basic.html"><i
+                                        class="fas fa-file-invoice-dollar"></i><span>Cotizar</span></a>
                             </li>
-                            <li><a href="mail-compose.html">Compose Mail</a>
+                            <li><a href="tables-basic.html"><i class="fas fa-file-invoice"></i><span>Facturar</span></a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="sub-menu {{ request()->is('persons/*') ? 'active' : '' }}">
+                        <a href="javascript:void(0);"><i class="fa fa fa-users"></i><span>Personas</span><i
+                                class="arrow fa fa-angle-right pull-right"></i></a>
+                        <ul>
+
+                            <li><a href="forms-validation.html"><i class="fas fa-user"></i><span>Clientes</span></a>
+                            </li>
+                            <li><a href="forms-mask.html"><i class="fas fa-user-tag"></i><span>Proveedores</span></a>
+                            </li>
+                            @can('manage.users', User::class)
+                                <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"><a
+                                        href="{{ route('users.index') }}"><i
+                                            class="fas fa-user-tie"></i><span>Usuarios</span></a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                    <li class="sub-menu {{ request()->is('inventory/*') ? 'active' : '' }}">
+                        <a href="javascript:void(0);"><i class="fas fa-cubes"></i><span>Inventario</span><i
+                                class="arrow fa fa-angle-right pull-right"></i></a>
+                        <ul>
+
+                            <li class="{{ request()->routeIs('products.*') ? 'active' : '' }}"><a
+                                    href="{{ route('products.index') }}"><i
+                                        class="fas fa-tags"></i><span>Productos</span></a>
+                            </li>
+                            <li><a href="forms-mask.html"><i class="fas fa-tag"></i><span>Servicios</span></a>
+                            </li>
+                            @can('manage.products', User::class)
+                                <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"><a
+                                        href="{{ route('users.index') }}"><i
+                                            class="fas fa-dollar-sign"></i><span>Valor</span></a>
+                                </li>
+                                <li><a href="{{ route('places.index') }}"><i
+                                            class="fas fa-store-alt"></i><span>Sucursales</span>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                    <li class="sub-menu ">
+                        <a href="javascript:void(0);"><i class="fas fa-arrow-down"></i><span>Ingresos</span><i
+                                class="arrow fa fa-angle-right pull-right"></i></a>
+                        <ul>
+                            <li class="active"><a href="mail-inbox.html"><i
+                                        class="fas fa-chart-line"></i><span>Ventas</span></a>
+                            </li>
+                            <li><a href="mail-compose.html"><i class="fas fa-sync-alt"></i><span>Recurrentes</span></a>
+                            </li>
+                            <li><a href="mail-compose.html"><i class="fas fa-sticky-note"></i><span>Otros</span></a>
                             </li>
                         </ul>
                     </li>
                     <li class="sub-menu">
-                        <a href="javascript:void(0);"><i class="fa fa-bar-chart-o"></i><span>Charts</span><i
+                        <a href="javascript:void(0);"><i class="fas fa-arrow-up"></i><span>Egresos</span><i
                                 class="arrow fa fa-angle-right pull-right"></i></a>
                         <ul>
-                            <li><a href="charts-chartjs.html">Chartjs</a>
+                            <li class="active"><a href="mail-inbox.html"><i
+                                        class="fas fa-cart-arrow-down"></i><span>Compras</span></a>
                             </li>
-                            <li><a href="charts-morris.html">Morris</a>
+                            <li><a href="mail-compose.html"><i class="fas fa-sync-alt"></i><span>Recurrentes</span></a>
                             </li>
-                            <li><a href="charts-c3.html">C3 Charts</a></li>
-                        </ul>
-                    </li>
-                    <li class="sub-menu">
-                        <a href="javascript:void(0);"><i class="fa fa-map-marker"></i><span>Maps</span><i
-                                class="arrow fa fa-angle-right pull-right"></i></a>
-                        <ul>
-                            <li><a href="map-google.html">Google Map</a>
-                            </li>
-                            <li><a href="map-vector.html">Vector Map</a>
+                            <li><a href="mail-compose.html"><i class="fas fa-sticky-note"></i><span>Otros</span></a>
                             </li>
                         </ul>
                     </li>
                     <li class="sub-menu">
-                        <a href="typography.html"><i class="fa fa-text-height"></i><span>Typography</span></a>
-                    </li>
-                    <li class="sub-menu">
-                        <a href="javascript:void(0);"><i class="fa fa-file"></i><span>Pages</span><i
+                        <a href="javascript:void(0);"><i class="fas fa-dollar-sign"></i><span>Contabilidad</span><i
                                 class="arrow fa fa-angle-right pull-right"></i></a>
                         <ul>
-                            <li><a href="pages-blank.html">Blank Page</a>
+                            <li><a href="map-google.html"><i class="fas fa-arrow-down"></i><span>Cta. por
+                                        Cobrar</span></a>
                             </li>
-                            <li><a href="pages-login.html">Login</a>
-                            </li>
-                            <li><a href="pages-sign-up.html">Sign Up</a>
-                            </li>
-                            <li><a href="pages-calendar.html">Calendar</a>
-                            </li>
-                            <li><a href="pages-timeline.html">Timeline</a>
-                            </li>
-                            <li><a href="pages-404.html">404</a>
-                            </li>
-                            <li><a href="pages-500.html">500</a>
+                            <li><a href="map-vector.html"><i class="fas fa-arrow-up"></i><span>Cta. por Pagar</span></a>
                             </li>
                         </ul>
                     </li>
+
+                    <li class="sub-menu">
+                        <a href="javascript:void(0);"><i class="fas fa-question"></i><span>Ayuda</span><i
+                                class="arrow fa fa-angle-right pull-right"></i></a>
+                        <ul>
+                            <li><a href="pages-blank.html"><i class="fas fa-info-circle"></i><span>Guía</span></a>
+                            </li>
+                            <li><a href="pages-login.html"><i class="fas fa-at"></i><span>Contacto</span></a>
+                            </li>
+
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </aside>
