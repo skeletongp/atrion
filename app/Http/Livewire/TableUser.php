@@ -11,7 +11,7 @@ class TableUser extends Component
 {
     use WithPagination;
     
-    public $search="";
+    public $search="", $place_id;
     public $is_active=1, $title='Usuarios activos', $icon="fa-trash text-red-500", $confirm='¿Eliminar usuario?', $button='fa-recycle';
     public function render()
     {
@@ -19,10 +19,13 @@ class TableUser extends Component
 
         $users=User::where(function ($search)
         {
-            $search->where('name','like','%'.$this->search.'%')
-            ->orWhere('email','like','%'.$this->search.'%');
+            $search->where('place_id','=',$this->place_id)
+            ->orWhere('name','like','%'.$this->search.'%')
+            ->orWhere('email','like','%'.$this->search.'%')
+            ;
         })
-        ->where('is_active','=', $this->is_active)        
+        ->where('is_active','=', $this->is_active) 
+        
         ->paginate(5);
         return view('livewire.table-user', compact('users'));
     }

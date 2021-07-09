@@ -158,3 +158,11 @@
 ::-webkit-scrollbar {
     display: none;
 }
+.chosen-select{
+    width: 100% !important;
+}
+.select2-container, .select2-selection__rendered, .select2-selection__arrow{
+    width: 100% !important;
+    border-width: 0 !important;
+    outline-width: 0 !important;
+}

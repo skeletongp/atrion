@@ -16,20 +16,20 @@ class RoleSeeder extends Seeder
     
     public function run()
     {
-        $admin=Role::create(['name'=>'admin']);
-        $worker=Role::create(['name'=>'worker']);
-        $other=Role::create(['name'=>'other']);
+        $admin=Role::create(['name'=>'Admin']);
+        $vendedor=Role::create(['name'=>'Vendedor']);
+        $otro=Role::create(['name'=>'Otro']);
 
-        Permission::create(['name'=>'manage.users'])->syncRoles([$admin]);
-        Permission::create(['name'=>'manage.products'])->syncRoles([$admin]);
-        Permission::create(['name'=>'manage.places'])->syncRoles([$admin]);
-        Permission::create(['name'=>'manage.providers'])->syncRoles([$admin]);
-        Permission::create(['name'=>'manage.invoices'])->syncRoles([$admin]);
-        Permission::create(['name'=>'manage.incomes'])->syncRoles([$admin]);
-        Permission::create(['name'=>'manage.outcomes'])->syncRoles([$admin]);
-        Permission::create(['name'=>'manage.clients'])->syncRoles([$admin, $worker]);
-        Permission::create(['name'=>'sale'])->syncRoles([$admin, $worker]);
-        Permission::create(['name'=>'buy'])->syncRoles([$admin, $worker]);
+        Permission::create(['name'=>'Gestionar Usuarios'])->syncRoles([$admin]);
+        Permission::create(['name'=>'Gestionar Productos'])->syncRoles([$admin]);
+        Permission::create(['name'=>'Gestionar Sucursales'])->syncRoles([$admin]);
+        Permission::create(['name'=>'Gestionar Suplidores'])->syncRoles([$admin]);
+        Permission::create(['name'=>'Gestionar Facturas'])->syncRoles([$admin]);
+        Permission::create(['name'=>'Gestionar Ingresos'])->syncRoles([$admin]);
+        Permission::create(['name'=>'Gestionar Egresos'])->syncRoles([$admin]);
+        Permission::create(['name'=>'Gestionar Clientes'])->syncRoles([$admin, $vendedor]);
+        Permission::create(['name'=>'Vender'])->syncRoles([$admin, $vendedor]);
+        Permission::create(['name'=>'Comprar'])->syncRoles([$admin]);
         
     }
 }

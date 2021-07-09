@@ -1,14 +1,15 @@
 <div>
 
-    <div class="bg-white pb-4 px-4 rounded-md w-full">
-        {{-- Botones superiores  --}}
-        <div class="flex justify-between lg:w-1/2 pt-6 mx-auto "  >
+    <div class="bg-white pb-4 px-4 rounded-md w-full bbg">
+        {{-- Botones superiores --}}
+        <div class="flex justify-between lg:w-1/2 pt-6 mx-auto ">
             <div class="" id="div-title">
-                <h1 class="text-center mx-auto uppercase font-bold text-lg lg:text-3xl "> {{ $title }}</h1>
+                <h1 class="text-center mx-auto uppercase font-bold text-lg lg:text-3xl "> {{ $title }} </h1>
             </div>
             <div class="flex justify-end " id="div-botones">
-                <div class="cursor-pointer mx-1 w-8 h-8 rounded-full flex items-center justify-center bg-gray-200" id="btn-adduser">
-                    <span class="fas fa-plus "  id="sp-plus"></span>
+                <div class="cursor-pointer mx-1 w-8 h-8 rounded-full flex items-center justify-center bg-gray-200"
+                    id="btn-adduser">
+                    <span class="fas fa-plus " id="sp-plus"></span>
                 </div>
                 @can('manage.users', User::class)
                     <div wire:click="toggle"
@@ -28,7 +29,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="overflow-x-auto mt-6 w-full" id="div-table">
             {{-- Tabla de usuarios --}}
             <table class="table-auto  lg:w-1/2 mx-auto">
@@ -36,7 +37,7 @@
                 <thead>
                     <tr class="rounded-lg text-sm font-medium text-gray-900 text-left uppercase"
                         style="font-size: 0.9674rem">
-                        <th class="px-4 py-2 bg-blue-100 border border-l-1 border-white">Nombre</th>
+                        <th class="px-4 py-2 bg-blue-100 border border-l-1 border-white">Nombre / Sucursal</th>
                         <th class="px-4 py-2 bg-blue-100 border border-l-1 border-white">Correo</th>
                         <th class="px-4 py-2 bg-blue-100 border border-l-1 border-white">Rol</th>
                         <th class="py-2 bg-blue-100 text-center" colspan="2">Acciones</th>
@@ -46,10 +47,12 @@
                 <tbody class="text-md font-normal text-white rounded-xl border-none">
                     @if ($users->count())
                         @foreach ($users as $user)
-                            <tr class=" border-b border-gray-200 hover:text-blue-200"
-                                style="background-color: #293949">
+                            <tr class=" border-b border-gray-200 hover:text-blue-200" style="background-color: #293949">
                                 {{-- Detalles --}}
-                                <td class="px-4 py-4 border border-l border-white">{{ $user->name }}</td>
+                                <td class="px-4 py-4 border border-l border-white">
+                                    <span>{{ $user->name }}</span><br>
+                                    <span class="select-none cursor-pointer" wire:click="$set('place_id',{{$user->place->id}})">{{$user->place->name}}</span>
+                                </td>
                                 <td class="px-4 py-4 border border-l border-white">{{ $user->email }}</td>
                                 <td class="px-4 py-4 border border-l border-white">{{ $user->getRoleNames()[0] }}</td>
                                 {{-- Acciones --}}
@@ -69,8 +72,10 @@
                     @else
                         <tr class=" border-b border-gray-200 hover:text-blue-200 py-10"
                             style="background-color: #293949">
-                            <td class="px-4 py-4 border-b border-white text-center" colspan="5"  style="background-color: #293949">
-                                <h2 class="font-bold uppercase text-lg select-none">No se ha encontrado ningún usuario</h2>
+                            <td class="px-4 py-4 border-b border-white text-center" colspan="5"
+                                style="background-color: #293949">
+                                <h2 class="font-bold uppercase text-lg select-none">No se ha encontrado ningún usuario
+                                </h2>
                             </td>
                         </tr>
                     @endif
@@ -81,7 +86,7 @@
             @livewire('add-user')
         </div>
     </div>
-    <div class="lg:w-1/2 mx-auto my-3" id="div-links">
+    <div class="lg:w-1/2 mx-auto my-3 mb" id="div-links">
         {{ $users->links() }}
     </div>
 </div>

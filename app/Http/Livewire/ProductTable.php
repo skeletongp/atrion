@@ -15,12 +15,15 @@ class ProductTable extends Component
     protected $listeners=['update_product_table'=>'render'];
     public function render()
     {
+        $user=Auth::user();
         $products=Product::where(function ($search)
         {
             $search->where('name','like','%'.$this->search.'%')
             ->orWhere('meta','like','%'.$this->search.'%');
         })
         ->where('is_active','=', $this->is_active)        
+        ->where('is_product','=', 1)        
+        ->where('place_id','=', $user->place_id)        
         ->paginate(5);
         return view('livewire.product-table', compact('products'));
     }

@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    public function getKeyName()
+    public function getRouteKeyName()
     {
         return 'slug';
     }
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
     }
 }

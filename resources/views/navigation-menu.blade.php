@@ -6,13 +6,12 @@
             <span class="fas fa-bars text-2xl text-blue-600" id="sp-menu-open"></span>
         </label>
         <label for="input-menu" id="lb-close"
-            class=" top-3 left-52 lb-close cursor-pointer flex-1 items-center justify-center fixed"
-            style="z-index:80">
+            class=" top-3 left-52 lb-close cursor-pointer flex-1 items-center justify-center fixed" style="z-index:80">
             <span class="fas fa-times text-2xl text-blue-600" id="sp-menu-close"></span>
         </label>
         <input type="checkbox" name="input-menu" id="input-menu" class="absolute bottom-16 right-4 hidden" checked>
         <aside class="sidebar {{-- menu-close --}}" id="sidebar">
-            
+
             <div id="leftside-navigation" class="nano">
                 <ul class="nano-content">
                     <li class="flex justify-between items-center">
@@ -38,18 +37,35 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="sub-menu ">
-                        <a href="javascript:void(0);"><i class="fa fa-table"></i><span>Facturación</span><i
-                                class="arrow fa fa-angle-right pull-right"></i></a>
-                        <ul>
-                            <li><a href="tables-basic.html"><i
-                                        class="fas fa-file-invoice-dollar"></i><span>Cotizar</span></a>
-                            </li>
-                            <li><a href="tables-basic.html"><i class="fas fa-file-invoice"></i><span>Facturar</span></a>
-                            </li>
+                    @can('Vender', User::class)
+                        <li class="sub-menu ">
+                            <a href="javascript:void(0);"><i class="fa fa-table"></i><span>Facturación</span><i
+                                    class="arrow fa fa-angle-right pull-right"></i></a>
+                            <ul>
+                                <li><a href="tables-basic.html"><i
+                                            class="fas fa-file-invoice-dollar"></i><span>Cotizar</span></a>
+                                </li>
+                                <li><a href="tables-basic.html"><i class="fas fa-file-invoice"></i><span>Facturar</span></a>
+                                </li>
 
-                        </ul>
-                    </li>
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('Comprar', User::class)
+                        <li class="sub-menu ">
+                            <a href="javascript:void(0);"><i class="fa fa-cart-arrow-down"></i><span>Compras</span><i
+                                    class="arrow fa fa-angle-right pull-right"></i></a>
+                            <ul>
+                                <li><a href="tables-basic.html"><i
+                                            class="fas fa-file-invoice-dollar"></i><span>Comprar</span></a>
+                                </li>
+                                <li><a href="tables-basic.html"><i
+                                            class="fas fa-file-invoice"></i><span>Registrar</span></a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    @endcan
                     <li class="sub-menu {{ request()->is('persons/*') ? 'active' : '' }}">
                         <a href="javascript:void(0);"><i class="fa fa fa-users"></i><span>Personas</span><i
                                 class="arrow fa fa-angle-right pull-right"></i></a>
@@ -59,7 +75,7 @@
                             </li>
                             <li><a href="forms-mask.html"><i class="fas fa-user-tag"></i><span>Proveedores</span></a>
                             </li>
-                            @can('manage.users', User::class)
+                            @can('Gestionar Usuarios', User::class)
                                 <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"><a
                                         href="{{ route('users.index') }}"><i
                                             class="fas fa-user-tie"></i><span>Usuarios</span></a>
@@ -78,55 +94,63 @@
                             </li>
                             <li><a href="forms-mask.html"><i class="fas fa-tag"></i><span>Servicios</span></a>
                             </li>
-                            @can('manage.products', User::class)
+                            @can('Gestionar Ingresos', User::class)
                                 <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"><a
                                         href="{{ route('users.index') }}"><i
                                             class="fas fa-dollar-sign"></i><span>Valor</span></a>
                                 </li>
-                                <li><a href="{{ route('places.index') }}"><i
-                                            class="fas fa-store-alt"></i><span>Sucursales</span>
-                                    </a>
-                                </li>
+                                @can('Gestionar Sucursales', User::class)
+                                    <li><a href="{{ route('places.index') }}"><i
+                                                class="fas fa-store-alt"></i><span>Sucursales</span>
+                                        </a>
+                                    </li>
+                                @endcan
                             @endcan
                         </ul>
                     </li>
-                    <li class="sub-menu ">
-                        <a href="javascript:void(0);"><i class="fas fa-arrow-down"></i><span>Ingresos</span><i
-                                class="arrow fa fa-angle-right pull-right"></i></a>
-                        <ul>
-                            <li class="active"><a href="mail-inbox.html"><i
-                                        class="fas fa-chart-line"></i><span>Ventas</span></a>
-                            </li>
-                            <li><a href="mail-compose.html"><i class="fas fa-sync-alt"></i><span>Recurrentes</span></a>
-                            </li>
-                            <li><a href="mail-compose.html"><i class="fas fa-sticky-note"></i><span>Otros</span></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="sub-menu">
-                        <a href="javascript:void(0);"><i class="fas fa-arrow-up"></i><span>Egresos</span><i
-                                class="arrow fa fa-angle-right pull-right"></i></a>
-                        <ul>
-                            <li class="active"><a href="mail-inbox.html"><i
-                                        class="fas fa-cart-arrow-down"></i><span>Compras</span></a>
-                            </li>
-                            <li><a href="mail-compose.html"><i class="fas fa-sync-alt"></i><span>Recurrentes</span></a>
-                            </li>
-                            <li><a href="mail-compose.html"><i class="fas fa-sticky-note"></i><span>Otros</span></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="sub-menu">
-                        <a href="javascript:void(0);"><i class="fas fa-dollar-sign"></i><span>Contabilidad</span><i
-                                class="arrow fa fa-angle-right pull-right"></i></a>
-                        <ul>
-                            <li><a href="map-google.html"><i class="fas fa-arrow-down"></i><span>Cta. por
-                                        Cobrar</span></a>
-                            </li>
-                            <li><a href="map-vector.html"><i class="fas fa-arrow-up"></i><span>Cta. por Pagar</span></a>
-                            </li>
-                        </ul>
-                    </li>
+                    @can('Gestionar Ingresos', User::class)
+                        <li class="sub-menu ">
+                            <a href="javascript:void(0);"><i class="fas fa-arrow-down"></i><span>Ingresos</span><i
+                                    class="arrow fa fa-angle-right pull-right"></i></a>
+                            <ul>
+                                <li class="active"><a href="mail-inbox.html"><i
+                                            class="fas fa-chart-line"></i><span>Ventas</span></a>
+                                </li>
+                                <li><a href="mail-compose.html"><i class="fas fa-sync-alt"></i><span>Recurrentes</span></a>
+                                </li>
+                                <li><a href="mail-compose.html"><i class="fas fa-sticky-note"></i><span>Otros</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('Gestionar Egresos', User::class)
+                        <li class="sub-menu">
+                            <a href="javascript:void(0);"><i class="fas fa-arrow-up"></i><span>Egresos</span><i
+                                    class="arrow fa fa-angle-right pull-right"></i></a>
+                            <ul>
+                                <li class="active"><a href="mail-inbox.html"><i
+                                            class="fas fa-cart-arrow-down"></i><span>Compras</span></a>
+                                </li>
+                                <li><a href="mail-compose.html"><i class="fas fa-sync-alt"></i><span>Recurrentes</span></a>
+                                </li>
+                                <li><a href="mail-compose.html"><i class="fas fa-sticky-note"></i><span>Otros</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('Gestionar Cuentas', Model::class)
+                        <li class="sub-menu">
+                            <a href="javascript:void(0);"><i class="fas fa-dollar-sign"></i><span>Contabilidad</span><i
+                                    class="arrow fa fa-angle-right pull-right"></i></a>
+                            <ul>
+                                <li><a href="map-google.html"><i class="fas fa-arrow-down"></i><span>Cta. por
+                                            Cobrar</span></a>
+                                </li>
+                                <li><a href="map-vector.html"><i class="fas fa-arrow-up"></i><span>Cta. por Pagar</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
 
                     <li class="sub-menu">
                         <a href="javascript:void(0);"><i class="fas fa-question"></i><span>Ayuda</span><i

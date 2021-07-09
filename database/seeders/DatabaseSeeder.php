@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             );
         \App\Models\User::factory(15)->create()->each( function ($user)
         {
-            $user->assignRole('worker');
+            $user->assignRole('vendedor');
         });
         User::create(
             [

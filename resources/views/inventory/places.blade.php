@@ -20,15 +20,6 @@
         @livewire('add-place')
     </div>
 
-    <script>
-        window.addEventListener('load', function() {
-            $('#btn-add').click(function() {
-                $('#div-places').toggle('', false);
-                $('#div-add').toggle('', false);
-                $('#sp-add').toggleClass('fa-plus fa-times', 300);
-
-            })
-        })
-    </script>
+   
     
 </x-app-layout>

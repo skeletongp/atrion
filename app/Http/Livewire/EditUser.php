@@ -41,7 +41,6 @@ class EditUser extends Component
 
         $user->save();
         if(!empty($this->role)){
-            dd($this->role);
             $user->syncRoles([$this->role]);
         }
         session()->flash('success', 'Datos actualizados');

@@ -47,7 +47,7 @@
                                 </td>
                                 <td class="px-4 py-4 text-center">
                                     <span>{{ $product->category->name }}</span><br>
-                                    <span>{{$product->slug}}</span>
+                                    <span>{{$product->place->name}}</span>
                                 </td>
                                 <td class="px-4 py-4 text-center">
                                     <span class="text-red-400"><span

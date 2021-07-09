@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 class AddProduct extends Component
 {
     public $name, $meta, $category_id, $place_id, $stock, $price, $cost;
+    public $message;
     protected $listeners=['update_add_product'=>'render'];
     public function render()
     {
@@ -39,11 +40,13 @@ class AddProduct extends Component
         $product->cost=$this->cost;
         $product->slug=Str::slug($this->name);
         $product->save();
+        $this->message="Producto añadido";
         $this->reset('name','meta','category_id','place_id','stock','price','cost');
         $this->emit('update_product_table');
     }
     public function toggle()
     {
+        $this->reset('message');
         $this->emit('toggle-add-product');
     }
 }

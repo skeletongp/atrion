@@ -1,12 +1,14 @@
 <div>
-    <div class="px-2" >
-        <h1 class="uppercase font-bold text-xl lg:text-2xl mb-4">Nuevo Producto</h1>
-        <div class="text-lg text-green-500 font-bold cursor-pointer"  id="sp_product_added">
-            <div  wire:click="toggle">
-                <span class="fas fa-check"></span>
-                Producto añadido
+    <div class="px-2">
+        <h1 class="uppercase font-bold text-xl lg:text-2xl mb-4 ">Nuevo Producto</h1>
+        @if (!is_null($message))
+            <div class="text-lg text-green-500 font-bold cursor-pointer select-none sp_product_added">
+                <div wire:click="toggle">
+                    <span class="fas fa-check"></span>
+                    {{ $message }}
+                </div>
             </div>
-        </div>
+        @endif
         <div>
             <div class="lg:flex">
                 <div class="lg:w-3/5 mx-1 my-2">

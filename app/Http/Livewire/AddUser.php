@@ -6,19 +6,16 @@ use App\Models\Place;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
 
 use Livewire\Component;
 
 class AddUser extends Component
 {
-    /**
-     * Create a newly registered user.
-     *
-     * @param  array  $input
-     * @return \App\Models\User
-     */
-    public $roles, $name, $email, $role, $place_id;
+    
+    public $roles, $name, $email, $role, $place_id, $permissions=[];
+    protected $listeners=['multi'=>'multi'];
     protected $rules=[
         "name"=>"required",
         "email"=>"required|unique:users,email|email|string",
@@ -42,8 +39,13 @@ class AddUser extends Component
         $user->password=Hash::make("user1234");
         $user->save();
         $user->syncRoles($this->role);
+        $user->syncPermissions($this->permissions);
         session()->flash('added', 'Usuario añadido');
-        $this->reset('name','email','place_id','role');
+        $this->reset('name','email','place_id','role', 'permissions');
         return redirect()->route('users.show', $user);
+    }
+    public function multi($value)
+    {
+        $this->permissions=$value;
     }
 }

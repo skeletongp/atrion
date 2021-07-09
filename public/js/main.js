@@ -73,7 +73,7 @@ window.addEventListener('load', function () {
 
   Livewire.on('toggle-add-product', function () {
     try {
-      $('#sp_product-added').toggle('', false);
+      $('.sp_product_added').toggle('', false);
     } catch (error) {
       console.log(error);
     }
