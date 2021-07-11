@@ -18,4 +18,13 @@ class PersonController extends Controller
     {
         return view('users.show', compact('user'));
     }
+    public function clients_index()
+    {
+        $users=User::where('is_active','=',1)->paginate(5);
+       return view('persons.clients_index', compact('users'));
+    }
+    public function clients_show(User $user)
+    {
+        return view('persons.clients_show', compact('user'));
+    }
 }

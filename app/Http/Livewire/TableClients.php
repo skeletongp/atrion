@@ -2,61 +2,58 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Product;
-use App\Models\User;
+use App\Models\Client;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class TableUser extends Component
+class TableClients extends Component
 {
+    
     use WithPagination;
     
     public $search="", $place_id, $order="name", $direction="asc";
-    public $is_active=1, $title='Usuarios activos', $icon="fa-trash text-red-500", $confirm='¿Eliminar usuario?', $button='fa-recycle';
+    public $is_active=1, $title='Clientes activos', $icon="fa-trash text-red-500", $confirm='¿Eliminar cliente?', $button='fa-recycle';
     public function render()
     {
        
 
-        $users=User::where(function ($search)
+        $clients=Client::where(function ($search)
         {
-            $search->where('place_id','=',$this->place_id)
-            ->orWhere('name','like','%'.$this->search.'%')
-            ->orWhere('email','like','%'.$this->search.'%')
+            $search->Where('name','like','%'.$this->search.'%')
+            ->orWhere('phone','like','%'.$this->search.'%')
             ;
         })
         ->where('is_active','=', $this->is_active) 
-        ->where('id','!=', 1) 
         ->orderBy($this->order, $this->direction)
         ->paginate(5);
-        return view('livewire.table-user', compact('users'));
+        return view('livewire.table-clients', compact('clients'));
     }
-    public function softdelete(User $user)
+    public function softdelete(Client $client)
     {
-        $user->is_active==1? $user->is_active=0: $user->is_active=1;
-        $user->save();
+        $client->is_active==1? $client->is_active=0: $client->is_active=1;
+        $client->save();
         $this->render();
     }
     public function toggle()
     {
         if ($this->is_active==1) {
             $this->is_active=0;
-            $this->title='Usuarios eliminados';
+            $this->title='Clientes eliminados';
             $this->icon='fa-sync-alt text-blue-500';
-            $this->confirm='¿Restaurar usuario?';
+            $this->confirm='¿Restaurar cliente?';
             $this->button='fa-reply-all';
-            $this->resetPage();
         }
         else{
             $this->reset('is_active','title','icon','confirm', 'button');
-            $this->resetPage();
+           
         }
     }
     public function toggleTitle()
     {
-        if ($this->title=="Nuevo Usuario") {
+        if ($this->title=="Nuevo Cliente") {
             $this->reset('title');
         }else{
-            $this->title="Nuevo Usuario";
+            $this->title="Nuevo Cliente";
         }
     }
     public function updatedSearch()

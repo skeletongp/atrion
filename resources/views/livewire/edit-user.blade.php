@@ -45,7 +45,9 @@
                     </x-input_select>
                     <x-jet-input-error for="place_id"></x-jet-input-error>
                 </div>
+                
             </div>
+            
         @endif
         <div class="flex justify-end m-2">
             <x-jet-button wire:click="update">Guardar</x-jet-button>

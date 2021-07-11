@@ -1,6 +1,6 @@
 <div>
 
-    <div>
+    <div wire:ignore.self>
         @if (isset($message))
             <span class="text-green-600 font-bold cursor-pointer sp-message" onclick="hideMessage(this)"><span
                     class="fas fa-check"></span> {{ $message }}</span>
@@ -8,7 +8,7 @@
         @if (!$places->count())
             <h1 class="mt-8 text-center uppercase text-xl font-bold">No se ha registrado ninguna sucursal</h1>
         @endif
-        <h1 class="font-bold uppercase text-2xl text-center">{{$title}}</h1>
+        <h1 class="font-bold uppercase text-2xl text-center">{{ $title }}</h1>
         <div class="md:grid md:grid-cols-2 lg:grid-cols-3 gap-1 bg-blue-500 h-72 bg-opacity-20 rounded-md relative"
             id="div-places">
             <div wire:click="toggle"
@@ -23,9 +23,11 @@
                             <div class="  shadow-xl m-2 p-1 px-2 rounded-lg bg-white  back absolute">
                                 <div class="absolute  top-2 right-2 block ">
                                     @livewire('edit-place', ['place_id' => $place->id], key($place->id))
-                                    <span class="{{$icon}} text-red-400  cursor-pointer mx-1"
-                                        onclick="confirm('{{$confirm}}') || event.stopImmediatePropagation()"
-                                        wire:click="softdelete('{{ $place->slug }}')"></span>
+                                    @if ($place->id != 1)
+                                        <span class="{{ $icon }} text-red-400  cursor-pointer mx-1"
+                                            onclick="confirm('{{ $confirm }}') || event.stopImmediatePropagation()"
+                                            wire:click="softdelete('{{ $place->slug }}')"></span>
+                                    @endif
                                 </div>
                                 <div class="action">
                                     <div class="flex h-1/3  items-center  ">

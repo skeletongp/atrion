@@ -69,6 +69,13 @@ window.addEventListener('load', function () {
     $('#div-add-product').toggle('', false);
     $('#sp-plus-product').toggleClass('fa-plus fa-times', 100);
   });
+  /* Efectos visuales de añadir sucursal */
+
+  $('#sp-add-place').click(function () {
+    $('#div-places').toggle('', false);
+    $('#div-add').toggle('', false);
+    $('#sp-add-place').toggleClass('fa-plus fa-times', 300);
+  });
   /* Desaparecer mensaje de éxito */
 
   Livewire.on('toggle-add-product', function () {

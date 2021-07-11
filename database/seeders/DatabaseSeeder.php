@@ -25,17 +25,14 @@ class DatabaseSeeder extends Seeder
         );
         Place::create(
             [
-                'name'=>'Principal',
-                'location'=>'Sede Central',
-                'phone'=>'000-000-0000',
-                'slug'=>Str::slug('principal'),
-                'is_active'=>1,
+                'name' => 'Principal',
+                'location' => 'Sede Central',
+                'phone' => '000-000-0000',
+                'slug' => Str::slug('principal'),
+                'is_active' => 1,
             ]
-            );
-        \App\Models\User::factory(15)->create()->each( function ($user)
-        {
-            $user->assignRole('vendedor');
-        });
+        );
+
         User::create(
             [
                 'name' => 'Administrador',
@@ -47,7 +44,10 @@ class DatabaseSeeder extends Seeder
                 'slug' => Str::slug('Administrador'),
                 'created_at' => now(),
                 'updated_at' => now(),
-            ])->assignRole('admin');
-        
+            ]
+        )->assignRole('admin');
+        \App\Models\User::factory(15)->create()->each(function ($user) {
+            $user->assignRole('Vendedor');
+        });
     }
 }

@@ -40,15 +40,31 @@
         </div>
         <div class="lg:col-span-4  shadow-xl bg-white p-4 hidden lg:block">
             <h1 class="m-4 text-3xl font-bold text-center">Permisos</h1>
-            <div class="lg:grid grid-cols-4 h-max">
-                @foreach ($user->getAllPermissions() as $permission)
-                    <span
-                        class="p-2 bg-gray-100 m-1 h-8 flex items-center justify-center rounded-xl">{{ $permission->name }}</span>
+            <div class="lg:grid grid-cols-3 h-max">
+                @foreach ($permissions as $permission)
+                    <span class="p-2 bg-gray-100 m-1 h-6 flex items-center justify-between rounded-xl">
+                        {{ $permission->name }}
+                        @can('Gestionar Usuarios', User::class)
+                            @if ($user->id != Auth::user()->id)
+                                @if ($user->can($permission->name))
+                                    <span class="fas fa-minus text-red-500 mx-1 cursor-pointer"
+                                        onclick="confirm('¿Revocar permiso al usuario?') || event.stopImmediatePropagation()"
+                                        wire:click="revoke('{{ $permission->name }}')">
+                                    @else
+                                    <span class="fas fa-plus text-green-500 mx-1 cursor-pointer" title="Asignar permiso"
+                                    onclick="confirm('Asignar permiso al usuario?') || event.stopImmediatePropagation()"
+                                    wire:click="assign('{{ $permission->name }}')">
+                                @endif
+
+                            @endif
+                        </span>
+                    @endcan
+                    </span>
                 @endforeach
             </div>
         </div>
         <script>
-          
+
         </script>
     </div>
 </div>

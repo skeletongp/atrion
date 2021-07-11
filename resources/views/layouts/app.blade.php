@@ -14,11 +14,12 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ mix('css/menu.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/center-atom.css') }}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />   
-
     @livewireStyles
 
     <!-- Scripts -->
@@ -27,7 +28,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
         integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
     @laravelPWA
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
 </head>
 
 <body class="font-sans antialiased h-screen">
@@ -45,7 +46,7 @@
                         {{ $header }}
                     </div>
                     {{-- Funciones del perfil --}}
-                    <div class="flex  text-gray-900 uppercase font-bold items-center space-x-2 lg:w-96 justify-end">
+                    <div class="flex  text-gray-900 uppercase font-bold items-center space-x-2 lg:w-72 ">
                         <a href="{{ route('user.show', Auth::user()) }}" class="profile-photo w-12 h-12 rounded-full">
                             <img src="{{ Auth::user()->profile_photo_url }}" alt=""
                                 class=" rounded-full mr-2 profile-photo">

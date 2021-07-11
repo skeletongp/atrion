@@ -11,7 +11,7 @@
                     id="btn-adduser">
                     <span class="fas fa-plus " id="sp-plus"></span>
                 </div>
-                @can('Gestionar Usuarios', User::class)
+                @can('Gestionar Clientes', User::class)
                     <div wire:click="toggle"
                         class="cursor-pointer mx-1 w-8 h-8 rounded-full flex items-center justify-center bg-gray-200">
                         <span class="fas {{ $button }} "></span>
@@ -38,43 +38,45 @@
                     <tr class="rounded-lg text-sm font-medium text-gray-900 text-left uppercase"
                         style="font-size: 0.9674rem">
                         <th class="px-4 py-2 bg-blue-100 border border-l-1 border-white cursor-pointer relative select-none "
-                            wire:click="toggleOrder('name')">Nombre / Sucursal 
+                            wire:click="toggleOrder('name')">Nombre Completo 
                             <span 
                             class="fas {{$order=='name' && $direction=="desc"? 'fa-sort-alpha-up-alt': ($order=='name'? 'fa-sort-alpha-down':'fa-sort')}} right-2 text-xl absolute">
                             </span>
                         </th>
-                        <th class="px-4 py-2 bg-blue-100 border border-l-1 border-white cursor-pointer select-none relative"
-                            wire:click="toggleOrder('email')">Correo 
+                        <th class="px-4 py-2 bg-blue-100 border border-l-1 border-white select-none text-center">Teléfono
+                        </th>
+                        <th class="px-4 py-2 bg-blue-100 border border-l-1 border-white cursor-pointer select-none relative text-center"
+                            wire:click="toggleOrder('debt')">Deuda 
                             <span 
-                            class="fas {{$order=='email' && $direction=="desc"? 'fa-sort-alpha-up-alt': ($order=='email'? 'fa-sort-alpha-down':'fa-sort')}} right-2 text-xl absolute">
+                            class="fas {{$order=='debt' && $direction=="desc"? 'fa-sort-alpha-up-alt': ($order=='debt'? 'fa-sort-alpha-down':'fa-sort')}} right-2 text-xl absolute">
                             </span>
                         </th>
-                        <th class="px-4 py-2 bg-blue-100 border border-l-1 border-white select-none">Rol
-                        </th>
+                       
                         <th class="py-2 bg-blue-100 text-center" colspan="2">Acciones</th>
                     </tr>
                 </thead>
                 {{-- Cuerpo de la tabla --}}
                 <tbody class="text-md font-normal text-white rounded-xl border-none">
-                    @if ($users->count())
-                        @foreach ($users as $user)
+                    @if ($clients->count())
+                        @foreach ($clients as $client)
                             <tr class=" border-b border-gray-200 hover:text-blue-200" style="background-color: #293949">
                                 {{-- Detalles --}}
                                 <td class="px-4 py-1 border border-l border-white">
-                                    <span>{{ $user->name }}</span><br>
-                                    <span class="select-none cursor-pointer"
-                                        wire:click="$set('place_id',{{ $user->place->id }})">{{ $user->place->name }}</span>
+                                    <span>{{ $client->name }}</span><br>
+                                   {{--  <span class="select-none cursor-pointer" --}}
+                                   {{--      wire:click="$set('place_id',{{ $client->place->id }})">{{ $client->place->name }}</span> --}}
                                 </td>
-                                <td class="px-4 py-1 border border-l border-white">{{ $user->email }}</td>
-                                <td class="px-4 py-1 border border-l border-white">{{ $user->getRoleNames()[0] }}</td>
+                                <td class="px-4 py-1 border border-l border-white text-center">{{ $client->phone}}</td>
+                                <td class="px-4 py-1 border border-l border-white text-center">{{ $client->debt }}</td>
+                                
                                 {{-- Acciones --}}
                                 <td class="py-1 bg-blue-100 border-b border-white text-center"><a
-                                        href="{{ route('users.show', $user) }}"><span
+                                        href="{{ route('users.show', $client) }}"><span
                                             class="fas fa-eye text-blue-500"></span></a></td>
                                 <td class="py-1 bg-blue-100 border-b border-white text-center">
                                     <a role="button"
                                         onclick="confirm('{{ $confirm }}') || event.stopImmediatePropagation()"
-                                        wire:click="softdelete('{{ $user->slug }}')">
+                                        wire:click="softdelete('{{ $client->slug }}')">
                                         <span class="fas {{ $icon }}"
                                             title="{{ $icon == 'fa-trash text-red-500' ? 'Eliminar' : 'Restaurar' }}"></span>
                                     </a>
@@ -95,10 +97,10 @@
             </table>
         </div>
         <div class="lg:w-1/2 mx-auto hidden" id="div-form">
-            @livewire('add-user')
+            @livewire('add-client')
         </div>
     </div>
     <div class="lg:w-1/2 mx-auto my-3 mb" id="div-links">
-        {{ $users->links() }}
+        {{ $clients->links() }}
     </div>
 </div>

@@ -7,13 +7,15 @@
             </div>
             <div class="flex">
 
-                @can('manage.products', Product::class)
+                @can('Gestionar Productos', Product::class)
                     <div wire:click="toggle"
                         class="cursor-pointer mx-1 w-8 h-8 rounded-full flex items-center justify-center bg-gray-200">
                         <span class="fas {{ $button }} "></span>
                     </div>
                 @endcan
+                
             </div>
+            
         </div>
         <div class="w-full flex justify-end  mt-2 lg:w-2/3 mx-auto">
             <div class="w-full sm:w-64 inline-block relative " id="div-search">

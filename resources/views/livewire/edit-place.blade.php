@@ -29,6 +29,7 @@
                             type="text" model="location"></x-input_text>
                         <x-jet-input-error for="location"></x-jet-input-error>
                     </div>
+                    
                 </div>
 
              

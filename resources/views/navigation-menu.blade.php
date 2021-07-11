@@ -71,7 +71,11 @@
                                 class="arrow fa fa-angle-right pull-right"></i></a>
                         <ul>
 
-                            <li><a href="forms-validation.html"><i class="fas fa-user"></i><span>Clientes</span></a>
+                            @can('Gestionar Clientes', User::class)
+                                <li class="{{ request()->routeIs('clients_*') ? 'active' : '' }}"><a
+                                        href="{{ route('clients_index') }}"><i
+                                            class="fas fa-user"></i><span>Clientes</span></a>
+                                @endcan
                             </li>
                             <li><a href="forms-mask.html"><i class="fas fa-user-tag"></i><span>Proveedores</span></a>
                             </li>
