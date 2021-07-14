@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        
     }
 
     /**
@@ -25,20 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::directive('admin', function () {
-            $role=Auth::user()->role->role;
-            return "<?php if ('$role'=='admin') { ?>";
-        });
-        Blade::directive('sales', function () {
-            $role=Auth::user()->role->role;
-            return "<?php if ('$role'=='sales') { ?>";
-        });
-        Blade::directive('other', function () {
-            $role=Auth::user()->role->role;
-            return "<?php  if ('$role'=='other') { ?>";
-        });
-        Blade::directive('endrole', function () {
-            return "<?php } ?>";
-        });
+      
     }
 }

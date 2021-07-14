@@ -58,7 +58,7 @@ class EditUser extends Component
             }
             session()->flash('success', 'Datos actualizados');
             $this->reset('name', 'role', 'email', 'place_id');
-            return redirect()->route('users.show', $user);
+            return redirect()->route('users_show', $user);
         }
     }
     public function multi($value)

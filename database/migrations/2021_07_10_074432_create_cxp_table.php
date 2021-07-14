@@ -17,6 +17,7 @@ class CreateCxpTable extends Migration
             $table->id();
             $table->unsignedBigInteger('provider_id');
             $table->decimal('amount');
+            $table->decimal('balance');
             $table->foreign('provider_id')
             ->references('id')
             ->on('providers');

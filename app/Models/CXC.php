@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class CXC extends Model
 {
     use HasFactory;
+    protected $table="cxcs";
 }

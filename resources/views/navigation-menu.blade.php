@@ -72,7 +72,7 @@
                         <ul>
 
                             @can('Gestionar Clientes', User::class)
-                                <li class="{{ request()->routeIs('clients_*') ? 'active' : '' }}"><a
+                                <li class="{{ request()->routeIs('clients_*') && !request()->routeIs('clients_trash')? 'active' : '' }}"><a
                                         href="{{ route('clients_index') }}"><i
                                             class="fas fa-user"></i><span>Clientes</span></a>
                                 @endcan
@@ -85,6 +85,28 @@
                                             class="fas fa-user-tie"></i><span>Usuarios</span></a>
                                 </li>
                             @endcan
+                            @role('Admin')
+                            <li class="sub-menu2  ">
+                                <a href="javascript:void(0);"><i
+                                        class="fas fa-trash-restore-alt" style="color: #ffb3b3 !important"></i><span>Papelera</span><i
+                                        class="arrow fa fa-angle-right pull-right"></i>
+                                    </a>
+                                <ul class="sub-level"  id="ul_sub" style="display: none; {{ request()->routeIs('clients_trash') ? 'display:inline' : '' }}">
+                                    <li class="{{ request()->routeIs('clients_trash') ? 'active' : '' }}"
+                                        style="margin-left: 15px !important"><a
+                                            href="{{ route('clients_trash', 0) }}"><i
+                                                class="fas fa-user" style="color: #ffb3b3 !important"></i><span>Clientes</span></a>
+                                    <li style="margin-left: 15px !important"><a href="forms-mask.html"><i
+                                                class="fas fa-user-tag" style="color: #ffb3b3 !important"></i><span>Proveedores</span></a>
+                                    </li>
+                                    <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"
+                                        style="margin-left: 15px !important"><a href="{{ route('users.index') }}"><i
+                                                class="fas fa-user-tie" style="color: #ffb3b3 !important"></i><span>Usuarios</span></a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            @endrole
                         </ul>
                     </li>
                     <li class="sub-menu {{ request()->is('inventory/*') ? 'active' : '' }}">
@@ -93,7 +115,7 @@
                         <ul>
 
                             <li class="{{ request()->routeIs('products.*') ? 'active' : '' }}"><a
-                                    href="{{ route('products.index') }}"><i
+                                    href="{{ route('products_index') }}"><i
                                         class="fas fa-tags"></i><span>Productos</span></a>
                             </li>
                             <li><a href="forms-mask.html"><i class="fas fa-tag"></i><span>Servicios</span></a>
@@ -104,7 +126,7 @@
                                             class="fas fa-dollar-sign"></i><span>Valor</span></a>
                                 </li>
                                 @can('Gestionar Sucursales', User::class)
-                                    <li><a href="{{ route('places.index') }}"><i
+                                    <li><a href="{{ route('places_index') }}"><i
                                                 class="fas fa-store-alt"></i><span>Sucursales</span>
                                         </a>
                                     </li>

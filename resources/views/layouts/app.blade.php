@@ -47,6 +47,7 @@
                     </div>
                     {{-- Funciones del perfil --}}
                     <div class="flex  text-gray-900 uppercase font-bold items-center space-x-2 lg:w-72 ">
+                        <a href="{{ url()->previous() }}" class="absolute top-1 right-2"><span class="fas fa-angle-double-left text-2xl"></span></a>
                         <a href="{{ route('user.show', Auth::user()) }}" class="profile-photo w-12 h-12 rounded-full">
                             <img src="{{ Auth::user()->profile_photo_url }}" alt=""
                                 class=" rounded-full mr-2 profile-photo">
