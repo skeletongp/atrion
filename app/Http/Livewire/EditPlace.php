@@ -9,15 +9,15 @@ use Illuminate\Support\Str;
 class EditPlace extends Component
 {
     public $open=false;
-    public $place_id, $name, $phone, $location, $message;
+    public $place, $name, $phone, $location, $message;
     public function render()
     {
-        $place=Place::where('id','=',$this->place_id)->first();
-        $this->name=$place->name;
-        $this->phone=$place->phone;
-        $this->location=$place->location;
+        
+        $this->name=$this->place->name;
+        $this->phone=$this->place->phone;
+        $this->location=$this->place->location;
 
-        return view('livewire.edit-place', compact('place'));
+        return view('livewire.edit-place');
     }
     protected $rules=[
         "name"=>"required|string",
@@ -25,17 +25,17 @@ class EditPlace extends Component
         "location"=>"required|max:60",
 
     ];
-    public function store(Place $place)
+    public function update($place)
     {
+        $place=Place::withTrashed()->where('slug','=',$place)->first();
         $this->validate();
         $place->name=$this->name;
         $place->phone=$this->phone;
         $place->location=$this->location;
         $place->slug=Str::slug($this->name);
-        if ($place->save()) {
-            $this->open=false;
-        }
-        $this->emit('success-update');
-        $this->emit('place_updated');
+        $place->save();
+        $this->place=$place;
+        $this->render();
+        $this->emit('update_place_table');
     }
 }

@@ -12,7 +12,11 @@ window.addEventListener('load', function () {
     $("#leftside-navigation ul ul").slideUp(), $(this).next().is(":visible") || $(this).next().slideDown(), e.stopPropagation();
   });
   $("#leftside-navigation .sub-menu2 > a").click(function (e) {
-    $('#ul_sub').toggle('', false);
+    $('#ul_sub1').toggle('', false);
+    e.stopPropagation();
+  });
+  $("#leftside-navigation .sub-menu3 > a").click(function (e) {
+    $('#ul_sub2').toggle('', false);
     e.stopPropagation();
   });
   $('#input-menu').on('change', function () {
@@ -108,12 +112,50 @@ window.addEventListener('load', function () {
       $('#div-invoices').toggle('', false);
     }
   });
-  /* Submit el formm de buscar al limpiarlo */
+  /* Probando import Excel */
 
-  search = document.getElementsByName('search');
-  search.forEach(function (input) {
-    input.addEventListener('search', function () {
-      $('#form-search').trigger('submit');
+  $('#excel').on('change', function (e) {
+    var file = $('#excel').prop('files')[0];
+    console.log(file);
+    var formData = new FormData();
+    formData.append('file', file);
+    $.ajax({
+      url: 'products/upload',
+      // <-- point to server-side PHP script 
+      dataType: 'text',
+      // <-- what to expect back from the PHP script, if anything
+      cache: false,
+      contentType: false,
+      processData: false,
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: formData,
+      type: 'post',
+      success: function success(result) {
+        alert('Se han insertado ' + result + ' filas');
+        window.location.href = "/inventory/products";
+      }
+    });
+  });
+
+  function hideMessage(sp) {
+    $(sp).slideUp();
+  }
+
+  $('.front').each(function () {
+    $(this).click(function () {
+      $(this).parent().toggleClass('rotar');
+    });
+  });
+  $('.action').each(function () {
+    $(this).click(function () {
+      $(this).parent().parent().toggleClass('rotar');
+    });
+  });
+  $(function () {
+    $('.draggable').each(function () {
+      $(this).draggable();
     });
   });
 });

@@ -16,18 +16,23 @@ class PersonController extends Controller
     {
         $query="";
             $query=$request->search;
-        $users = User::search($query)->sortable(['name' => 'asc'])->where('is_active', '=', $is_active)->where('id','!=',1)->paginate(12);
+       $is_active==1?
+       $users = User::search($query)->sortable(['name' => 'asc'])->where('id','!=',1)->paginate(12):
+       $users = User::onlyTrashed()->search($query)->sortable(['name' => 'asc'])->where('id','!=',1)->paginate(12);
         return view('users.index', compact('users','query'));
     }
     public function users_show(User $user)
     {
+        
         return view('users.show', compact('user'));
     }
     public function clients_index(Request $request, $is_active=1)
     {
         $query="";
             $query=$request->search;
-        $clients = Client::search($query)->sortable(['name' => 'asc'])->where('is_active', '=', $is_active)->paginate(12);
+       $is_active==1?
+       $clients = Client::search($query)->sortable(['name' => 'asc'])->paginate(12):
+       $clients = Client::onlyTrashed()->search($query)->sortable(['name' => 'asc'])->paginate(12);
         return view('persons.clients_index')->with(['clients'=>$clients, 'estado'=>$is_active, 'query'=>$query]);;
     }
     public function clients_show(Client $client)

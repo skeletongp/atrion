@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('meta');
-            $table->tinyInteger('is_active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

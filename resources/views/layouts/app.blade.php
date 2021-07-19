@@ -19,7 +19,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />   
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />  
+        <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css"> 
     @livewireStyles
 
     <!-- Scripts -->
@@ -27,8 +28,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
         integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+        <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script> 
     @laravelPWA
-     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
+ 
 </head>
 
 <body class="font-sans antialiased h-screen">
@@ -74,7 +76,7 @@
         <main class="bg-gray-900" style="max-height: 100vh !important; min-height:100vh" id="main">
 
             <div class="bg-gray-900 w-screen overflow-hidden">
-                <div class=" max-w-screen sm:px-2 lg:pl-8 bg-white py-8 py-24 overflow-y-auto"
+                <div class=" max-w-screen sm:px-2 lg:pl-8 bg-white  py-24 overflow-y-auto"
                     style="height: 100vh; max-height:100vh">
                     <div class="bg-white shadow-xl sm:rounded-lg max-w-screen-2xl ml-auto lg:mr-12 py-4">
                         {{ $slot }}

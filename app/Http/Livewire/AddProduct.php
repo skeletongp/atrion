@@ -7,9 +7,12 @@ use App\Models\Place;
 use App\Models\Product;
 use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\WithPagination;
+
 class AddProduct extends Component
 {
-    public $name, $meta, $category_id, $place_id, $stock, $price, $cost;
+    use WithPagination;
+    public $name, $meta, $category_id=1, $place_id, $stock, $price, $cost;
     public $message;
     protected $listeners=['update_add_product'=>'render'];
     public function render()
@@ -19,7 +22,7 @@ class AddProduct extends Component
         return view('livewire.add-product', compact('places', 'categories'));
     }
     protected $rules=[
-        'name'=>'required|unique:products,name|max:50',
+        'name'=>'required|unique_with:products,place_id|max:50',
         'meta'=>'required|max:100',
         'category_id'=>'required',
         'place_id'=>'required',

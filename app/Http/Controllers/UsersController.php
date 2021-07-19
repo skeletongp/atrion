@@ -11,7 +11,7 @@ class UsersController extends Controller
     use WithPagination;
     public function index()
     {
-        $users=User::where('is_active','=',1)->paginate(5);
+        $users=User::paginate(5);
        return view('users.index', compact('users'));
     }
     public function show(User $user)

@@ -19,6 +19,7 @@ class EditUser extends Component
         $this->name = $this->user->name;
         $this->email = $this->user->email;
         $this->role = $this->user->getRoleNames()[0];
+        $this->place_id = $this->user->place_id;
         $this->roles = Role::all();
         $places = Place::all();
         return view('livewire.edit-user', compact('places'));
@@ -58,7 +59,8 @@ class EditUser extends Component
             }
             session()->flash('success', 'Datos actualizados');
             $this->reset('name', 'role', 'email', 'place_id');
-            return redirect()->route('users_show', $user);
+            $this->emit('update_user_table');
+
         }
     }
     public function multi($value)

@@ -23,7 +23,7 @@ class CreateProductsTable extends Migration
             $table->string('slug');
             $table->unsignedBigInteger('place_id');
             $table->unsignedBigInteger('category_id');
-            $table->tinyInteger('is_active')->default(1);
+            $table->softDeletes();
             $table->tinyInteger('is_product')->default(1);
             $table->foreign('place_id')
             ->references('id')

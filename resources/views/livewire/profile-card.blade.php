@@ -42,18 +42,21 @@
             <h1 class="m-4 text-3xl font-bold text-center">Permisos</h1>
             <div class="lg:grid grid-cols-3 h-max">
                 @foreach ($permissions as $permission)
-                    <span class="p-2 bg-gray-100 m-1 h-6 flex items-center justify-between rounded-xl">
-                        {{ $permission->name }}
+                    <span class="p-2 bg-gray-100 m-1 h-6 flex items-center justify-between rounded-xl ">
+                        <span>
+                            <span
+                                class="{{ $user->can($permission->name) ? 'fas fa-check text-green-500' : 'fas fa-times text-red-500' }} mr-2">
+                            </span>{{ $permission->name }} </span>
                         @can('Gestionar Usuarios', User::class)
                             @if ($user->id != Auth::user()->id)
                                 @if ($user->can($permission->name))
                                     <span class="fas fa-minus text-red-500 mx-1 cursor-pointer"
                                         onclick="confirm('¿Revocar permiso al usuario?') || event.stopImmediatePropagation()"
-                                        wire:click="revoke('{{ $permission->name }}')">
+                                        wire:click="revoke('{{ $permission->name }}')" title="Revocar">
                                     @else
-                                    <span class="fas fa-plus text-green-500 mx-1 cursor-pointer" title="Asignar permiso"
-                                    onclick="confirm('Asignar permiso al usuario?') || event.stopImmediatePropagation()"
-                                    wire:click="assign('{{ $permission->name }}')">
+                                        <span class="fas fa-plus text-green-500 mx-1 cursor-pointer" title="Asignar"
+                                            onclick="confirm('Asignar permiso al usuario?') || event.stopImmediatePropagation()"
+                                            wire:click="assign('{{ $permission->name }}')">
                                 @endif
 
                             @endif

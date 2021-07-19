@@ -6,7 +6,7 @@
                     class="fas fa-check"></span> {{ $message }}</span>
         @endif
         @if (!$places->count())
-            <h1 class="mt-8 text-center uppercase text-xl font-bold">No se ha registrado ninguna sucursal</h1>
+            <h1 class="mt-8 text-center uppercase text-xl font-bold">No se ha encontrado ninguna sucursal</h1>
         @endif
         <h1 class="font-bold uppercase text-2xl text-center">{{ $title }}</h1>
         <div class="md:grid md:grid-cols-2 lg:grid-cols-3 gap-1 bg-blue-500 h-72 bg-opacity-20 rounded-md relative"
@@ -83,27 +83,9 @@
             {{ $places->links() }}
         </div>
     </div>
-    <div class="hidden bg-white rounded-xl div-edit" id="div-edit">
-
-    </div>
+   
     <script>
-        function hideMessage(sp) {
-            $(sp).slideUp();
-
-        }
-        window.addEventListener('load', function() {
-            $('.front').each(function() {
-                $(this).click(function() {
-                    $(this).parent().toggleClass('rotar')
-                })
-            })
-            $('.action').each(function() {
-                $(this).click(function() {
-                    $(this).parent().parent().toggleClass('rotar')
-                })
-            })
-
-        })
+       
     </script>
 
 </div>

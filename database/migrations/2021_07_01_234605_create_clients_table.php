@@ -19,7 +19,7 @@ class CreateClientsTable extends Migration
             $table->string('phone');
             $table->string('slug');
             $table->decimal('debt');
-            $table->tinyInteger('is_active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

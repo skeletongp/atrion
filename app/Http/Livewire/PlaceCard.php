@@ -15,9 +15,17 @@ class PlaceCard extends Component
     protected $listeners = ['place_updated' => 'update_message', 'message' => 'add_message'];
     public function render()
     {
-        $places = Place::where('is_active', '=', $this->is_active,)
-            ->where('name', 'like', '%' . $this->search . '%')
-            ->paginate(3);
+       if ($this->is_active==1) {
+        $places = Place::
+        where('name', 'like', '%' . $this->search . '%')
+        ->paginate(3);
+       } else {
+        $places = Place::
+        onlyTrashed()
+        ->where('name', 'like', '%' . $this->search . '%')
+        ->paginate(3);
+       }
+       
         return view('livewire.place-card', compact('places'));
     }
     public function update_message()
@@ -30,11 +38,16 @@ class PlaceCard extends Component
         $this->message = 'Sucursal Registrada';
         $this->render();
     }
-    public function softdelete(Place $place)
+    public function softdelete($place)
     {
+        $place=Place::withTrashed()->where('slug','=',$place)->first();
         if (Auth::user()->can('Gestionar Sucursales')) {
-            $place->is_active == 1 ? $place->is_active = 0 : $place->is_active = 1;
-            $place->save();
+            if ($place->deleted_at==null) {
+               $place->delete();
+            } else {
+                $place->restore();
+            }
+            
             $this->render();
         }
     }
@@ -48,8 +61,8 @@ class PlaceCard extends Component
             $this->button = 'fa-reply-all';
             $this->resetPage();
         } else {
+            $this->reset('is_active','title','confirm','icon','button');
             $this->resetPage();
-            return redirect()->route('places.index');
         }
     }
 }

@@ -30,7 +30,7 @@
                  <div class="lg:w-1/2 mx-1 my-2">
                      <x-input_select name="role" label="Rol" placeholder="Asigne un rol" model="role"  >
                          @foreach ($roles as $rol)
-                         <option value="{{ $rol->name }}" class="{{ $role==$rol->name ?'text-green-500' : '' }}">
+                         <option value="{{ $rol->name }}">
                              {{ $rol->name }}</option>
                      @endforeach
                      </x-input_select>                    
@@ -39,7 +39,7 @@
                  <div class="lg:w-1/2 mx-1 my-2">
                      <x-input_select name="place_id" label="Sede" placeholder="Asigne una sucursal" model="place_id">
                          @foreach ($places as $place)
-                             <option value="{{ $place->id }}" class="{{ $user->place_id == $place->id ? 'text-green-500' : '' }}">
+                             <option value="{{ $place->id }}" >
                                  {{ $place->name }}</option>
                          @endforeach
                      </x-input_select>

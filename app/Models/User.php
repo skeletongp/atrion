@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -24,6 +25,7 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
     use HasRoles;
     use SearchableTrait, Sortable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -51,6 +53,7 @@ class User extends Authenticatable
             'users.email' => 10,
             'roles.name' => 10,
             'places.name' => 10,
+            'places.location' => 10,
             'users.created_at' => 5,
             'users.updated_At' => 2,
         ],  

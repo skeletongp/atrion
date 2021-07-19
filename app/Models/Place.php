@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Place extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, SearchableTrait;
 
     public function getRouteKeyName()
     {
@@ -22,4 +24,21 @@ class Place extends Model
     {
         return $this->hasMany(Invoice::class);
     }
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+    protected $searchable = [
+       
+        'columns' => [
+            'name' => 10,
+            'phone' => 10,
+            'location' => 10,
+            'created_at' => 5,
+            'updated_At' => 2,
+            
+
+        ]
+        
+    ];
 }

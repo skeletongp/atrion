@@ -17,7 +17,7 @@
 
         <div class="lg:flex ">
 
-            <div class="lg:w-1/3 mx-1 my-2">
+            <div class="lg:w-5/12 mx-1 my-2">
                 <x-input_select name="role" label="Rol" placeholder="Asigne un rol" model="role">
                     @foreach ($roles as $rol)
                         <option value="{{ $rol->name }}" {{ $role = $rol->name ? 'selected' : '' }}>{{ $rol->name }}
@@ -26,7 +26,7 @@
                 </x-input_select>
                 <x-jet-input-error for="role"></x-jet-input-error>
             </div>
-            <div class="lg:w-1/2 mx-1 my-2">
+            <div class="lg:w-7/12 mx-1 my-2">
                 <x-input_select name="place_id" label="Sede" placeholder="Asigne una sucursal" model="place_id">
                     @foreach ($places as $place)
                         <option value="{{ $place->id }}">

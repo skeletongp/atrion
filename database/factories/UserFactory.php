@@ -32,7 +32,6 @@ class UserFactory extends Factory
                 'email_verified_at' => now(),
                 'password' => Hash::make('admin1234'), // password
                 'remember_token' => Str::random(10),
-                'is_active' => 1,
                 'slug' => Str::slug($name),
                 'created_at' => now(),
                 'updated_at' => now(),

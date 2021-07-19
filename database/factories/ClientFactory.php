@@ -28,7 +28,6 @@ class ClientFactory extends Factory
             'slug'=>Str::slug($name),
             'phone'=>$this->faker->numerify('###-###-####'),
             'debt'=>0,
-            'is_active'=>1
         ];
     }
 }

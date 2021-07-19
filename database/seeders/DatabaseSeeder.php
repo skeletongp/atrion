@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Place;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -29,7 +30,6 @@ class DatabaseSeeder extends Seeder
                 'location' => 'Sede Central',
                 'phone' => '000-000-0000',
                 'slug' => Str::slug('principal'),
-                'is_active' => 1,
             ]
         );
 
@@ -40,7 +40,6 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('admin1234'), // password
                 'remember_token' => Str::random(10),
-                'is_active' => 1,
                 'slug' => Str::slug('Administrador'),
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -50,5 +49,11 @@ class DatabaseSeeder extends Seeder
             $user->assignRole('Vendedor');
         });
         \App\Models\Client::factory(36)->create();
+        Category::create([
+            'name' => 'General',
+            'meta' => 'Categoría genérica de productos sin clasificar',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

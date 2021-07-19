@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Kyslik\ColumnSortable\Sortable;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
@@ -11,7 +12,7 @@ use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Client extends Model
 {
-    use HasFactory, Sortable;
+    use HasFactory, Sortable, SoftDeletes;
     use SearchableTrait;
     public function getRouteKeyName()
     {

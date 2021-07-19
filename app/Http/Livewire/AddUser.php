@@ -44,7 +44,7 @@ class AddUser extends Component
             $user->syncPermissions($this->permissions);
             session()->flash('added', 'Usuario añadido');
             $this->reset('name', 'email', 'place_id', 'role', 'permissions');
-            return redirect()->route('users_show', $user);
+            $this->emit('update_user_table');
         }
     }
     public function multi($value)
