@@ -14,4 +14,12 @@ class Cash extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function incomes()
+    {
+        return $this->hasMany(Income::class)->where('date','=',date('Y-m-d'));
+    }
+    public function allIncomes()
+    {
+        return $this->hasMany(Income::class);
+    }
 }

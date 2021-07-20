@@ -61,6 +61,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('inventory')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/inventory.php'));
+
+            Route::middleware(['web', 'auth:sanctum'])
+                ->prefix('invoice')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/invoice.php'));
         });
     }
 

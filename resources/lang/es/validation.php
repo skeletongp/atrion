@@ -177,6 +177,7 @@ return [
         'stock'=>"Stock",
         'meta'=>"Descripción",
         'place_id'=>"Sucursal",
+        'amount'=>"Balance",
     ],
 
 ];

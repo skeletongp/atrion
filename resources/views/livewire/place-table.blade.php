@@ -8,10 +8,10 @@
         <div class=" mx-auto">
             <x-modal modalId="md_add">
                 @slot('title')
-                    <span class="px-4 my-2"><span class="fas fa-plus font-bold"></span> Nuevo Usuario</span>
+                    <span class="px-4 my-2"><span class="fas fa-plus font-bold"></span> Nuevo Local</span>
                 @endslot
                 <div class=" " id="div-add-product">
-                    @livewire('add-user')
+                    @livewire('add-place')
                 </div>
               
             </x-modal>

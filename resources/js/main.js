@@ -152,4 +152,5 @@ window.addEventListener('load', function () {
             $(this).draggable();
         })
     });
+   
 })
