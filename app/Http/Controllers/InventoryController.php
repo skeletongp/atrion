@@ -31,4 +31,5 @@ class InventoryController extends Controller
         $totalRows = $import->getRowCount();
         return $totalRows;
     }
+   
 }

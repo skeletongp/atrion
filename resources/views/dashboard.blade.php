@@ -10,8 +10,7 @@
         
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex-1 justify-center">
             <div class="bg-white shadow-xl sm:rounded-lg flex-1 justify-center mx-auto">
-                <x-jet-welcome />
-                <x-jet-welcome />
+                @livewire('cash-view', ['user' => Auth::user()], key(Auth::user()->id))
             </div>
         </div>
     </div>

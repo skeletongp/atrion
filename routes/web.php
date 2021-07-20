@@ -21,11 +21,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
-Route::get('/migrate',function ()
-{
-   Artisan::call('migrate');
-   return view('dashboard');
-});
+
 Route::get('/migrate/fresh',function ()
 {
    Artisan::call('migrate:fresh');

@@ -27,11 +27,11 @@ class AddClient extends Component
         $client->phone=$this->phone;
         $client->debt=$this->debt;
         $client->slug=Str::slug($this->name);
-        $client->is_active=1;
         $client->save();
       
         session()->flash('added', 'Cliente añadido');
         $this->reset('name','phone','debt');
-        return redirect()->route('clients_index');
+        $this->emit('update_client_table');
+        
     }
 }
