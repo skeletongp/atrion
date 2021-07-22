@@ -28,6 +28,10 @@ class Place extends Model
     {
         return $this->hasMany(User::class);
     }
+    public function cash()
+    {
+        return $this->hasOne(Cash::class)->where('date','=',date('Y-m-d'));
+    }
     protected $searchable = [
        
         'columns' => [

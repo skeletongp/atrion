@@ -36,6 +36,8 @@
                     readonly model="role" />
                 <x-input_text name='' label='Sede ' :oldValue="$user->place->name" type="text" placeholder="''" readonly
                     model="place" />
+                    <x-input_text name='' label='Ventas' :oldValue="$user->sales->count()" type="text" placeholder="''" readonly
+                        model="sales" />
             </div>
         </div>
         <div class="lg:col-span-4  shadow-xl bg-white p-4 hidden lg:block">

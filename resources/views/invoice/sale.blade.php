@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     
-    <div class="pt-2 relative">            
+    <div class="pt-2 relative ">            
             @livewire('make-invoice')
             @if (isset($error))
             <div class="alert alert-danger">{{ $error }}</div>

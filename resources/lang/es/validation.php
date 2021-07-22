@@ -178,6 +178,7 @@ return [
         'meta'=>"Descripción",
         'place_id'=>"Sucursal",
         'amount'=>"Balance",
+        'cant'=>"Cantidad",
     ],
 
 ];

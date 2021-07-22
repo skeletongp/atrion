@@ -13,12 +13,13 @@ class ProfileCard extends Component
 {
     use WithPagination;
     public $user;
-    public $name, $email, $role, $place;
+    public $name, $email, $role, $place, $sales;
     public function render()
     {
         $this->name = $this->user->name;
         $this->email = $this->user->email;
         $this->place = $this->user->place->name;
+        $this->sales = $this->user->sales->count();
         $this->role = $this->user->getRoleNames()[0];
 
         $permissions = User::find(1)->getAllPermissions();

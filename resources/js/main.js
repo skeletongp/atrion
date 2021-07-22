@@ -1,4 +1,6 @@
 window.addEventListener('load', function () {
+       
+
     let isChecked = true;;
     /* Controles del menú */
     $("#leftside-navigation .sub-menu > a").click(function (e) {
@@ -32,7 +34,6 @@ window.addEventListener('load', function () {
         }
 
     });
-
     /* Función para cerrar sesión */
     var button = document.getElementById('sub2');
     button.onclick = function () {
@@ -147,10 +148,8 @@ window.addEventListener('load', function () {
             $(this).parent().parent().toggleClass('rotar')
         })
     })
-    $(function () {
-        $('.draggable').each(function () {
-            $(this).draggable();
-        })
-    });
-   
+    
+        $('.draggable').draggable();
+      
+    
 })

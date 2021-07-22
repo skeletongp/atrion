@@ -153,11 +153,7 @@ window.addEventListener('load', function () {
       $(this).parent().parent().toggleClass('rotar');
     });
   });
-  $(function () {
-    $('.draggable').each(function () {
-      $(this).draggable();
-    });
-  });
+  $('.draggable').draggable();
 });
 /******/ })()
 ;

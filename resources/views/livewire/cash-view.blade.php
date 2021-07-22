@@ -3,15 +3,18 @@
     <div class="mx-auto my-2">
         @if (session('error'))
             <span class="text-red-600 font-bold text-lg">{{ session('error') }}
-            @role('Admin')
+                @role('Admin')
                 <span class="font-bold text-lg space-x-2 text-white bg-gray-900 px-3 py-1 rounded-xl cursor-pointer"
-                wire:click="reopen({{$cash}})"
-                >
-                    <span class="fas fa-lock-open"></span> 
+                    wire:click="reopen({{ $cash }})">
+                    <span class="fas fa-lock-open"></span>
                     ¿Reabrir?</span>
-            @endrole
+                @endrole
         @endif
-    </span>
+        @if (session('cashOut'))
+            <span class="text-red-600 font-bold text-lg">{{ session('cashOut') }}
+
+        @endif
+        </span>
     </div>
     @if ($cash && $cash->status == 1)
         <div class="relative">
@@ -69,7 +72,7 @@
             <span class="absolute top-2 right-2 font-bold uppercase text-lg cursor-pointer"
                 onclick="confirm('¿Desea cerrar la caja?')||event.stopImmediatePropagation()" wire:click="close">
                 <span class="fas fa-lock mx-1"></span>
-               <span class="hidden md:inline-block"> Cerrar Caja</span>
+                <span class="hidden md:inline-block"> Cerrar Caja</span>
             </span>
         </div>
     @else
@@ -77,12 +80,13 @@
             <div>
                 <img src="{{ $user->profile_photo_url }}" alt="avatar" class="w-48 h-48 rounded-full mx-auto my-4">
             </div>
-            <div class="flex flex-col items-center justify-center  my-4 py-2 px-2 relative">
+            <div class="flex flex-col items-center justify-center  my-4 py-2 px-2 relative" wire:ignore>
                 <h1 class="text-2xl text-center font-bold p-4 uppercase rounded-full">
                     Bienvenido, {{ $user->name }}</h1>
                 <x-modal :modalId="'modal'.$user->id">
                     <x-slot name="title">
-                        <div class=" w-72 uppercase font-bold text-2xl  rounded-full px-8 py-2 cursor-pointer mx-auto">
+                        <div class=" w-72 uppercase font-bold text-2xl  rounded-full px-8 py-2 cursor-pointer mx-auto"
+                            wire:click='confirmar ({{ $cash }})'>
                             <span class="fas fa-lock-open"></span>Abrir Caja
                         </div>
                     </x-slot>
@@ -95,7 +99,9 @@
                 </x-modal>
             </div>
         </div>
-
+        <button class="hidden" id="btn-reopen"
+            onclick="confirm('La cada de hoy fue cerrada. ¿Desea reabrirla?')||event.stopImmediatePropagation()"
+            wire:click="reopen({{ $cash }})"></button>
     @endif
     <canvas id="myChart" width="280" height="100"></canvas>
 
@@ -162,5 +168,10 @@
 
             }
         });
+        window.addEventListener('load', function() {
+            Livewire.on('reopenClick', function() {
+                $('#btn-reopen').trigger('click');
+            })
+        })
     </script>
 </div>

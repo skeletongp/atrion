@@ -17,6 +17,10 @@ class CreateDetailsTable extends Migration
             $table->id();
             $table->integer('cant');
             $table->decimal('discount');
+            $table->decimal('tax');
+            $table->decimal('subtotal');
+            $table->decimal('total');
+            $table->decimal('price');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('invoice_id');
             $table->foreign('product_id')

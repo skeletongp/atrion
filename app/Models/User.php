@@ -101,6 +101,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Place::class);
     }
+    public function sales()
+    {
+        return $this->hasMany(Invoice::class);
+    }
     public function cash()
     {
         return $this->hasOne(Cash::class)->where('date','=',date('Y-m-d'));
