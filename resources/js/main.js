@@ -110,7 +110,7 @@ window.addEventListener('load', function () {
 
 
 
-    /* Probando import Excel */
+    /* Importar productos desde Excel */
     $('#excel').on('change', function (e) {
         let file = $('#excel').prop('files')[0];
         console.log(file)
@@ -133,7 +133,7 @@ window.addEventListener('load', function () {
             }
         });
     })
-
+   
     function hideMessage(sp) {
         $(sp).slideUp();
 

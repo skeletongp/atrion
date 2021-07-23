@@ -3,7 +3,9 @@
     <!-- component -->
     <div class="bg-white py-3 px-4 rounded-md w-full  ">
         {{-- Btn Papelera --}}
-        <span class="fa {{$button}} cursor-pointer text-2xl" wire:click='toggle'></span>
+        <div class="flex justify-end w-full">
+            <span class="fa {{$button}} cursor-pointer text-2xl w-max " wire:click='toggle'></span>
+        </div>
         {{-- Btn  nuevo Usuario--}}
         <div class=" mx-auto">
             <x-modal modalId="md_add">
@@ -63,10 +65,10 @@
                                 @foreach ($array as $client)
                                     <tr
                                         class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
-                                        <td class="px-4 py-2 lg:w-72 lg:max-w-72 cursor-pointer"><a href="{{route('users_show',$client)}}">{{ $client->name }}</a></td>
+                                        <td class="px-4 py-2 2xl:w-72 2xl:max-w-72 ">{{ $client->name }}</td>
                                         <td class="px-4 py-2 text-center">{{ $client->phone }}</td>
                                         <td class="px-4 py-2 text-center">{{ $client->debt }}</td>
-                                        <td class="px-4 py-2 text-center">{{ $client->invoices->count()}}</td>
+                                        <td class="px-4 py-2 text-center"><a href="{{route('invoices_filter', $client->id)}}">{{ $client->invoices->count()}}</a></td>
                                         <td class="px-4 py-2 text-center">{{ $client->accounts->count()  }}</td>
                                         <td class="px-2  text-center">
                                             

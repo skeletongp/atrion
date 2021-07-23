@@ -12,7 +12,7 @@ class Cash extends Model
     use HasFactory, SoftDeletes;
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
     public function incomes()
     {
@@ -21,5 +21,9 @@ class Cash extends Model
     public function allIncomes()
     {
         return $this->hasMany(Income::class);
+    }
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
     }
 }

@@ -112,7 +112,7 @@ window.addEventListener('load', function () {
       $('#div-invoices').toggle('', false);
     }
   });
-  /* Probando import Excel */
+  /* Importar productos desde Excel */
 
   $('#excel').on('change', function (e) {
     var file = $('#excel').prop('files')[0];

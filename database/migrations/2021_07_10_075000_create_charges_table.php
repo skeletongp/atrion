@@ -17,7 +17,7 @@ class CreateChargesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('cxp_id');
             $table->decimal('amount');
-            $table->foreign('cxp_id')
+            $table->foreign('cxp_id', 18,2)
             ->references('id')
             ->on('cxps');
             $table->timestamps();

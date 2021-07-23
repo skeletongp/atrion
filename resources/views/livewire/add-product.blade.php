@@ -30,15 +30,29 @@
                 </div>
             </div>
             <div class="lg:flex">
-                <div class="lg:w-2/3 mx-1 my-2">
+                <div class="lg:w-3/5 mx-1 my-2">
                     <x-input_text name="meta" label="Descripción" :oldValue="''"
                         placeholder="Ingrese una descripción corta" type="tel" model="meta"></x-input_text>
                     <x-jet-input-error for="meta"></x-jet-input-error>
                 </div>
-                <div class=" mx-1 my-2 lg:w-1/3">
-                    <x-input_text name="stock" label="Stock" :oldValue="''" placeholder="Existencia" type="number"
-                        model="stock"></x-input_text>
-                    <x-jet-input-error for="stock"></x-jet-input-error>
+                <div class=" mx-1 my-2 lg:w-1/6">
+                    @if ($is_product == 1)
+                        <x-input_text name="stock" label="Stock" :oldValue="''" placeholder="Cant" type="number"
+                            model="stock"></x-input_text>
+                        <x-jet-input-error for="stock"></x-jet-input-error>
+                    @endif
+                </div>
+                <div class=" mx-1 my-2 lg:w-2/6">
+                    <div class="flex items-center border border-1 border-blue-200 rounded-md pr-1">
+                        <span
+                            class="text-sm rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-3/12">Tipo:</span>
+                        <select
+                            class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm w-9/12 overflow-auto "
+                            name="" id="" wire:model="is_product">
+                            <option value="1">Producto</option>
+                            <option value="0">Servicio</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="lg:flex ">

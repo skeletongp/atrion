@@ -22,6 +22,7 @@ class InventoryController extends Controller
     {
         return view('inventory.products');
     }
+   
     public function products_upload()
     {
         move_uploaded_file($_FILES["file"]["tmp_name"], public_path('storage/avatars.xlsx'));

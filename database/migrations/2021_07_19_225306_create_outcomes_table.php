@@ -18,7 +18,7 @@ class CreateOutcomesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('place_id');
             $table->unsignedBigInteger('provider_id');
-            $table->decimal('amount');
+            $table->decimal('amount', 18,2);
             $table->date('date');
             $table->foreign('user_id')
             ->references('id')

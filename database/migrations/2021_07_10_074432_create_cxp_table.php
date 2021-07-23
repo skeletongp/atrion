@@ -16,8 +16,8 @@ class CreateCxpTable extends Migration
         Schema::create('cxps', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('provider_id');
-            $table->decimal('amount');
-            $table->decimal('balance');
+            $table->decimal('amount', 18,2);
+            $table->decimal('balance', 18,2);
             $table->foreign('provider_id')
             ->references('id')
             ->on('providers');

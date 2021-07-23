@@ -109,18 +109,19 @@
     transition: all 0.4s ease-in-out;
 }
 
-.profile-photo:hover~.div-perfil {
+.profile-photo:hover .div-perfil {
     display: block;
-	opacity: 1;
-	top: 4.5rem;
-}
-.div-perfil:hover {
-    display: block;
-	opacity: 1;
-	top: 4.5rem;
+    opacity: 1;
+    top: 4.5rem;
 }
 
-.rotar{
+.div-perfil:hover {
+    display: block;
+    opacity: 1;
+    top: 4.5rem;
+}
+
+.rotar {
     transform: rotateY(180deg)
 }
 
@@ -157,7 +158,7 @@
 
 ::-webkit-scrollbar {
     display: none;
-    
+
 }
 
 .card-1::before {
@@ -194,4 +195,7 @@
     transition: all 0.3s ease-out;
     color: #ffffff;
 }
+
+
+
 

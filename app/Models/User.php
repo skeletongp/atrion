@@ -99,7 +99,7 @@ class User extends Authenticatable
     }
     public function place()
     {
-        return $this->belongsTo(Place::class);
+        return $this->belongsTo(Place::class)->withTrashed();
     }
     public function sales()
     {

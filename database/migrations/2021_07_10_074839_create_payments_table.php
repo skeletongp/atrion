@@ -16,7 +16,7 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('cxc_id');
-            $table->decimal('amount');
+            $table->decimal('amount', 18,2);
             $table->foreign('cxc_id')
             ->references('id')
             ->on('cxcs');

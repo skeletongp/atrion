@@ -12,17 +12,20 @@ use Livewire\WithPagination;
 class AddProduct extends Component
 {
     use WithPagination;
-    public $name, $meta, $category_id=1, $place_id, $stock, $price, $cost;
+    public $name, $meta, $category_id=1, $place_id, $stock, $price, $cost, $is_product;
     public $message;
-    protected $listeners=['update_add_product'=>'render'];
+    protected $listeners=['update_add_product'=>'render', 'store_product'=>'store'];
     public function render()
     {
+        if ($this->is_product==null) {
+            $this->is_product=1;
+        }
         $places=Place::orderBy('name')->get();
         $categories=Category::orderBy('name')->get();
         return view('livewire.add-product', compact('places', 'categories'));
     }
     protected $rules=[
-        'name'=>'required|unique_with:products,place_id|max:50',
+        'name'=>'required|unique_with:products,place_id|max:40',
         'meta'=>'required|max:100',
         'category_id'=>'required',
         'place_id'=>'required',
@@ -41,6 +44,7 @@ class AddProduct extends Component
         $product->stock=$this->stock;
         $product->price=$this->price;
         $product->cost=$this->cost;
+        $product->is_product=$this->is_product;
         $product->slug=Str::slug($this->name);
         $product->save();
         $this->message="Producto añadido";
@@ -51,5 +55,9 @@ class AddProduct extends Component
     {
         $this->reset('message');
         $this->emit('toggle-add-product');
+    }
+    public function updatedIsproduct()
+    {
+       $this->is_product==1?'':$this->stock=1;
     }
 }

@@ -16,11 +16,11 @@ class CreateDetailsTable extends Migration
         Schema::create('details', function (Blueprint $table) {
             $table->id();
             $table->integer('cant');
-            $table->decimal('discount');
-            $table->decimal('tax');
-            $table->decimal('subtotal');
-            $table->decimal('total');
-            $table->decimal('price');
+            $table->decimal('discount', 18,2);
+            $table->decimal('tax', 18,2);
+            $table->decimal('subtotal', 18,2);
+            $table->decimal('total', 18,2);
+            $table->decimal('price', 18,2);
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('invoice_id');
             $table->foreign('product_id')

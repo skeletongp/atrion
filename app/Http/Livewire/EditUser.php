@@ -59,7 +59,7 @@ class EditUser extends Component
             }
             session()->flash('success', 'Datos actualizados');
             $this->reset('name', 'role', 'email', 'place_id');
-            $this->emit('update_user_table');
+           return redirect()->route('users_show',$user);
 
         }
     }

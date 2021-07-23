@@ -3,7 +3,9 @@
     <!-- component -->
     <div class="bg-white py-3 px-4 rounded-md w-full  ">
         {{-- Btn Papelera --}}
-        <span class="fa {{$button}} cursor-pointer text-2xl" wire:click='toggle'></span>
+        <div class="flex justify-end w-full">
+            <span class="fa {{ $button }} cursor-pointer text-2xl right-2" wire:click='toggle'></span>
+            </div>
         {{-- Btn  nuevo Usuario--}}
         <div class=" mx-auto">
             <x-modal modalId="md_add">

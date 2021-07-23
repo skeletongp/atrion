@@ -17,14 +17,16 @@ class CreateInvoicesTable extends Migration
             $table->id();
             $table->string('number');
             $table->date('date');
-            $table->decimal('subtotal');
-            $table->decimal('tax');
-            $table->decimal('total');
+            $table->decimal('subtotal', 18,2);
+            $table->decimal('tax', 18,2);
+            $table->decimal('total', 18,2);
             $table->string('ncf');
+            $table->string('type')->default('sale');
             $table->softDeletes();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('place_id');
+           
             $table->foreign('user_id')
             ->references('id')
             ->on('users');
@@ -34,6 +36,7 @@ class CreateInvoicesTable extends Migration
             $table->foreign('place_id')
             ->references('id')
             ->on('places');
+            
             $table->timestamps();
         });
     }

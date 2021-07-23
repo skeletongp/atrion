@@ -3,29 +3,18 @@
     <!-- component -->
     <div class="bg-white py-3 px-4 rounded-md w-full  ">
         {{-- Btn Papelera --}}
-        <div class="flex justify-end w-full">
-            <span class="fa {{ $button }} cursor-pointer text-2xl right-2" wire:click='toggle'></span>
-        </div>
-        {{-- Btn  nuevo Usuario --}}
-        <div class=" mx-auto">
-            <x-modal modalId="md_add">
-                @slot('title')
-                    <span class="px-4 my-2"><span class="fas fa-plus font-bold"></span> Nuevo Usuario</span>
-                @endslot
-                <div class=" select-none ">
-                    @livewire('add-user')
-                </div>
-
-            </x-modal>
-        </div>
-
+        @role('Admin')
+        <span class="fa {{ $button }} cursor-pointer text-2xl" wire:click='toggle'></span>
+        @endrole
+       
+        
         <div class="  lg:w-2/3 mx-auto my-4 flex items-center justify-center ">
             <div class="flex border border-1 border-blue-200 rounded-md items-center w-11/12">
                 <span
                     class="text-sm border-none rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-2/6 lg:w-1/6">Búsqueda:</span>
                 <input name="search"
                     class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm -ml-1 w-4/6 lg:w-5/6 overflow-auto"
-                    id="search" type="search" placeholder="Buscar producto" value="{{ old('search') }}"
+                    id="search" type="search" invoiceholder="Buscar producto" value="{{ old('search') }}"
                     wire:model.defer="search" />
             </div>
             <div>
@@ -34,6 +23,9 @@
         </div>
 
         <div class=" mx-auto sm:px-6 lg:px-8 flex-1 justify-center ">
+           @if ($client_id>0)
+           <h1 class="font-bold text-center">Facturas de: <span class="text-lg uppercase">{{$invoices->first()->client->name}}</span></h1>
+           @endif
             <div>
 
                 <div class="overflow-x-auto mt-3 select-none" style="height: 34rem">
@@ -41,49 +33,50 @@
                         <thead>
                             <tr class="bg-gray-900 text-base font-bold text-white text-left"
                                 style="font-size: 0.9674rem">
-                                <th class="px-4 py-2 cursor-pointer" wire:clicK="order('name')">Nombre
-                                    <span class="fas {{ $order == 'name' ? $icon_order : 'fa-sort' }}"></span>
+                                <th class="px-4 py-2 " wire:clicK="order('name')">Cliente
+                                    </span>
                                 </th>
-                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('email')">Correo
-                                    <span class="fas {{ $order == 'email' ? $icon_order : 'fa-sort' }}"></span>
+                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('date')">Fecha
+                                    <span class="fas {{ $order == 'date' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
-                                <th class="px-4 py-2  text-center ">Rol</th>
-                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('updated_at')">
-                                    Registrado
-                                    <span class="fas {{ $order == 'updated_at' ? $icon_order : 'fa-sort' }}"></span>
+                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('total')">Total
+                                    <span class="fas {{ $order == 'total' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
-                                <th class="px-4 py-2  text-center ">Sucursal
+                                <th class="px-4 py-2  text-center ">Vendedor</th>
+
+                                <th class="px-4 py-2  text-center ">Deuda
 
                                 </th>
 
-                                <th class="py-2  text-center" colspan="2">Acciones</th>
+                                <th class="py-2  text-center" colspan="1">Detalles</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm font-normal text-gray-900">
-                            @foreach ($users->chunk(50) as $array)
-                                @foreach ($array as $user)
+                            @foreach ($invoices->chunk(50) as $array)
+                                @foreach ($array as $invoice)
                                     <tr
                                         class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
-                                        <td class="px-4 py-2 lg:w-72 lg:max-w-72 cursor-pointer"><a
-                                                href="{{ route('users_show', $user) }}">{{ $user->name }}</a></td>
-                                        <td class="px-4 py-2 text-center">{{ $user->email }}</td>
-                                        <td class="px-4 py-2 text-center">{{ $user->getRoleNames()[0] }}</td>
-                                        <td class="px-4 py-2 text-center">{{ substr($user->created_at, 0, 10) }}</td>
-                                        <td class="px-4 py-2 text-center">{{ $user->place->name }}</td>
-                                        <td class="px-2  text-center">
-                                            <x-modal modalId="edit{{ $user->id }}">
-                                                <x-slot name="title">
-                                                    <span class="fas fa-pen mx-2"></span>
-                                                </x-slot>
-                                                @livewire('edit-user', ['user' => $user], key($user->id))
-                                            </x-modal>
-                                        </td>
-                                        <td class="px-2 py-2 text-center">
+                                        <td class="px-4 py-2 lg:w-56 lg:max-w-56 cursor-pointer">
+                                            @role('Admin')
                                             <span class="fas {{ $icon }} text-red-400 cursor-pointer"
                                                 onclick="confirm('{{ $confirm }}')|| event.stopImmediatePropagation()"
-                                                wire:click="softdelete('{{ $user->slug }}')">
+                                                wire:click="softdelete('{{ $invoice->number }}')">
                                             </span>
+                                            @endrole
+                                            <a href="{{route('invoices_filter',$invoice->client->id)}}">{{ $invoice->client->name }}</a>
                                         </td>
+                                        <td class="px-4 py-2 text-center">{{ $invoice->date }}</td>
+                                        <td class="px-4 py-2 text-center">${{ $invoice->total }}</td>
+                                        <td class="px-4 py-2 text-center">{{ $invoice->user->name }}</td>
+                                        <td class="px-4 py-2 text-center">
+                                            {{ $invoice->rest > 0 ? '$'.$invoice->rest : 'Saldada' }}</td>
+                                        <td class="px-2  text-center">
+                                            <a href="{{ route('preview', $invoice) }}">
+                                                <span class="fas fa-eye mx-2"></span>
+                                            </a>
+
+                                        </td>
+
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -92,7 +85,7 @@
                     </table>
                 </div>
                 <div class="py-2 lg:w-2/3 mx-auto  text-red-400">
-                    {!! $users->links() !!}
+                    {!! $invoices->links() !!}
                 </div>
             </div>
         </div>

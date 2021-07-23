@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Cash;
 use App\Models\Client;
+use App\Models\CXC;
 use App\Models\Detail;
 use App\Models\Income;
 use App\Models\Invoice;
@@ -18,7 +19,7 @@ class MakeInvoice extends Component
     public $clients, $products, $product;
     public $client_id, $name = "Nombre del Cliente", $phone = "000-000-0000";
     public $product_id, $price, $cant = 1, $discount = 0, $productName, $stock=0;
-    public $list = [];
+    public $list = [], $payed=0.0, $rest;
     public $totales = ['subtotal' => 0, 'discount' => 0, 'total' => 0, 'tax' => 0];
     protected $listeners = [
         'change',
@@ -44,7 +45,12 @@ class MakeInvoice extends Component
         $this->product_id = $val;
         $this->product = Product::find($val);
         $this->price = $this->product->price;
-        $this->stock = $this->product->stock;
+        if ($this->product->is_product==1) {
+            $this->stock = $this->product->stock;
+        } else {
+            $this->stock = round(1000000/$this->product->price, 2);
+        }
+        
         $this->productName = $this->product->name;
     }
     protected $rules = [
@@ -76,6 +82,7 @@ class MakeInvoice extends Component
         $this->totales['tax'] += $productDetail['tax'];
         $this->totales['total'] += $productDetail['total'];
         $this->totales['discount'] += $productDetail['discount'];
+        $this->payed=$this->totales['total'];
         $this->emit('update_details');
     }
     public function remove($id)
@@ -89,6 +96,7 @@ class MakeInvoice extends Component
                 array_splice($this->list, array_search($productDetail, $this->list), 1);
             }
         }
+        $this->payed=$this->totales['total'];
     }
     public function charge($id)
     {
@@ -105,6 +113,8 @@ class MakeInvoice extends Component
     public function facturar()
     {
         if ($this->client_id > 0 && $this->totales['total'] > 0) {
+            $this->cobrar();
+            $this->createAccount();
             $invoice = new Invoice();
             $invoice->number = str_pad(Auth::user()->place->invoices->count() + 1, 5, '0', STR_PAD_LEFT);
             $invoice->date = date('Y-m-d');
@@ -115,6 +125,9 @@ class MakeInvoice extends Component
             $invoice->user_id = Auth::user()->id;
             $invoice->place_id = Auth::user()->place_id;
             $invoice->client_id = $this->client_id;
+            $invoice->payed = $this->payed;
+            $invoice->cash_id = Auth::user()->place->cash->id;
+            $invoice->rest = $this->rest;
             if ($invoice->save()) {
                 foreach ($this->list as $productDetail) {
                     $detail = new Detail();
@@ -128,13 +141,13 @@ class MakeInvoice extends Component
                     $detail->invoice_id = $invoice->id;
                     $detail->save();
                     $product=Product::find($productDetail['id']);
-                    $product->stock-=$productDetail['cant'];
+                   $product->is_product==1? $product->stock-=$productDetail['cant']:'';
                     $product->save();
                 }
                 $this->upIncome($invoice->total);
                 $this->upCash(Auth::user()->place->cash->id, $invoice->total);
             }
-        return redirect()->route('sale');
+        return redirect()->route('preview', $invoice);
         }
     }
     public function upIncome($total)
@@ -144,19 +157,41 @@ class MakeInvoice extends Component
         $income->place_id=Auth::user()->place_id;
         $income->client_id=$this->client_id;
         $income->cash_id=Auth::user()->place->cash->id;
-        $income->amount=$total;
+        $income->amount=$this->payed;
         $income->date=date('Y-m-d');
         $income->save();
     }
     public function upCash($cash, $total)
     {
         $cash=Cash::find($cash);
-        $cash->end+=$total;
+        $cash->end+=$this->payed;
         $cash->save();
     }
     public function prove()
     {
         $pdf=PDF::loadview('pdfs.invoice');
         return $pdf->download('invoice.pdf');
+    }
+    public function cobrar()
+    {
+        if ($this->totales['total']>$this->payed) {
+            $this->rest=$this->totales['total']-$this->payed;
+        } else{
+            $this->rest=0;
+        }
+        $client=Client::find($this->client_id);
+        $client->debt+=$this->rest;
+        $client->save();
+    }
+    public function createAccount()
+    {
+       if($this->rest>0){
+           $account=new CXC();
+           $account->client_id=$this->client_id;
+           $account->amount=$this->rest;
+           $account->balance=$this->rest;
+           $account->save();
+
+       }
     }
 }

@@ -16,8 +16,8 @@ class CreateCashesTable extends Migration
             $table->unsignedBigInteger('place_id');
             $table->softDeletes();  
             $table->tinyInteger('status')->default(1);  
-            $table->decimal('start',8,2);
-            $table->decimal('end',8,2)->nullable();
+            $table->decimal('start', 18,2);
+            $table->decimal('end', 18,2)->nullable();
             $table->foreign('user_id')
             ->references('id')
             ->on('users');

@@ -2,32 +2,40 @@
 
     <!-- component -->
     <div class="bg-white py-3 px-4 rounded-md w-full  ">
-
+        <div class="flex justify-end w-full">
+        <span class="fa {{ $button }} cursor-pointer text-2xl right-2" wire:click='toggle'></span>
+        </div>
         <div class=" mx-auto">
             <x-modal modalId="md_add">
                 @slot('title')
-                    <span class="px-4 my-2 text-xl"><span class="fas fa-plus font-bold "></span> Nuevo Producto</span>
+                    <span class="px-4 my-2 text-xl"><span class="fas fa-plus font-bold "></span> Nuevo </span>
                 @endslot
                 <div class=" " id="div-add-product">
                     @livewire('add-product')
                 </div>
                 <x-slot name="excel">
-                    @if (Auth::user()->id==1)
-                    <div class="flex items-center border border-1 border-blue-200 rounded-md pr-1">
-                        <span
-                            class="text-sm rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-2/6">Sucursal:</span>
-                        <select
-                            class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm w-4/6 overflow-auto "
-                            name="place_id" id="" wire:model="place_id">
-                            <option value="">Elija una sucursal</option>
-                            @foreach ($places as $place)
-                            <option value="{{$place->id}}">{{$place->name}}</option>
-                        @endforeach
-                        </select>
-                        
-                    </div>
-                   
+                    @if (Auth::user()->id == 1)
+                        <div class="flex items-center border border-1 border-blue-200 rounded-md pr-1">
+                            <span
+                                class="text-sm rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-2/6">Filtrar:</span>
+                            <select
+                                class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm w-4/6 overflow-auto "
+                                name="place_id" id="" wire:model="place_id">
+                                <option value="">Elija una sucursal</option>
+                                @foreach ($places as $place)
+                                    <option value="{{ $place->id }}">{{ $place->name }}</option>
+                                @endforeach
+                            </select>
+                            <select
+                                class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm w-4/6 overflow-auto "
+                                name="" id="" wire:model="type">
+                                <option value="1">Producto</option>
+                                <option value="0">Servicio</option>
+                            </select>
+                        </div>
+
                     @endif
+
 
                 </x-slot>
             </x-modal>
@@ -64,9 +72,11 @@
                                 <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('price')">Precio
                                     <span class="fas {{ $order == 'price' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
-                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('stock')">Stock
-                                    <span class="fas {{ $order == 'stock' ? $icon_order : 'fa-sort' }}"></span>
-                                </th>
+                                @if ($type == 1)
+                                    <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('stock')">Stock
+                                        <span class="fas {{ $order == 'stock' ? $icon_order : 'fa-sort' }}"></span>
+                                    </th>
+                                @endif
                                 <th class="px-4 py-2  text-center cursor-pointer">Categoría</th>
                                 <th class="py-2  text-center" colspan="2">Acciones</th>
                             </tr>
@@ -79,7 +89,9 @@
                                         <td class="px-4 py-2 lg:w-72 lg:max-w-72">{{ $product->name }}</td>
                                         <td class="px-4 py-2 text-center">${{ $product->cost }}</td>
                                         <td class="px-4 py-2 text-center">${{ $product->price }}</td>
+                                        @if ($type==1)
                                         <td class="px-4 py-2 text-center">{{ $product->stock }}</td>
+                                        @endif
                                         <td class="px-4 py-2 text-center">{{ $product->category->name }}</td>
                                         <td class=" py-2 text-center">
                                             <x-modal modalId="edit{{ $product->id }}">

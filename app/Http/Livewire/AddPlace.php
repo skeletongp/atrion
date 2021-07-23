@@ -31,6 +31,6 @@ class AddPlace extends Component
         $place->slug=Str::slug($this->name);
         $place->save();
         $this->emit('message');
-        return redirect()->route('places.index');
+        return redirect()->route('places_index');
     }
 }

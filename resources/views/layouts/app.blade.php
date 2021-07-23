@@ -59,13 +59,13 @@
                     </div>
                     {{-- Funciones del perfil --}}
                     <div class="flex  text-gray-900 uppercase font-bold items-center space-x-2 lg:w-72 ">
-                        <a href="{{ url()->previous() }}" class="absolute top-1 right-2"><span
+                        <a href="{{ url()->previous() }}" class="absolute top-1 right-2 "><span
                                 class="fas fa-angle-double-left text-2xl"></span></a>
                         <a href="{{ route('user.show', Auth::user()) }}" class="profile-photo w-12 h-12 rounded-full">
                             <img src="{{ Auth::user()->profile_photo_url }}" alt=""
                                 class=" rounded-full mr-2 profile-photo">
                         </a>
-                        <span class="hidden lg:block">{{ Auth::user()->name }}</span>
+                        <span class="hidden lg:block profile-photo cursor-pointer">{{ Auth::user()->name }}</span>
                         <div
                             class="fixed -top-8 right-2 lg:right-auto opacity-0 div-perfil px-2 py-1 z-20 bg-white rounded-md">
                             <a href="{{ route('user.show', Auth::user()) }}"><span class="fas fa-user"></span>

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\Place;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -52,6 +53,14 @@ class DatabaseSeeder extends Seeder
         Category::create([
             'name' => 'General',
             'meta' => 'Categoría genérica de productos sin clasificar',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Company::create([
+            'name'=>'Atrion Systems',
+            'location'=>'Av. Independencia, No. 22, D. N.',
+            'phone'=>'829-804-1907',
+            'logo'=>'https://ui-avatars.com/api/?name=Atrion+Systems&color=7F9CF5&background=EBF4FF',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
