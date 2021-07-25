@@ -32,6 +32,7 @@ class Client extends Model
         'name',
         'phone',
         'debt',
+        'rnc',
         'created_at',
         'updated_at'
     ];

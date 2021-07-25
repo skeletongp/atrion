@@ -6,10 +6,11 @@
         @role('Admin')
         <span class="fa {{ $button }} cursor-pointer text-2xl" wire:click='toggle'></span>
         @endrole
-       
-        
+
+
         <div class="  lg:w-2/3 mx-auto my-4 flex items-center justify-center ">
-            <div class="flex border border-1 border-blue-200 rounded-md items-center w-11/12">
+            {{-- Buscar --}}
+            <div class="flex border border-1 border-blue-200 rounded-md items-center w-9/12">
                 <span
                     class="text-sm border-none rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-2/6 lg:w-1/6">Búsqueda:</span>
                 <input name="search"
@@ -17,15 +18,29 @@
                     id="search" type="search" invoiceholder="Buscar producto" value="{{ old('search') }}"
                     wire:model.defer="search" />
             </div>
-            <div>
-                <span class="fas fa-search ml-2 text-xl cursor-pointer" wire:click="search" id="sp-search"></span>
+
+            {{-- Filtrar --}}
+            <div class="hidden lg:inline">
+                <div class="flex border border-1 border-blue-200 rounded-md items-center ml-2 ">
+                    <span
+                        class="text-sm border-none rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-2/6 lg:w-3/6">Ver:</span>
+                    <select name="" id="" wire:model="amount"
+                        class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm -ml-1 overflow-auto ">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
             </div>
         </div>
 
         <div class=" mx-auto sm:px-6 lg:px-8 flex-1 justify-center ">
-           @if ($client_id>0)
-           <h1 class="font-bold text-center">Facturas de: <span class="text-lg uppercase">{{$invoices->first()->client->name}}</span></h1>
-           @endif
+            @if ($client_id > 0)
+                <h1 class="font-bold text-center">Facturas de: <span
+                        class="text-lg uppercase">{{ $invoices->first()->client->name }}</span></h1>
+            @endif
             <div>
 
                 <div class="overflow-x-auto mt-3 select-none" style="height: 34rem">
@@ -63,13 +78,14 @@
                                                 wire:click="softdelete('{{ $invoice->number }}')">
                                             </span>
                                             @endrole
-                                            <a href="{{route('invoices_filter',$invoice->client->id)}}">{{ $invoice->client->name }}</a>
+                                            <a
+                                                href="{{ route('invoices_filter', $invoice->client->id) }}">{{ $invoice->client->name }}</a>
                                         </td>
                                         <td class="px-4 py-2 text-center">{{ $invoice->date }}</td>
                                         <td class="px-4 py-2 text-center">${{ $invoice->total }}</td>
                                         <td class="px-4 py-2 text-center">{{ $invoice->user->name }}</td>
                                         <td class="px-4 py-2 text-center">
-                                            {{ $invoice->rest > 0 ? '$'.$invoice->rest : 'Saldada' }}</td>
+                                            {{ $invoice->rest > 0 ? '$' . $invoice->rest : 'Saldada' }}</td>
                                         <td class="px-2  text-center">
                                             <a href="{{ route('preview', $invoice) }}">
                                                 <span class="fas fa-eye mx-2"></span>
@@ -80,6 +96,20 @@
                                     </tr>
                                 @endforeach
                             @endforeach
+                            <tr class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base text-white"
+                                style="background-color: black">
+                                <td class="px-4 py-2 lg:w-56 lg:max-w-56 text-center font-bold" colspan="2">
+                                    TOTALES
+                                </td>
+                                <td class="px-4 py-2 text-center font-bold">${{ $invoices->sum('total') }}</td>
+                                <td class="px-4 py-2 text-center font-bold"></td>
+                                <td class="px-4 py-2 text-center font-bold">
+                                    ${{ $invoices->sum('rest') }}</td>
+                                <td class="px-2  text-center">
+
+                                </td>
+
+                            </tr>
 
                         </tbody>
                     </table>

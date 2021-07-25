@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class EditClient extends Component
 {
-    public $name, $phone, $client;
+    public $name, $phone, $client, $rnc;
     public function render()
     {
         $this->name=$this->client->name;
@@ -18,6 +18,7 @@ class EditClient extends Component
     }
     protected $rules = [
         "name" => "required",
+        "rnc"=>"required",
         "phone" => "required|regex:/[0-9]{3}-[0-9]{3}-[0-9]{4}/",
 
     ];
@@ -27,6 +28,7 @@ class EditClient extends Component
         $this->validate();
         $client->name = $this->name;
         $client->phone = $this->phone;
+        $client->rnc = $this->rnc;
         $client->slug = Str::slug($this->name);
         $client->save();
 

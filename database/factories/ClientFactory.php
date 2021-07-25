@@ -26,7 +26,8 @@ class ClientFactory extends Factory
         return [
             'name'=>$name,
             'slug'=>Str::slug($name),
-            'phone'=>$this->faker->numerify('###-###-####'),
+            'phone'=>$this->faker->numerify('809-###-####'),
+            'rnc'=>$this->faker->numerify('###########'),
             'debt'=>0,
         ];
     }

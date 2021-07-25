@@ -5,7 +5,20 @@
         <x-jet-input-error for="discount" class="text-xl"></x-jet-input-error>
     </div>
 
-    <div class="md:flex justify-between items-center px-4 lg:w-2/3 mx-auto bg-gradient-to-b from-blue-50 to-blue-200">
+    <div
+        class="md:flex justify-between items-center px-4 md:w-11/12 lg:w-10/12 xl:w-2/3 mx-auto bg-gradient-to-b from-blue-50 to-blue-200 relative">
+        <div class="absolute top-2 left-1/3 flex space-x-2 items-center">
+
+            <x-jet-input type="checkbox" value="1" id="is_ncf" wire:model="is_ncf">NCF</x-jet-input>
+            <x-jet-label for="is_ncf">NCF</x-jet-label>
+            @if ($is_ncf==1)
+            <x-input_select label="Tipo" name="typeFiscal" model="typeFiscal" oldValue="" placeholder="Tipo">
+                @foreach ($tipos as $tipo)
+                    <option value="{{$tipo->type}}">{{$tipo->type}}</option>
+                @endforeach
+            </x-input_select>
+            @endif
+        </div>
         <div class="md:w-max h-40 py-4 px-1 shadow-sm rounded-xl flex flex-col">
             <x-jet-label for="client_id" class="font-bold text-lg py-1 ">
                 <span class="fas fa-pen text-blue-600 cursor-pointer text-xs hidden" id="hide_select"></span> Facturar
@@ -52,12 +65,13 @@
         </div>
     </div>
 
-    <div class=" py-8 px-4 lg:w-2/3 mx-auto bg-gradient-to-t from-blue-50 to-blue-200" style="max-height: 70vh">
+    <div class=" py-8 px-4 md:w-11/12 lg:w-10/12 xl:w-2/3 mx-auto bg-gradient-to-t from-blue-50 to-blue-200"
+        style="max-height: 70vh">
         <div class="">
 
-            <div class="flex space-x-3 items-center w-full" wire:ignore>
+            <div class="md:flex space-x-3 items-center w-full" wire:ignore>
 
-                <div id="div_select" class="w-full">
+                <div id="div_select" class="md:w-full">
                     <x-jet-label for="product_id">Producto</x-jet-label>
                     <select class="chosen-select product_id w-full" data-placeholder="Selecciona un producto"
                         id="product_id">
@@ -65,46 +79,52 @@
                         @foreach ($products->chunk(50) as $array)
                             @foreach ($array as $product)
                                 <option value="{{ $product->id }}">
-                                    {{ $product->name }} - ${{ $product->price }} ({{$product->stock}})
+                                    {{ $product->name }} - ${{ $product->price }} ({{ $product->stock }})
                                 </option>
                             @endforeach
                         @endforeach
                     </select>
                 </div>
-                <div class="lg:w-1/4">
-                    <x-jet-label for="cant">Cantidad</x-jet-label>
-                    <x-jet-input type="number" placeholder="Cantidad" wire:model.defer="cant"
-                        class="py-0 w-full enter_input" max='5' name="cant">
-                    </x-jet-input>
 
-                </div>
-                <div class="lg:w-1/4">
-                    <x-jet-label for="price">Precio</x-jet-label>
-                    <x-jet-input type="number" placeholder="Precio" wire:model.defer="price" class="py-0 w-full"
-                        readonly>
-                    </x-jet-input>
 
-                </div>
-                @can('Descontar')
+                <div class="flex space-x-2 items-center mt-2 md:mt-0">
                     <div class="lg:w-1/4">
-                        <x-jet-label for="discount">Descuento</x-jet-label>
-                        <x-jet-input type="number" placeholder="Descuento" wire:model.defer="discount"
-                            class="py-0 w-full enter_input">
+                        <x-jet-label for="cant">Cantidad</x-jet-label>
+                        <x-jet-input type="number" placeholder="Cantidad" wire:model.defer="cant"
+                            class="py-0 w-full enter_input" max='5' name="cant">
                         </x-jet-input>
 
                     </div>
-                @endcan
-                <div class="lg:w-1/4 mt-4">
-                    <x-jet-button class="py-1" wire:click="addDetail" id="addDetail"><span class="fas fa-plus"></span>
-                    </x-jet-button>
+                    <div class="lg:w-1/4">
+                        <x-jet-label for="price">Precio</x-jet-label>
+                        <x-jet-input type="number" placeholder="Precio" wire:model.defer="price" class="py-0 w-full"
+                            readonly>
+                        </x-jet-input>
+
+                    </div>
+                    @can('Descontar')
+                        <div class="lg:w-1/4">
+                            <x-jet-label for="discount">Descuento</x-jet-label>
+                            <x-jet-input type="number" placeholder="Descuento" wire:model.defer="discount"
+                                class="py-0 w-full enter_input">
+                            </x-jet-input>
+
+                        </div>
+                    @endcan
+                    <div class="lg:w-1/4 mt-4">
+                        <x-jet-button class="py-1" wire:click="addDetail" id="addDetail"><span
+                                class="fas fa-plus"></span>
+                        </x-jet-button>
+                    </div>
                 </div>
 
             </div>
-            <div class="" >
+            <div class="">
                 <div class="overflow-scroll relative" style="max-height:50vh">
-                    <table class=" my-2 w-full  "  >
-                        <thead class=" " >
-                            <tr class="bg-gray-900 text-base font-bold text-white text-left  " style="font-size: 0.9674rem">
+                    <table class=" my-2 w-full  ">
+                        <thead class=" ">
+                            <tr class="bg-gray-900 text-base font-bold text-white text-left  "
+                                style="font-size: 0.9674rem">
                                 <th class="px-4 py-2   sticky top-0 bg-gray-900">Cant</th>
                                 <th class="px-4 py-2 sticky top-0 bg-gray-900">Producto</th>
                                 <th class="px-4 py-2  text-center sticky top-0 bg-gray-900">Precio</th>
@@ -115,7 +135,7 @@
                                 <th class="py-2  text-center sticky top-0 bg-gray-900" colspan="2">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody class="text-sm font-normal text-gray-900 overflow-auto " >
+                        <tbody class="text-sm font-normal text-gray-900 overflow-auto ">
                             @if (count($list) > 0)
                                 @foreach ($list as $item)
                                     <tr
@@ -126,7 +146,8 @@
                                         <td class="px-4 py-2 text-center">${{ $item['tax'] }}</td>
                                         <td class="px-4 py-2 text-center">${{ $item['subtotal'] }}</td>
                                         <td class="px-4 py-2 text-center">${{ $item['discount'] }}</td>
-                                        <td class="px-4 py-2 text-center">${{ $item['total'] }}</td>
+                                        <td class="px-4 py-2 text-center">${{ $item['total'] - $item['discount'] }}
+                                        </td>
                                         <td class=" py-2 text-center">
                                             <span class="fas fa-pen text-blue-400 cursor-pointer"
                                                 wire:click="charge('{{ $item['id'] }}')">
@@ -141,40 +162,52 @@
                                     </tr>
                                 @endforeach
                                 <tr>
-    
+
                                 </tr>
                                 <tr
                                     class=" border-white hover:border-gray-200 py-4 text-base font-bold sticky bottom-0 bg-gray-600 text-white">
-                                    <td class="px-4 py-1 max-w-16 text-center font-bold uppercase sticky bottom-0 bg-gray-600" colspan="3">Totales</td>
-                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">${{ $totales['tax'] }}</td>
-                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">${{ $totales['subtotal'] }}</td>
-                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">${{ $totales['discount'] }}</td>
-                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">${{ $totales['total'] }}</td>
+                                    <td class="px-4 py-1 max-w-16 text-center font-bold uppercase sticky bottom-0 bg-gray-600"
+                                        colspan="3">Totales</td>
+                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
+                                        ${{ $totales['tax'] }}</td>
+                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
+                                        ${{ $totales['subtotal'] }}</td>
+                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
+                                        ${{ $totales['discount'] }}</td>
+                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
+                                        ${{ $totales['total'] }}</td>
                                     <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600" colspan="2"></td>
-    
+
                                 </tr>
                             @endif
-    
-    
+
+
                         </tbody>
                     </table>
                 </div>
-                <div class="py-2 flex justify-end mr-8">
+                <div class="py-2 flex justify-end mr-8 space-y-4">
                     <x-modal modalId="cobrar">
                         <x-slot name='title'>
-                            <div class="font-bold text-lg flex items-center cursor-pointer bg-gray-900 text-white px-2  rounded-xl">
-                                <span class="fas fa-money mx-2"></span> Facturar</div>
+                            <div
+                                class="font-bold text-lg flex items-center cursor-pointer bg-gray-900 text-white px-2  rounded-xl">
+                                <span class="fas fa-money mx-2"></span> Facturar
+                            </div>
                         </x-slot>
                         <div>
-                            <x-jet-label for="payed">Cobrar</x-jet-label>
-                            <x-jet-input type='number' placeholder="Cobrar" wire:model.defer="payed" class="text-center"></x-jet-input>
-                            <x-jet-button wire:click="facturar">Cobrar</x-jet-button>
+                            <x-jet-label for="cashMoney">Efectivo</x-jet-label>
+                            <x-jet-input type='number' placeholder="Efectivo" wire:model.defer="cashMoney"
+                                class="text-center mb-2" id="input-payed"></x-jet-input>
+                            <x-jet-label for="other">Otro</x-jet-label>
+                            <x-jet-input type='number' placeholder="otro" wire:model.defer="other" class="text-center mb-2"
+                                id="input-payed"></x-jet-input>
+                           
+                            <br>
+
+                            <x-jet-button wire:click="facturar" id="btn-facturar">Cobrar</x-jet-button>
                         </div>
                     </x-modal>
                 </div>
-                <span wire:click="prove" class="cursor-pointer">
-                    Probar {{$payed}}
-                </span>
+
 
             </div>
         </div>
@@ -201,6 +234,11 @@
                 if (e.which == 13) {
                     $('#addDetail').trigger('click');
                     $('#product_id').select2('open');
+                }
+            })
+            $('#input-payed').on('keypress', function(e) {
+                if (e.which == 13) {
+                    $('#btn-facturar').trigger('click');
                 }
             })
         </script>

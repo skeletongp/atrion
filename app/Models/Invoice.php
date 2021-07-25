@@ -22,6 +22,10 @@ class Invoice extends Model
     {
         return $this->belongsTo(Client::class)->withTrashed();
     }
+    public function fiscal()
+    {
+        return $this->belongsTo(Fiscal::class)->withTrashed();
+    }
     public function getRouteKeyName()
     {
         return 'number';

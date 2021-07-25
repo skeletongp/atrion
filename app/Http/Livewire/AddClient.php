@@ -8,10 +8,11 @@ use Illuminate\Support\Str;
 
 class AddClient extends Component
 {
-    public $name, $phone, $debt=0;
+    public $name, $phone, $debt=0, $rnc;
     protected $listeners=['multi'=>'multi'];
     protected $rules=[
         "name"=>"required|unique:clients,name",
+        "rnc"=>"required|unique:clients,rnc",
         "phone"=>"required|regex:/[0-9]{3}-[0-9]{3}-[0-9]{4}/",
 
     ];
@@ -26,11 +27,12 @@ class AddClient extends Component
         $client->name=$this->name;
         $client->phone=$this->phone;
         $client->debt=$this->debt;
+        $client->rnc=$this->rnc;
         $client->slug=Str::slug($this->name);
         $client->save();
       
         session()->flash('added', 'Cliente añadido');
-        $this->reset('name','phone','debt');
+        $this->reset('name','phone','debt', 'rnc');
         $this->emit('update_client_table');
         
     }

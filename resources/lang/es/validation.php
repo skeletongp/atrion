@@ -179,6 +179,7 @@ return [
         'place_id'=>"Sucursal",
         'amount'=>"Balance",
         'cant'=>"Cantidad",
+        'rnc'=>"RNC/ID",
     ],
 
 ];

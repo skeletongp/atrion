@@ -15,6 +15,13 @@
             </div>
            
         </div>
+        <div class="w-full">
+            <div class="lg:w-6/12 mx-1 my-2">
+                <x-input_text name="rnc" label="RNC/ID" :oldValue="''" placeholder="RNC/Cédula" type="rnc"
+                    model="rnc"></x-input_text>
+                <x-jet-input-error for="rnc"></x-jet-input-error>
+            </div>
+        </div>
 
        
 

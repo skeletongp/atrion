@@ -18,6 +18,7 @@ class CreateCompaniesTable extends Migration
             $table->string('name');
             $table->string('location');
             $table->string('phone');
+            $table->string('rnc');
             $table->string('logo');
             $table->timestamps();
         });

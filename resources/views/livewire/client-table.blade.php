@@ -4,18 +4,18 @@
     <div class="bg-white py-3 px-4 rounded-md w-full  ">
         {{-- Btn Papelera --}}
         <div class="flex justify-end w-full">
-            <span class="fa {{$button}} cursor-pointer text-2xl w-max " wire:click='toggle'></span>
+            <span class="fa {{ $button }} cursor-pointer text-2xl w-max " wire:click='toggle'></span>
         </div>
-        {{-- Btn  nuevo Usuario--}}
+        {{-- Btn  nuevo Usuario --}}
         <div class=" mx-auto">
             <x-modal modalId="md_add">
                 @slot('title')
                     <span class="px-4 my-2"><span class="fas fa-plus font-bold"></span> Nuevo Cliente</span>
                 @endslot
-                <div class=" select-none " >
+                <div class=" select-none ">
                     @livewire('add-client')
                 </div>
-              
+
             </x-modal>
         </div>
 
@@ -41,9 +41,13 @@
                         <thead>
                             <tr class="bg-gray-900 text-base font-bold text-white text-left"
                                 style="font-size: 0.9674rem">
+                                <th class="px-4 py-2 cursor-pointer text-center" wire:clicK="order('rnc')">RNC
+                                    <span class="fas {{ $order == 'rnc' ? $icon_order : 'fa-sort' }}"></span>
+                                </th>
                                 <th class="px-4 py-2 cursor-pointer" wire:clicK="order('name')">Nombre
                                     <span class="fas {{ $order == 'name' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
+
                                 <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('phone')">Teléfono
                                     <span class="fas {{ $order == 'phone' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
@@ -51,12 +55,12 @@
                                     <span class="fas {{ $order == 'debt' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
                                 <th class="px-4 py-2  text-center ">Facturas
-                                    
+
                                 </th>
-                                <th class="px-4 py-2  text-center " >Cuentas
-                                    
+                                <th class="px-4 py-2  text-center ">Cuentas
+
                                 </th>
-                              
+
                                 <th class="py-2  text-center" colspan="2">Acciones</th>
                             </tr>
                         </thead>
@@ -65,23 +69,27 @@
                                 @foreach ($array as $client)
                                     <tr
                                         class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
-                                        <td class="px-4 py-2 2xl:w-72 2xl:max-w-72 ">{{ $client->name }}</td>
+                                        <td class="px-4 py-2 text-center">{{ $client->rnc }}</td>
+                                        <td class="px-4 py-2 2xl:max-w-72 ">{{ $client->name }}</td>
                                         <td class="px-4 py-2 text-center">{{ $client->phone }}</td>
-                                        <td class="px-4 py-2 text-center">{{ $client->debt }}</td>
-                                        <td class="px-4 py-2 text-center"><a href="{{route('invoices_filter', $client->id)}}">{{ $client->invoices->count()}}</a></td>
-                                        <td class="px-4 py-2 text-center">{{ $client->accounts->count()  }}</td>
+                                        <td class="px-4 py-2 text-center">${{ $client->debt }}</td>
+                                        <td class="px-4 py-2 text-center">
+                                            <a href="{{ $client->invoices->count()>0?route('invoices_filter', $client->id):'javascript:void(0);' }}">{{ $client->invoices->count() }}
+                                            </a>
+                                        </td>
+                                        <td class="px-4 py-2 text-center">{{ $client->accounts->count() }}</td>
                                         <td class="px-2  text-center">
-                                            
+
                                             <x-modal modalId="edit{{ $client->id }}">
                                                 <x-slot name="title">
                                                     <span class="fas fa-pen mx-2"></span>
                                                 </x-slot>
-                                               @livewire('edit-client', ['client' => $client], key($client->id))
+                                                @livewire('edit-client', ['client' => $client], key($client->id))
                                             </x-modal>
                                         </td>
                                         <td class="px-2 py-2 text-center">
-                                            <span class="fas {{$icon}} text-red-400 cursor-pointer"
-                                                onclick="confirm('{{$confirm}}')|| event.stopImmediatePropagation()"
+                                            <span class="fas {{ $icon }} text-red-400 cursor-pointer"
+                                                onclick="confirm('{{ $confirm }}')|| event.stopImmediatePropagation()"
                                                 wire:click="softdelete('{{ $client->slug }}')">
                                             </span>
                                         </td>
@@ -130,9 +138,9 @@
 
         .table {
             transition: all 1s ease-in-out;
-            
+
         }
-        
+
     </style>
     <script>
         $('#search').on('keypress', function(e) {

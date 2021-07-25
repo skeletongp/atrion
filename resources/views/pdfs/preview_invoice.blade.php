@@ -1,5 +1,8 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 <div class="body">
-   
 
     <div class="div-title">
         <div class="logo"></div>
@@ -19,11 +22,15 @@
                     <h3 class="h-name">Facturado a:</h3>
                     <h3 class="h-info">{{ $invoice->client->name }}</h3>
                     <h3 class="h-info">{{ $invoice->client->phone }}</h3>
+                    <h3 class="h-info">{{ $invoice->client->rnc }}</h3>
                 </td>
                 <td style="width:30mm; text-align:right">
                     <h3 class="h-name">Factura:</h3>
                     <h3 class="h-info">No {{ $invoice->number }}</h3>
                     <h3 class="h-info">{{ $invoice->date }}</h3>
+                    @if ($invoice->fiscal)
+                    <h3 class="h-info">NCF:{{ $invoice->fiscal->ncf }}</h3>
+                    @endif
                 </td>
             </tr>
         </table>
@@ -62,13 +69,14 @@
                 <tr>
                     <td style="background-color: white"></td>
                     <td colspan="2" class="td-total">ITBIS</td>
-                    <td class="td-total" style="text-align: right; padding-right:10px">${{ $invoice->tax }}</td>
+                    <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->tax }} <b style="font-size: 12px">+</b></td>
                 </tr>
                 @if ($details->sum('discount')>0)
                 <tr>
                     <td style="background-color: white"></td>
-                    <td colspan="2" class="td-total">ITBIS</td>
-                    <td class="td-total" style="text-align: right; padding-right:10px; color:red">$-{{ round($details->sum('discount'),0,2) }}</td>
+                    <td colspan="2" class="td-total">Descuento </td>
+                    <td class="td-total" style="text-align: right; padding-right:10p">
+                       ${{ round($details->sum('discount'),0,2) }} <b style="font-size: 12px">-</b></td>
                 </tr>
                     
                 @endif
@@ -85,9 +93,18 @@
 
                 <tr>
                     <td style="background-color: white"></td>
-                    <td colspan="2" class="td-total">Pagó</td>
-                    <td class="td-total" style="text-align: right; padding-right:10px">${{ $invoice->payed }}</td>
+                    <td colspan="2" class="td-total">Efectivo</td>
+                    <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->cash }}</td>
                 </tr>
+                @if ($invoice->other>0){
+                    <tr>
+                        <td style="background-color: white"></td>
+                        <td colspan="2" class="td-total">Otro</td>
+                        <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->other }}</td>
+                    </tr>
+                }
+                    
+                @endif
                 <tr>
                     <td style="background-color: white"></td>
                     <td colspan="2" class="td-total">Balance</td>
@@ -110,12 +127,10 @@
     </div>
 </div>
 <script type="text/javascript">
-    try {
-        this.print();
-    }
-    catch(e) {
-        window.onload = window.print;
-    }
+    let back=document.getElementById('back');
+    back.addEventListener('click', function () {
+        alert('hola')
+    })
 </script>
 <style>
     * {
@@ -237,6 +252,11 @@
         text-transform: uppercase;
     }
 
+    .sp-totales{
+        display: flex;
+        justify-content: space-between;
+    }
+    
     .footer {
         margin-top: 20px;
         text-align: center;
@@ -270,6 +290,11 @@
     }
     .firm h3{
         margin-bottom: 19px;
+    }
+    .back{
+        font-weight: bold;
+        font-size: 1.5rem;
+        cursor: pointer;
     }
 
 </style>

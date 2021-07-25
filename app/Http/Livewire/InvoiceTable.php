@@ -11,7 +11,7 @@ use Livewire\WithPagination;
 class InvoiceTable extends Component
 {
     use WithPagination;
-    public $search = "", $direction = 'asc', $order = "date", $icon_order = 'fa-sort-up';
+    public $search = "", $direction = 'asc', $order = "date", $icon_order = 'fa-sort-up', $amount=10;
     public $is_active = 1, $title = 'Facturas activas', $icon = "fa-trash text-red-500", $confirm = '¿Eliminar factura?', $button = 'fa-recycle';
     protected $listeners = ['update_invoice_table' => 'render'];
     public $client_id;
@@ -22,24 +22,24 @@ class InvoiceTable extends Component
                 $invoices = Invoice::search($this->search)
                 ->where('client_id','=',$this->client_id)
                 ->where('place_id','=',Auth::user()->place_id)
-                    ->orderBy($this->order, $this->direction)->paginate(10);
+                    ->orderBy($this->order, $this->direction)->paginate($this->amount);
             } else {
                 $invoices = Invoice::onlyTrashed()->search($this->search)
                 ->where('client_id','=',$this->client_id)
                 ->where('place_id','=',Auth::user()->place_id)
-                    ->orderBy($this->order, $this->direction)->paginate(10);
+                    ->orderBy($this->order, $this->direction)->paginate($this->amount);
             }
         } else {
             if ($this->is_active == 1) {
                 $invoices = Invoice::search($this->search)
                 ->where('type','=','sale')
                 ->where('place_id','=',Auth::user()->place_id)
-                    ->orderBy($this->order, $this->direction)->paginate(10);
+                    ->orderBy($this->order, $this->direction)->paginate($this->amount);
             } else {
                 $invoices = Invoice::onlyTrashed()->search($this->search)
                 ->where('type','=','sale')
                 ->where('place_id','=',Auth::user()->place_id)
-                    ->orderBy($this->order, $this->direction)->paginate(10);
+                    ->orderBy($this->order, $this->direction)->paginate($this->amount);
             }
         }
         

@@ -24,6 +24,12 @@
                                 href="{{ route('user.show', Auth::user()) }}"><i class="fas fa-user"></i><span>Mi
                                     perfil</span></a>
                         </li>
+                        @role('Admin')
+                        <li class="{{ request()->routeIs('user.show') ? 'active' : '' }}"><a
+                                href="{{ route('user.show', Auth::user()) }}"><i class="fas fa-city"></i>
+                                <span>Empresa</span></a>
+                        </li>
+                        @endrole
                         <li class="{{ request()->is('account/outcomes*') ? 'active' : '' }}">
                             <form method="POST" action="{{ route('logout') }}" id="form">
                                 @csrf
@@ -104,7 +110,7 @@
                                             class="fas fa-tags"></i><span>Productos</span></a>
                                 </li>
                             @endcan
-                            
+
                             @can('Gestionar Ingresos', User::class)
                                 <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"><a
                                         href="{{ route('users.index') }}"><i
@@ -166,7 +172,21 @@
                         </ul>
                     </li>
                 @endcan
-
+                @can('Gestionar Ingresos', User::class)
+                    <li class="sub-menu ">
+                        <a href="javascript:void(0);"><i class="fas fa-donate"></i><span>Contabilidad</span><i
+                                class="arrow fa fa-angle-right pull-right"></i></a>
+                        <ul>
+                            <li class="active"><a href="{{ route('fiscal_index') }}"><i
+                                        class="fas fa-chart-line"></i><span>Comprobantes</span></a>
+                            </li>
+                            <li><a href="mail-compose.html"><i class="fas fa-sync-alt"></i><span>Recurrentes</span></a>
+                            </li>
+                            <li><a href="mail-compose.html"><i class="fas fa-sticky-note"></i><span>Otros</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                @endcan
                 <li class="sub-menu">
                     <a href="javascript:void(0);"><i class="fas fa-question"></i><span>Ayuda</span><i
                             class="arrow fa fa-angle-right pull-right"></i></a>
