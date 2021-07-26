@@ -10,7 +10,7 @@
         <div class=" mx-auto">
             <x-modal modalId="md_add">
                 @slot('title')
-                    <span class="px-4 my-2"><span class="fas fa-plus font-bold"></span> Nuevo Local</span>
+                    <span class="px-4 my-2 text-lg"><span class="fas fa-plus font-bold"></span> Nuevo Local</span>
                 @endslot
                 <div class=" " id="div-add-product">
                     @livewire('add-place')
@@ -37,22 +37,22 @@
             <div>
 
                 <div class="overflow-x-auto mt-3 select-none" style="height: 34rem">
-                    <table class="table-auto  lg:w-2/3 mx-auto table">
+                    <table class="table-auto w-screen lg:w-2/3 mx-auto table">
                         <thead>
                             <tr class="bg-gray-900 text-base font-bold text-white text-left"
                                 style="font-size: 0.9674rem">
                                 <th class="px-4 py-2 cursor-pointer" wire:clicK="order('name')">Nombre
-                                    <span class="fas {{ $order == 'name' ? $icon_order : 'fa-sort' }}"></span>
+                                    <div class="hidden md:inline-block"><span class="fas {{ $order == 'name' ? $icon_order : 'fa-sort' }}"></span></div>
                                 </th>
                                 <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('phone')">Teléfono
-                                    <span class="fas {{ $order == 'phone' ? $icon_order : 'fa-sort' }}"></span>
+                                    <div class="hidden md:inline-block"><span class="fas {{ $order == 'phone' ? $icon_order : 'fa-sort' }}"></span></div>
                                 </th>
                                 <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('location')">Ubicación
-                                    <span class="fas {{ $order == 'location' ? $icon_order : 'fa-sort' }}"></span>
+                                    <div class="hidden md:inline-block"><span class="fas {{ $order == 'location' ? $icon_order : 'fa-sort' }}"></span></div>
                                 </th>
-                                <th class="px-4 py-2  text-center ">Productos</th>
+                                <th class="px-4 py-2  text-center ">Inv.</th>
 
-                                <th class="px-4 py-2  text-center " >Empleados
+                                <th class="px-4 py-2  text-center " >Empl.
                                     
                                 </th>
                               
@@ -63,13 +63,13 @@
                             @foreach ($places->chunk(50) as $array)
                                 @foreach ($array as $place)
                                     <tr
-                                        class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
-                                        <td class="px-4 py-2 lg:w-72 lg:max-w-72 cursor-pointer">{{ $place->name }}</td>
-                                        <td class="px-4 py-2 text-center">{{ $place->phone }}</td>
-                                        <td class="px-4 py-2 text-center">{{ $place->location }}</td>
-                                        <td class="px-4 py-2 text-center">{{ $place->products->count()}}</td>
-                                        <td class="px-4 py-2 text-center">{{ $place->users->count()  }}</td>
-                                        <td class="px-2  text-center">
+                                        class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base w-full">
+                                        <td class="lg:px-4 py-2 cursor-pointer">{{ $place->name }}</td>
+                                        <td class="lg:px-4 py-2 text-center">{{ str_replace('-', "",$place->phone) }}</td>
+                                        <td class="lg:px-4 py-2 text-center">{{ $place->location }}</td>
+                                        <td class="lg:px-4 py-2 text-center">{{ $place->products->count()}}</td>
+                                        <td class="lg:px-4 py-2 text-center">{{ $place->users->count()  }}</td>
+                                        <td class="lg:px-2  text-center">
                                             <x-modal modalId="edit{{ $place->id }}">
                                                 <x-slot name="title">
                                                     <span class="fas fa-pen mx-2"></span>

@@ -11,7 +11,7 @@ class input_text extends Component
      *
      * @return void
      */
-    public $name, $label, $oldValue, $placehoder, $type, $readonly, $model;
+    public $name, $label, $oldValue, $placehoder, $type, $readonly, $model, $class="";
     public function __construct($name, $label, $oldValue, $placehoder, $type, $readonly, $model)
     {
         $this->name=$name;

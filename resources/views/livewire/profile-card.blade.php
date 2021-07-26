@@ -26,7 +26,7 @@
 
             </div>
         </div>
-        <div class="lg:col-span-3 h-56 lg:h-48 shadow-xl p-4 space-y-2">
+        <div class="lg:col-span-3 h-72 lg:h-48 shadow-xl p-4 space-y-2 rounded-xl">
             <x-input_text name='' label='Nombre' :oldValue="$user->name" type="text" placeholder="''" readonly
                 model="name" />
             <x-input_text name='' label='Correo' :oldValue="$user->email" type="text" placeholder="''" readonly

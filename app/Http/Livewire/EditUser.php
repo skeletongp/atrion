@@ -25,7 +25,7 @@ class EditUser extends Component
         return view('livewire.edit-user', compact('places'));
     }
     protected $rules = [
-        "name" => "required",
+        "name" => "required|max:30",
         "email" => "required",
         "place_id" => "required",
         "password_confirm" => "same:password",

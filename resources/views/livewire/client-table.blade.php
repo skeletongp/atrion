@@ -71,7 +71,7 @@
                                         class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
                                         <td class="px-4 py-2 text-center">{{ $client->rnc }}</td>
                                         <td class="px-4 py-2 2xl:max-w-72 ">{{ $client->name }}</td>
-                                        <td class="px-4 py-2 text-center">{{ $client->phone }}</td>
+                                        <td class="px-4 py-2 text-center">{{ str_replace('-','',$client->phone) }}</td>
                                         <td class="px-4 py-2 text-center">${{ $client->debt }}</td>
                                         <td class="px-4 py-2 text-center">
                                             <a href="{{ $client->invoices->count()>0?route('invoices_filter', $client->id):'javascript:void(0);' }}">{{ $client->invoices->count() }}

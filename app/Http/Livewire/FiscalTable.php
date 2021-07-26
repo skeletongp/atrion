@@ -19,7 +19,7 @@ class FiscalTable extends Component
     protected $listeners = ['update_product_table' => 'render'];
     public function render()
     {
-        $fiscals=Fiscal::paginate(10);
+        $fiscals=Fiscal::withTrashed()->search($this->search)->orderBy('ncf')->paginate(10);
         return view('livewire.fiscal-table', compact('fiscals'));
     }
     public function toggle()

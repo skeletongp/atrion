@@ -14,6 +14,7 @@ class EditClient extends Component
     {
         $this->name=$this->client->name;
         $this->phone=$this->client->phone;
+        $this->rnc=$this->client->rnc;
         return view('livewire.edit-client');
     }
     protected $rules = [

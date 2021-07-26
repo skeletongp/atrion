@@ -136,7 +136,9 @@ class MakeInvoice extends Component
             $invoice->payed = $this->payed;
             $invoice->cash_id = Auth::user()->place->cash->id;
             $invoice->rest = $this->rest;
-            $invoice->fiscal_id = $this->ncf_id;
+            if ($this->ncf_id>0) {
+                $invoice->fiscal_id = $this->ncf_id;
+            }
             $invoice->cash = $this->cashMoney;
             $invoice->other = $this->other;
             $invoice->is_fiscal = $this->is_ncf;

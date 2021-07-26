@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
             'name'=>'Atrion Systems',
             'location'=>'Av. Independencia, No. 22, D. N.',
             'phone'=>'829-804-1907',
-            'phone'=>'402-2184412-2',
+            'rnc'=>'402-2184412-2',
             'logo'=>'https://ui-avatars.com/api/?name=Atrion+Systems&color=7F9CF5&background=EBF4FF',
             'created_at' => now(),
             'updated_at' => now(),

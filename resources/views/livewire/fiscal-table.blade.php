@@ -33,34 +33,35 @@
 
         <div class=" mx-auto sm:px-6 lg:px-8 flex-1 justify-center ">
             <div>
-
                 <div class="overflow-x-auto mt-3 select-none" style="height: 34rem">
                     <table class="table-auto  lg:w-2/3 mx-auto">
                         <thead>
                             <tr class="bg-gray-900 text-base font-bold text-white text-left"
                                 style="font-size: 0.9674rem">
-                                <th class="px-4 py-2 cursor-pointer" >NCF
-                                </th>
-                                <th class="px-4 py-2  text-center cursor-pointer" >Fecha
-                                </th>
-                                <th class="px-4 py-2  text-center cursor-pointer" >Emitido A
-                                   
-                                </th>
+                                <th class="px-4 py-2 cursor-pointer" >NCF</th>
+                                <th class="px-4 py-2  text-center cursor-pointer" >Fecha</th>
+                                <th class="px-4 py-2  text-center cursor-pointer" >Emitido A</th>
+                                <th class="px-4 py-2  text-center cursor-pointer" >Factura</th>
                                 
                                 <th class="px-4 py-2  text-center cursor-pointer">Monto</th>
-                                <th class="py-2  text-center" colspan="2">Acciones</th>
+                                <th class="py-2  text-center hidden" colspan="2">Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm font-normal text-gray-900">
                             @foreach ($fiscals->chunk(50) as $array)
                                 @foreach ($array as $fiscal)
                                     <tr
-                                        class="hover:bg-blue-100 border-b border-white hover:border-g   ray-200 py-4 text-base">
-                                        <td class="px-4 py-2 lg:w-72 lg:max-w-72">{{ $fiscal->serie }}-{{ $fiscal->type_number }}-{{ $fiscal->secuency }}</td>
-                                        <td class="px-4 py-2 text-center">{{ substr($fiscal->created_at,0,10 )}}</td>
+                                        class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
+                                        <td class="px-4 py-2 ">{{ $fiscal->serie }}-{{ $fiscal->type_number }}-{{ $fiscal->secuency }}</td>
+                                        <td class="px-4 py-2 text-center">{{ substr($fiscal->created_at,0,10 )}} </td>
                                         
                                        @if ($fiscal->invoice)
-                                       <td class="px-4 py-2 text-center">${{ $fiscal->invoice->client->name }}</td>
+                                       <td class="px-4 py-2 text-center">{{ $fiscal->invoice->client->name }}</td>
+                                       @else
+                                       <td class="px-4 py-2 text-center">N/A</td>
+                                       @endif
+                                       @if ($fiscal->invoice)
+                                       <td class="px-4 py-2 text-center">No. {{ $fiscal->invoice->number }}</td>
                                        @else
                                        <td class="px-4 py-2 text-center">N/A</td>
                                        @endif
@@ -72,7 +73,7 @@
                                         <td class=" py-2 text-center">
                                            
                                         </td>
-                                        <td class=" py-2 text-center">
+                                        <td class=" py-2 text-center hidden">
                                             <span class="fas fa-trash text-red-400 cursor-pointer"
                                                 onclick="confirm('¿Desea borrar este fiscalo?')|| event.stopImmediatePropagation()"
                                                 wire:click="softdelete('{{ $fiscal->slug }}')">

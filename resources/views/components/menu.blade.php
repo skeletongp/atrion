@@ -12,7 +12,18 @@
     <aside class="sidebar {{-- menu-close --}}" id="sidebar">
 
         <div id="leftside-navigation" class="nano">
+
             <ul class="nano-content">
+                <li class="flex justify-between items-center h-24 ">
+                    <a href="{{ route('user.company') }}"
+                        style="display: flex !important; justify-contents: center; 	align-items: center">
+                        <div class="w-10 h-10 bg-cover rounded-full mr-1 shadow-xl border-2 border-blue-300"
+                            style="background-image: url('{{ \App\Models\Company::get()->first()->logo }})'"></div>
+                        <span
+                            class="w-6/12 uppercase font-bold overflow-hidden truncate ">{{ \App\Models\Company::get()->first()->name }}
+                            para ves más</span>
+                    </a>
+                </li>
                 <li class="flex justify-between items-center">
                     <a href="{{ route('dashboard') }}"><i class="fas fa-home"></i><span>Panel</span></a>
                 </li>
@@ -26,7 +37,7 @@
                         </li>
                         @role('Admin')
                         <li class="{{ request()->routeIs('user.show') ? 'active' : '' }}"><a
-                                href="{{ route('user.show', Auth::user()) }}"><i class="fas fa-city"></i>
+                                href="{{ route('user.company', Auth::user()) }}"><i class="fas fa-city"></i>
                                 <span>Empresa</span></a>
                         </li>
                         @endrole

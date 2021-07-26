@@ -40,10 +40,9 @@
 <body class="font-sans antialiased h-screen">
     <x-jet-banner />
     @php
-        setlocale(LC_TIME, 'spanish');
-        date_default_timezone_set('Europe/Madrid');
+        date_default_timezone_set('America/Santo_Domingo');
         // Unix
-        setlocale(LC_TIME, 'es_ES.UTF-8');
+        setlocale(LC_ALL, 'es_ES.UTF-8');
         
     @endphp
     <div class=" mx-auto bg-gray-100" id="body">
@@ -58,7 +57,7 @@
                         {{ $header }}
                     </div>
                     {{-- Funciones del perfil --}}
-                    <div class="flex  text-gray-900 uppercase font-bold items-center space-x-2 lg:w-72 ">
+                    <div class="flex  text-gray-900 uppercase font-bold items-center space-x-2 w-1/2 justify-end ">
                         <a href="{{ url()->previous() }}" class="absolute top-1 right-2 "><span
                                 class="fas fa-angle-double-left text-2xl"></span></a>
                         <a href="{{ route('user.show', Auth::user()) }}" class="profile-photo w-12 h-12 rounded-full">

@@ -6,30 +6,30 @@
 
     <div class="div-title">
         <div class="logo"></div>
-        <h3 class="h-title">{{$company->name}}</h3>
-        <h3 class="h-subtitle"><i class="icon-phone-sign"></i> 
-            {{$company->phone}}</h3>
-        <h3 class="h-subtitle">{{$company->location}}</h3>
+        <h3 class="h-title">{{ $company->name }}</h3>
+        <h3 class="h-subtitle"><i class="icon-phone-sign"></i>
+            {{ $company->phone }}</h3>
+        <h3 class="h-subtitle">{{ $company->location }}</h3>
         <h3 class="h-subtitle">{{ $invoice->user->place->name }}</h3>
     </div>
     <hr>
 
-
+{{setlocale(LC_ALL, 'es_ES.UTF-8')}}
     <div class="info">
         <table style="width: 70mm; margin: 0 auto 0 auto">
             <tr>
                 <td style="width:30mm; text-align:left">
                     <h3 class="h-name">Facturado a:</h3>
                     <h3 class="h-info">{{ $invoice->client->name }}</h3>
-                    <h3 class="h-info">{{ $invoice->client->phone }}</h3>
-                    <h3 class="h-info">{{ $invoice->client->rnc }}</h3>
+                    <h3 class="h-info">Tel.: {{ $invoice->client->phone }}</h3>
+                    <h3 class="h-info">RNC/ID: {{ $invoice->client->rnc }}</h3>
                 </td>
                 <td style="width:30mm; text-align:right">
                     <h3 class="h-name">Factura:</h3>
                     <h3 class="h-info">No {{ $invoice->number }}</h3>
-                    <h3 class="h-info">{{ $invoice->date }}</h3>
+                    <h3 class="h-info">{{date("d M, Y", strtotime($invoice->date )) }}</h3>
                     @if ($invoice->fiscal)
-                    <h3 class="h-info">NCF:{{ $invoice->fiscal->ncf }}</h3>
+                        <h3 class="h-info">NCF: {{ $invoice->fiscal->ncf }}</h3>
                     @endif
                 </td>
             </tr>
@@ -69,16 +69,17 @@
                 <tr>
                     <td style="background-color: white"></td>
                     <td colspan="2" class="td-total">ITBIS</td>
-                    <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->tax }} <b style="font-size: 12px">+</b></td>
+                    <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->tax }} <b
+                            style="font-size: 12px">+</b></td>
                 </tr>
-                @if ($details->sum('discount')>0)
-                <tr>
-                    <td style="background-color: white"></td>
-                    <td colspan="2" class="td-total">Descuento </td>
-                    <td class="td-total" style="text-align: right; padding-right:10p">
-                       ${{ round($details->sum('discount'),0,2) }} <b style="font-size: 12px">-</b></td>
-                </tr>
-                    
+                @if ($details->sum('discount') > 0)
+                    <tr>
+                        <td style="background-color: white"></td>
+                        <td colspan="2" class="td-total">Descuento </td>
+                        <td class="td-total" style="text-align: right; padding-right:10p">
+                            ${{ round($details->sum('discount'), 0, 2) }} <b style="font-size: 12px">-</b></td>
+                    </tr>
+
                 @endif
                 <tr>
                     <td style="background-color: white"></td>
@@ -96,14 +97,15 @@
                     <td colspan="2" class="td-total">Efectivo</td>
                     <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->cash }}</td>
                 </tr>
-                @if ($invoice->other>0){
+                @if ($invoice->other > 0){
                     <tr>
                         <td style="background-color: white"></td>
                         <td colspan="2" class="td-total">Otro</td>
-                        <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->other }}</td>
+                        <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->other }}
+                        </td>
                     </tr>
-                }
-                    
+                    }
+
                 @endif
                 <tr>
                     <td style="background-color: white"></td>
@@ -118,7 +120,7 @@
     </div>
     <div class="firm">
         <h3>ATENDIDO POR: </h3>
-        <span >{{ Auth::user()->name }}</span>
+        <span>{{ Auth::user()->name }}</span>
     </div>
     <div class="footer">
         <h3>¡GRACIAS POR PREFERIRNOS!</h3>
@@ -127,8 +129,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    let back=document.getElementById('back');
-    back.addEventListener('click', function () {
+    let back = document.getElementById('back');
+    back.addEventListener('click', function() {
         alert('hola')
     })
 </script>
@@ -139,7 +141,7 @@
         transform: scale(0.99)
     }
 
-    
+
     @page {
         size: 80mm 257mm;
         padding: 0;
@@ -161,7 +163,8 @@
     .logo {
         width: 20mm;
         height: 20mm;
-        border-radius: 50%;
+       
+        border-radius: 3.8rem 3.8rem 3.8rem 3.8rem;
         background-color: #BC544B;
         margin: 0 auto 0 auto;
         background-position: center;
@@ -252,11 +255,11 @@
         text-transform: uppercase;
     }
 
-    .sp-totales{
+    .sp-totales {
         display: flex;
         justify-content: space-between;
     }
-    
+
     .footer {
         margin-top: 20px;
         text-align: center;
@@ -283,15 +286,18 @@
         font-size: 14px;
         margin-top: 8px;
     }
-    .firm span{
+
+    .firm span {
         text-transform: uppercase;
         font-size: 14px;
         text-decoration: overline
     }
-    .firm h3{
+
+    .firm h3 {
         margin-bottom: 19px;
     }
-    .back{
+
+    .back {
         font-weight: bold;
         font-size: 1.5rem;
         cursor: pointer;

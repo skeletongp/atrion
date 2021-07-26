@@ -15,9 +15,9 @@
                 </div>
                 <x-slot name="excel">
                     @if (Auth::user()->id == 1)
-                        <div class="flex items-center border border-1 border-blue-200 rounded-md pr-1">
+                        <div class="flex items-center border border-1 border-blue-200 rounded-md pr-1 w-full">
                             <span
-                                class="text-sm rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-2/6">Filtrar:</span>
+                                class="text-sm rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-3/6 md:w-2/6 hidden md:inline-block">Filtrar:</span>
                             <select
                                 class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm w-4/6 overflow-auto "
                                 name="place_id" id="" wire:model="place_id">
@@ -50,7 +50,7 @@
                     id="search" type="search" placeholder="Buscar producto" value="{{ old('search') }}"
                     wire:model.defer="search" />
             </div>
-            <div>
+            <div class="hidden md:inline-block">
                 <span class="fas fa-search ml-2 text-xl cursor-pointer" wire:click="search" id="sp-search"></span>
             </div>
         </div>
@@ -59,22 +59,22 @@
             <div>
 
                 <div class="overflow-x-auto mt-3 select-none" style="height: 34rem">
-                    <table class="table-auto  lg:w-2/3 mx-auto">
+                    <table class="  lg:w-2/3 mx-auto">
                         <thead>
                             <tr class="bg-gray-900 text-base font-bold text-white text-left"
                                 style="font-size: 0.9674rem">
-                                <th class="px-4 py-2 cursor-pointer" wire:clicK="order('name')">Nombre
-                                    <span class="fas {{ $order == 'name' ? $icon_order : 'fa-sort' }}"></span>
+                                <th class="px-4 py-2 cursor-pointer " wire:clicK="order('name')">Nombre
+                                    <div class="hidden md:inline-block"><span class="hidden fas {{ $order == 'name' ? $icon_order : 'fa-sort' }} "></span></div>
                                 </th>
                                 <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('cost')">Costo
-                                    <span class="fas {{ $order == 'cost' ? $icon_order : 'fa-sort' }}"></span>
+                                    <div class="hidden md:inline-block"><span class="fas {{ $order == 'cost' ? $icon_order : 'fa-sort' }} hidden lg:inline-block"></span></div>
                                 </th>
                                 <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('price')">Precio
-                                    <span class="fas {{ $order == 'price' ? $icon_order : 'fa-sort' }}"></span>
+                                    <div class="hidden md:inline-block"><span class="fas {{ $order == 'price' ? $icon_order : 'fa-sort' }} hidden lg:inline-block"></span></div>
                                 </th>
                                 @if ($type == 1)
                                     <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('stock')">Stock
-                                        <span class="fas {{ $order == 'stock' ? $icon_order : 'fa-sort' }}"></span>
+                                       <div class="hidden md:inline-block"> <span class="fas {{ $order == 'stock' ? $icon_order : 'fa-sort' }} hidden lg:inline-block"></span></div>
                                     </th>
                                 @endif
                                 <th class="px-4 py-2  text-center cursor-pointer">Categoría</th>
@@ -87,7 +87,7 @@
                                     <tr
                                         class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
                                         <td class="px-4 py-2 lg:w-72 lg:max-w-72">{{ $product->name }}</td>
-                                        <td class="px-4 py-2 text-center">${{ $product->cost }}</td>
+                                        <td class="px-4 py-2 text-center w-24">${{ $product->cost }}</td>
                                         <td class="px-4 py-2 text-center">${{ $product->price }}</td>
                                         @if ($type==1)
                                         <td class="px-4 py-2 text-center">{{ $product->stock }}</td>
