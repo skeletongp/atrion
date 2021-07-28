@@ -151,5 +151,49 @@ window.addEventListener('load', function () {
     
         $('.draggable').draggable();
       
-    
+      /* Formatea los selects a select2 */
+      $(".O").select2();
+
+      /* Oculta el botón de editar cliente */
+      $('#hide_select').hide('', false)
+
+     
+      /* Detecta la selección de producto y lo
+      envía al método change del componente */
+      $('.product_id').change(function() {
+          var value = $('.product_id').select2("val");
+          if (value != "") {
+              Livewire.emit('change', value);
+          }
+      })
+
+      /* Oculta el botón de editar cliente.
+      Muestra/Oculta el select de cliente */
+      $('#hide_select').click(function() {
+          $('#div_select').toggle('', false)
+          $('#hide_select').hide('', false)
+      })
+
+      /* Evento enter de los inputs para añadir
+      producto a la factura */
+      $('.enter_input').on('keypress', function(e) {
+          if (e.which == 13) {
+              $('#addDetail').trigger('click');
+              $('#product_id').select2('open');
+          }
+      })
+
+      /* Evento input del botón para cobrar */
+      $('#input-payed').on('keypress', function(e) {
+          if (e.which == 13) {
+              $('#btn-facturar').trigger('click');
+          }
+      })
+
+      /* Reinicia el select al añadir producto a factura */
+      $('#addDetail').click(function() {
+          $("#product_id").val('').trigger('change')
+          console.log('false')
+
+      })
 })

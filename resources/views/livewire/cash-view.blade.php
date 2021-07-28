@@ -48,7 +48,7 @@
                     'value'=>$cash->start,
                     'icon1'=>'fas fa-coins text-white',
                     'icon2'=>'fas fa-dollar-sign text-green-800 last',
-                    'bg1'=>'bg-gradient-to-r from-blue-400 to-blue-200',
+                    'bg1'=>'bg-blue-100 hover:bg-blue-400',
                     'bg2'=>'bg-blue-900',
                     ], key(1))
                     @livewire('panel-data',
@@ -57,7 +57,7 @@
                     'value'=>$cash->incomes->count(),
                     'icon1'=>'fas fa-cash-register text-white',
                     'icon2'=>'fas fa-sort-up',
-                    'bg1'=>'bg-gradient-to-r from-blue-300 to-blue-100',
+                    'bg1'=>'bg-blue-100 hover:bg-blue-400',
                     'bg2'=>'bg-blue-900',
                     ], key(4))
                     @livewire('panel-data',
@@ -66,7 +66,7 @@
                     'value'=>$user->place->products->count(),
                     'icon1'=>'fas fa-boxes text-white',
                     'icon2'=>'fas fa-sort-up',
-                    'bg1'=>'bg-gradient-to-r from-blue-300 to-blue-100',
+                    'bg1'=>'bg-blue-100 hover:bg-blue-400',
                     'bg2'=>'bg-blue-900',
                     ], key(3))
                     @livewire('panel-data',
@@ -75,7 +75,7 @@
                     'value'=>$cash->end,
                     'icon1'=>'fas fa-dollar-sign text-white',
                     'icon2'=>'fas fa-dollar-sign text-green-800',
-                    'bg1'=>'bg-gradient-to-r from-green-400 to-green-200',
+                    'bg1'=>'bg-green-300 hover:bg-blue-400',
                     'bg2'=>'bg-green-700',
                     ], key(2))
 
@@ -86,7 +86,7 @@
                     'value'=>$cash->invoices->sum('total'),
                     'icon1'=>'fas fa-dollar-sign text-white',
                     'icon2'=>'fas fa-dollar-sign text-green-800',
-                    'bg1'=>'bg-gradient-to-r from-green-400 to-green-200',
+                    'bg1'=>'bg-green-300 hover:bg-blue-400',
                     'bg2'=>'bg-green-700',
                     ], key(5))
                     @livewire('panel-data',
@@ -95,7 +95,7 @@
                     'value'=>$cash->incomes->sum('amount'),
                     'icon1'=>'fas fa-dollar-sign text-white',
                     'icon2'=>'fas fa-dollar-sign text-green-800',
-                    'bg1'=>'bg-gradient-to-r from-green-400 to-green-200',
+                    'bg1'=>'bg-green-300 hover:bg-blue-400',
                     'bg2'=>'bg-green-700',
                     ], key(5))
                 </div>

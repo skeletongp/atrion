@@ -7,7 +7,11 @@
         <span class="fa {{ $button }} cursor-pointer text-2xl" wire:click='toggle'></span>
         @endrole
 
-
+        <h1 class="uppercase font-bold text-2xl text-center">
+           
+            {{$is_active==0?'Papelera':'Historial'}} de {{$type=="invoice"?'Facturas':'Cotizaciones'}}
+          
+        </h1>
         <div class="  lg:w-2/3 mx-auto my-4 flex items-center justify-center ">
             {{-- Buscar --}}
             <div class="flex border border-1 border-blue-200 rounded-md items-center w-9/12">
@@ -15,7 +19,7 @@
                     class="text-sm border-none rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-2/6 lg:w-1/6">Búsqueda:</span>
                 <input name="search"
                     class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm -ml-1 w-4/6 lg:w-5/6 overflow-auto"
-                    id="search" type="search" invoiceholder="Buscar producto" value="{{ old('search') }}"
+                    id="search" type="search" placeholder="Buscar producto" value="{{ old('search') }}"
                     wire:model.defer="search" />
             </div>
 
@@ -33,11 +37,13 @@
                         <option value="50">50</option>
                     </select>
                 </div>
+
             </div>
+            {{$order}}
         </div>
 
         <div class=" mx-auto sm:px-6 lg:px-8 flex-1 justify-center ">
-            @if ($client_id > 0)
+            @if ($client_id > 0 && $invoices->first())
                 <h1 class="font-bold text-center">Facturas de: <span
                         class="text-lg uppercase">{{ $invoices->first()->client->name }}</span></h1>
             @endif
@@ -48,8 +54,8 @@
                         <thead>
                             <tr class="bg-gray-900 text-base font-bold text-white text-left"
                                 style="font-size: 0.9674rem">
-                                <th class="px-4 py-2 " wire:clicK="order('name')">Cliente
-                                    </span>
+                                <th class="px-4 py-2 cursor-pointer" wire:clicK="order('clients.name')">Cliente
+                                    <span class="fas {{ $order == 'clients.name' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
                                 <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('date')">Fecha
                                     <span class="fas {{ $order == 'date' ? $icon_order : 'fa-sort' }}"></span>
@@ -57,11 +63,18 @@
                                 <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('total')">Total
                                     <span class="fas {{ $order == 'total' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
-                                <th class="px-4 py-2  text-center ">Vendedor</th>
-
-                                <th class="px-4 py-2  text-center ">Deuda
-
+                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('users.name')">
+                                    Vendedor
+                                    <span class="fas {{ $order == 'users.name' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
+
+                                @if ($type == 'invoice')
+                                    <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('rest')">Deuda
+                                        <span class="fas {{ $order == 'rest' ? $icon_order : 'fa-sort' }}"></span>
+                                    </th>
+                                @else
+
+                                @endif
 
                                 <th class="py-2  text-center" colspan="1">Detalles</th>
                             </tr>
@@ -75,7 +88,7 @@
                                             @role('Admin')
                                             <span class="fas {{ $icon }} text-red-400 cursor-pointer"
                                                 onclick="confirm('{{ $confirm }}')|| event.stopImmediatePropagation()"
-                                                wire:click="softdelete('{{ $invoice->number }}')">
+                                                wire:click="softdelete('{{ $invoice->id }}')">
                                             </span>
                                             @endrole
                                             <a
@@ -83,9 +96,11 @@
                                         </td>
                                         <td class="px-4 py-2 text-center">{{ $invoice->date }}</td>
                                         <td class="px-4 py-2 text-center">${{ $invoice->total }}</td>
-                                        <td class="px-4 py-2 text-center">{{ $invoice->user->name }}</td>
-                                        <td class="px-4 py-2 text-center">
-                                            {{ $invoice->rest > 0 ? '$' . $invoice->rest : 'Saldada' }}</td>
+                                        <td class="px-4 py-2 text-center">{{ $invoice->salor->name }}</td>
+                                        @if ($invoice->cash)
+                                            <td class="px-4 py-2 text-center">
+                                                {{ $invoice->rest > 0 ? '$' . $invoice->rest : 'Saldada' }}</td>
+                                        @endif
                                         <td class="px-2  text-center">
                                             <a href="{{ route('preview', $invoice) }}">
                                                 <span class="fas fa-eye mx-2"></span>
@@ -103,11 +118,17 @@
                                 </td>
                                 <td class="px-4 py-2 text-center font-bold">${{ $invoices->sum('total') }}</td>
                                 <td class="px-4 py-2 text-center font-bold"></td>
+                                @if ($type=="invoice")
                                 <td class="px-4 py-2 text-center font-bold">
                                     ${{ $invoices->sum('rest') }}</td>
-                                <td class="px-2  text-center">
+                                @else
+                                <td class="px-4 py-2 text-center font-bold"></td>
+                                @endif
+                                @if ($type=="invoice")
+                                    <td class="px-2  text-center">
 
-                                </td>
+                                    </td>
+                                @endif
 
                             </tr>
 

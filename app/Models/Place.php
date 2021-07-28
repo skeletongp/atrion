@@ -24,6 +24,10 @@ class Place extends Model
     {
         return $this->hasMany(Invoice::class);
     }
+    public function cotizes()
+    {
+        return $this->hasMany(Cotize::class);
+    }
     public function users()
     {
         return $this->hasMany(User::class);

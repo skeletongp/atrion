@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cash;
 use App\Models\Company;
+use App\Models\Cotdetail;
+use App\Models\Cotize;
 use App\Models\Detail;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
@@ -29,11 +31,22 @@ class InvoiceController extends Controller
         $pdf = PDF::loadview('pdfs.preview_invoice', ['details' => $details, 'invoice' => $invoice, 'company'=>$company]);
         return $pdf->stream('invoice.pdf');
 
-        return view('pdfs.invoice')->with(['invoice' => $invoice, 'details' => $details]);
+    }
+    public function preview_cotize(Cotize $cotize)
+    {
+        $details = Cotdetail::where('cotize_id', $cotize->id)->get();
+        $company=Company::first();
+        $pdf = PDF::loadview('pdfs.preview_invoice', ['details' => $details, 'invoice' => $cotize, 'company'=>$company]);
+        return $pdf->stream('invoice.pdf');
+
     }
     public function invoices()
     {
         return view('invoice.invoices');
+    }
+    public function cotizes()
+    {
+        return view('invoice.cotizes');
     }
     public function invoices_filter($client_id)
     {

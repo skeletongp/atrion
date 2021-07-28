@@ -58,7 +58,7 @@
                         <a href="javascript:void(0);"><i class="fa fa-table"></i><span>Facturación</span><i
                                 class="arrow fa fa-angle-right pull-right"></i></a>
                         <ul>
-                            <li><a href="{{ route('preview', 'NCF00000001') }}"><i
+                            <li><a href="{{ route('sale', 1) }}"><i
                                         class="fas fa-file-invoice-dollar"></i><span>Cotizar</span></a>
                             </li>
                             <li class="{{ request()->is('invoice/sale*') ? 'active' : '' }}"><a
@@ -67,8 +67,12 @@
                             </li>
                             <li class="{{ request()->is('invoice/invoices*') ? 'active' : '' }}"><a
                                     href="{{ route('invoices') }}"><i
-                                        class="fas fa-refresh"></i><span>Historial</span></a>
+                                        class="fas fa-refresh"></i><span>Facturas</span></a>
                             </li>
+                            <li class="{{ request()->is('invoice/cotizes*') ? 'active' : '' }}"><a
+                                href="{{ route('cotizes') }}"><i
+                                    class="fas fa-refresh"></i><span>Cotizaciones</span></a>
+                        </li>
                         </ul>
                     </li>
                 @endcan

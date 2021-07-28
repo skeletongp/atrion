@@ -4,12 +4,15 @@ namespace App\Http\Livewire;
 
 use App\Models\Cash;
 use App\Models\Client;
+use App\Models\Cotdetail;
+use App\Models\Cotize;
 use App\Models\CXC;
 use App\Models\Detail;
 use App\Models\Fiscal;
 use App\Models\Income;
 use App\Models\Invoice;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -17,14 +20,14 @@ use stdClass;
 
 class MakeInvoice extends Component
 {
-    public $clients, $products, $product;
+    public $clients, $products, $product, $cotize=0;
     public $client_id, $name = "Nombre del Cliente", $phone = "000-000-0000";
-    public $product_id, $price, $cant = 1, $discount = 0, $productName, $stock=0, $typeFiscal, $fiscal;
-    public $list = [], $payed=0.0, $rest , $cashMoney=0.0, $other=0.0, $is_ncf=0, $ncf_id=0;
+    public $product_id, $price, $cant = 1, $discount = 0, $productName, $stock=0, $typeFiscal=0, $fiscal;
+    public $list = [], $payed=0.0, $rest , $cashMoney=0.0, $other=0.0, $is_ncf=0, $ncf_id=0, $salor_id;
     public $totales = ['subtotal' => 0, 'discount' => 0, 'total' => 0, 'tax' => 0];
     protected $listeners = [
-        'change',
-        'render'
+        'change'=>'change',
+        'update_client_table'=>'update_clients'
     ];
     public function render()
     {
@@ -40,8 +43,14 @@ class MakeInvoice extends Component
             $this->phone = $client->phone;
         }
         $tipos=Fiscal::select('type')->groupBy('type')->get();
-        return view('livewire.make-invoice')->with('tipos', $tipos);
+        $this->salor_id=Auth::user()->id;
+        $salor=User::where('place_id',Auth::user()->place_id)
+        ->orderBy('name')
+        ->get();
+        return view('livewire.make-invoice')->with(['tipos'=>$tipos, 'salor'=>$salor]);
     }
+
+    /* Detecta la selección de un producto */
     public function change($val)
     {
         $this->product_id = $val;
@@ -54,7 +63,10 @@ class MakeInvoice extends Component
         }
         
         $this->productName = $this->product->name;
+     
     }
+
+    /* Validaciones */
     protected $rules = [
         'price' => 'required|numeric|min:1',
         'cant' => 'required|numeric|min:1|lte:stock',
@@ -62,46 +74,56 @@ class MakeInvoice extends Component
         'productName' => 'required|string',
     ];
 
+    /* Añade el producto a la lista para facturar */
     public function addDetail()
     {
         
         $this->validate();
         $productDetail = new stdClass();
         $productDetail->id = $this->product_id;
-        $productDetail->price = round($this->price * 0.82, 2);
-        $productDetail->tax = round($this->price * 0.18, 2)* $this->cant;
-        $productDetail->subtotal = round($productDetail->price, 2) * $this->cant;
+        $productDetail->price = $this->price * 0.82;
+        $productDetail->tax = ($this->price * 0.18)* $this->cant;
+        $productDetail->subtotal = ($productDetail->price) * $this->cant;
         $productDetail->discount = $this->discount;
         $productDetail->name = $this->productName;
         $productDetail->cant = $this->cant;
         $productDetail->name = $this->productName;
-        $productDetail->total = round((($this->price * $this->cant)), 2);
+        $productDetail->total = (($this->price * $this->cant));
         $productDetail = json_decode(json_encode($productDetail), true);
-        $this->remove($productDetail['id']);
+        $this->getTotals($productDetail,$productDetail['id']);
         array_push($this->list, $productDetail);
         $this->reset('product_id', 'price', 'cant', 'discount', 'productName',);
-        $this->totales['subtotal'] += $productDetail['subtotal'];
-        $this->totales['tax'] += $productDetail['tax'];
-        $this->totales['total'] += $productDetail['total'];
-        $this->totales['discount'] += $productDetail['discount'];
-        $this->totales['total']-=$this->totales['discount'];
-        $this->payed=round($this->totales['total'],2);
+        $this->getTotals($productDetail, "suma");
         $this->emit('update_details');
     }
-    public function remove($id)
+
+    /* Calcula los totales, al añadir $op debe decir sumar.
+    Al eliminar, $op debe ser el id del producto */
+    public function getTotals($productDetail, $op)
     {
-        foreach ($this->list as $productDetail) {
-            if ($productDetail['id'] == $id) {
-                $this->totales['subtotal'] -= $productDetail['subtotal'];
-                $this->totales['tax'] -= $productDetail['tax'];
-                $this->totales['total'] -= $productDetail['total'];
-                $this->totales['discount'] -= $productDetail['discount'];
-                $this->payed=round($this->totales['total'],2);
-                array_splice($this->list, array_search($productDetail, $this->list), 1);
+        if ($op=="suma") {
+            $this->totales['subtotal'] += $productDetail['subtotal'];
+            $this->totales['tax'] += $productDetail['tax'];
+            $this->totales['total'] += $productDetail['total'];
+            $this->totales['discount'] += $productDetail['discount'];
+            $this->totales['total']-=$this->totales['discount'];
+            $this->payed=round($this->totales['total'],2);
+        } else {
+            foreach ($this->list as $productDetail) {
+                if ($productDetail['id'] == $op) {
+                    $this->totales['subtotal'] -= $productDetail['subtotal'];
+                    $this->totales['tax'] -= $productDetail['tax'];
+                    $this->totales['total'] -= $productDetail['total'];
+                    $this->totales['discount'] -= $productDetail['discount'];
+                    $this->payed=round($this->totales['total'],2);
+                    array_splice($this->list, array_search($productDetail, $this->list), 1);
+                }
             }
+            $this->payed=$this->totales['total'];
         }
-        $this->payed=$this->totales['total'];
+        $this->cashMoney=$this->totales['total'];
     }
+    /* Carga el producto a los inputs para editarlo y lo borra de la lista */
     public function charge($id)
     {
         foreach ($this->list as $productDetail) {
@@ -114,12 +136,13 @@ class MakeInvoice extends Component
             }
         }
     }
+    /* Facturacíón de los productos en la lista */
     public function facturar()
     {
         if ($this->client_id > 0 && $this->totales['total'] > 0) {
             $this->cobrar();
             $this->createAccount();
-            if ($this->typeFiscal) {
+            if ($this->typeFiscal==1) {
                 $type=Fiscal::where('type',"=",$this->typeFiscal)->orderBy('ncf','asc')->first();
                 $this->ncf_id=$type->id;
                 $type->delete();
@@ -131,6 +154,7 @@ class MakeInvoice extends Component
             $invoice->tax = $this->totales['tax'];
             $invoice->total = $this->totales['total'];
             $invoice->user_id = Auth::user()->id;
+            $invoice->salor_id = $this->salor_id;
             $invoice->place_id = Auth::user()->place_id;
             $invoice->client_id = $this->client_id;
             $invoice->payed = $this->payed;
@@ -142,30 +166,32 @@ class MakeInvoice extends Component
             $invoice->cash = $this->cashMoney;
             $invoice->other = $this->other;
             $invoice->is_fiscal = $this->is_ncf;
-            
-            if ($invoice->save()) {
-                foreach ($this->list as $productDetail) {
-                    $detail = new Detail();
-                    $detail->cant = $productDetail['cant'];
-                    $detail->discount = $productDetail['discount'];
-                    $detail->price = $productDetail['price'];
-                    $detail->tax = $productDetail['tax'];
-                    $detail->total = $productDetail['total'];
-                    $detail->subtotal = $productDetail['subtotal'];
-                    $detail->product_id = $productDetail['id'];
-                    $detail->invoice_id = $invoice->id;
-                    $detail->save();
-                    $product=Product::find($productDetail['id']);
-                   $product->is_product==1? $product->stock-=$productDetail['cant']:'';
-                    $product->save();
-                }
-                $this->upIncome($invoice->total);
-                $this->upCash(Auth::user()->place->cash->id, $invoice->total);
-            }
+            $this->fillDetail($invoice);
+           
         return redirect()->route('preview', $invoice);
         }
     }
-    public function upIncome($total)
+    public function cotizar()
+    {
+        if ($this->client_id > 0 && $this->totales['total'] > 0) {
+          
+            $cotize = new Cotize();
+            $cotize->number = str_pad(Auth::user()->place->cotizes->count() + 1, 5, '0', STR_PAD_LEFT);
+            $cotize->date = date('Y-m-d');
+            $cotize->subtotal = $this->totales['subtotal'];
+            $cotize->tax = $this->totales['tax'];
+            $cotize->total = $this->totales['total'];
+            $cotize->user_id = Auth::user()->id;
+            $cotize->cash_id = Auth::user()->place->cash->id;
+            $cotize->place_id = Auth::user()->place_id;
+            $cotize->client_id = $this->client_id;         
+            $this->fillCotDetail($cotize);
+           
+        return redirect()->route('preview_cotize', $cotize);
+        }
+    }
+    /* Registra el ingreso de la venta */
+    public function upIncome()
     {
         $income= new Income();
         $income->user_id=Auth::user()->id;
@@ -176,17 +202,60 @@ class MakeInvoice extends Component
         $income->date=date('Y-m-d');
         $income->save();
     }
+
+    /* Guarda los detalles de la factura en su tabla */
+    public function fillDetail($invoice)
+    {
+        if ($invoice->save()) {
+            foreach ($this->list as $productDetail) {
+                $detail = new Detail();
+                $detail->cant = $productDetail['cant'];
+                $detail->discount = $productDetail['discount'];
+                $detail->price = $productDetail['price'];
+                $detail->tax = $productDetail['tax'];
+                $detail->total = $productDetail['total'];
+                $detail->subtotal = $productDetail['subtotal'];
+                $detail->product_id = $productDetail['id'];
+                $detail->invoice_id = $invoice->id;
+                $detail->save();
+                $product=Product::find($productDetail['id']);
+               $product->is_product==1? $product->stock-=$productDetail['cant']:'';
+                $product->save();
+            }
+            $this->upIncome();
+            $this->upCash(Auth::user()->place->cash->id, $invoice->total);
+        }
+    }
+
+    public function fillCotDetail($cotize)
+    {
+        if ($cotize->save()) {
+            foreach ($this->list as $productDetail) {
+                $detail = new Cotdetail();
+                $detail->cant = $productDetail['cant'];
+                $detail->discount = $productDetail['discount'];
+                $detail->price = $productDetail['price'];
+                $detail->tax = $productDetail['tax'];
+                $detail->total = $productDetail['total'];
+                $detail->subtotal = $productDetail['subtotal'];
+                $detail->product_id = $productDetail['id'];
+                $detail->cotize_id = $cotize->id;
+                $detail->save();
+               
+            }
+           
+        }
+    }
+    /* Ingresa el monto de la venta en la caja - Lo que pagó el cliente */
     public function upCash($cash, $total)
     {
         $cash=Cash::find($cash);
         $cash->end+=$this->payed;
         $cash->save();
     }
-    public function prove()
-    {
-        $pdf=PDF::loadview('pdfs.invoice');
-        return $pdf->download('invoice.pdf');
-    }
+    
+    /* Recibe el monto que pagó el cliente 
+    y actualiza la deuda del cliente*/
     public function cobrar()
     {
         $this->payed=$this->cashMoney+$this->other;
@@ -203,6 +272,7 @@ class MakeInvoice extends Component
         $client->debt+=$this->rest;
         $client->save();
     }
+    /* Si el cliente queda debiendo, registra la deuda */
     public function createAccount()
     {
        if($this->rest>0){
@@ -214,5 +284,8 @@ class MakeInvoice extends Component
 
        }
     }
-    
+    public function update_clients()
+    {
+        $this->clients = Client::orderBy('name')->get();
+    }
 }

@@ -17,7 +17,7 @@
 
 
 
-        <dialog id="{!! $modalId !!}" class="">
+        <dialog id="{!! $modalId !!}" class=" bg-transparent">
 
             <div
                 class="p-7 flex justify-center items-center fixed right-0 left-0 top-0 w-full h-full z-50 transition-opacity duration-300 xl:mx-32   py-4">

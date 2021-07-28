@@ -10,26 +10,37 @@
         <h3 class="h-subtitle"><i class="icon-phone-sign"></i>
             {{ $company->phone }}</h3>
         <h3 class="h-subtitle">{{ $company->location }}</h3>
-        <h3 class="h-subtitle">{{ $invoice->user->place->name }}</h3>
+        <h3 class="h-subtitle">RNC: {{ $company->rnc }}</h3>
+        <h3 class="h-subtitle">Sucursal: {{ $invoice->user->place->name }}</h3>
     </div>
     <hr>
 
-{{setlocale(LC_ALL, 'es_ES.UTF-8')}}
+    {{ setlocale(LC_ALL, 'es_ES.UTF-8') }}
     <div class="info">
         <table style="width: 70mm; margin: 0 auto 0 auto">
             <tr>
                 <td style="width:30mm; text-align:left">
+                    @if ($invoice->cash)
                     <h3 class="h-name">Facturado a:</h3>
+                    @else
+                    <h3 class="h-name">Cotizado a:</h3>
+                    @endif
                     <h3 class="h-info">{{ $invoice->client->name }}</h3>
                     <h3 class="h-info">Tel.: {{ $invoice->client->phone }}</h3>
-                    <h3 class="h-info">RNC/ID: {{ $invoice->client->rnc }}</h3>
+                    <h3 class="h-info">RNC: {{ $invoice->client->rnc }}</h3>
                 </td>
                 <td style="width:30mm; text-align:right">
+                    @if ($invoice->cash)
                     <h3 class="h-name">Factura:</h3>
+                    @else
+                    <h3 class="h-name">Cotización:</h3>
+                    @endif
                     <h3 class="h-info">No {{ $invoice->number }}</h3>
-                    <h3 class="h-info">{{date("d M, Y", strtotime($invoice->date )) }}</h3>
+                    <h3 class="h-info">{{ date('d M, Y', strtotime($invoice->date)) }}</h3>
                     @if ($invoice->fiscal)
                         <h3 class="h-info">NCF: {{ $invoice->fiscal->ncf }}</h3>
+                    @else
+                    <h3 class="h-info">-----</h3>
                     @endif
                 </td>
             </tr>
@@ -92,11 +103,14 @@
                         ------------------------------------------------------------------------------------</td>
                 </tr>
 
-                <tr>
-                    <td style="background-color: white"></td>
-                    <td colspan="2" class="td-total">Efectivo</td>
-                    <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->cash }}</td>
-                </tr>
+                @if ($invoice->cash)
+                    <tr>
+                        <td style="background-color: white"></td>
+                        <td colspan="2" class="td-total">Efectivo</td>
+                        <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->cash }}
+                        </td>
+                    </tr>
+                @endif
                 @if ($invoice->other > 0){
                     <tr>
                         <td style="background-color: white"></td>
@@ -107,33 +121,54 @@
                     }
 
                 @endif
-                <tr>
-                    <td style="background-color: white"></td>
-                    <td colspan="2" class="td-total">Balance</td>
-                    <td class="td-total" style="text-align: right; padding-right:10px">
-                        <span style="{{ $invoice->rest > 0 ? 'color:red' : '' }}">
-                            ${{ $invoice->rest }}</span>
-                    </td>
-                </tr>
+                @if ($invoice->cash)
+                    <tr>
+                        <td style="background-color: white"></td>
+                        <td colspan="2" class="td-total">Balance</td>
+                        <td class="td-total" style="text-align: right; padding-right:10px">
+                            <span style="{{ $invoice->rest > 0 ? 'color:red' : '' }}">
+                                ${{ $invoice->rest }}</span>
+                        </td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>
-    <div class="firm">
-        <h3>ATENDIDO POR: </h3>
-        <span>{{ Auth::user()->name }}</span>
-    </div>
+    <table class="tb_firm">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="firm">
+                        <h3>Cajero: </h3>
+                        <span>{{ $invoice->user->name }}</span>
+                    </div>
+                </td>
+                @if ($invoice->salor)
+                    <td>
+                        <div class="firm">
+                            <h3>Vendedor: </h3>
+                            <span>{{ $invoice->salor->name }}</span>
+                        </div>
+                    </td>
+                @endif
+            </tr>
+        </tbody>
+    </table>
+
     <div class="footer">
         <h3>¡GRACIAS POR PREFERIRNOS!</h3>
+        @if ($invoice->cash)
         <h4>** Favor revisar su factura al momento de pagar.**</h4>
         <h4>** No se aceptan devoluciones.**</h4>
+        @else
+        <h4>** Ticket para fines de estimación.**</h4>
+        <h4>** Los precios pueden variar al momento de la compra.**</h4>
+        @endif
     </div>
 </div>
-<script type="text/javascript">
-    let back = document.getElementById('back');
-    back.addEventListener('click', function() {
-        alert('hola')
-    })
-</script>
+<script type="text/javascript"> try { this.print(); } catch (e) { window.onload = window.print; } </script>
+
+
 <style>
     * {
         font-size: 10px;
@@ -163,7 +198,7 @@
     .logo {
         width: 20mm;
         height: 20mm;
-       
+
         border-radius: 3.8rem 3.8rem 3.8rem 3.8rem;
         background-color: #BC544B;
         margin: 0 auto 0 auto;
@@ -255,10 +290,7 @@
         text-transform: uppercase;
     }
 
-    .sp-totales {
-        display: flex;
-        justify-content: space-between;
-    }
+
 
     .footer {
         margin-top: 20px;
@@ -281,20 +313,25 @@
         word-wrap: break-word;
     }
 
+    .tb_firm {
+        width: 100%
+    }
+
+    .tb_firm td {
+        text-align: center
+    }
+
     .firm {
-        text-align: center;
-        font-size: 14px;
-        margin-top: 8px;
+        font-size: 12px;
     }
 
     .firm span {
         text-transform: uppercase;
-        font-size: 14px;
-        text-decoration: overline
+        font-size: 11px;
     }
 
     .firm h3 {
-        margin-bottom: 19px;
+        margin-bottom: 5px;
     }
 
     .back {

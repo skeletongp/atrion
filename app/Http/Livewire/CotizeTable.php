@@ -3,53 +3,50 @@
 namespace App\Http\Livewire;
 
 use App\Models\Client;
+use App\Models\Cotize;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class InvoiceTable extends Component
+class CotizeTable extends Component
 {
     use WithPagination;
-    public $search = "", $direction = 'asc', $order = "date", $icon_order = 'fa-sort-up', $amount=10, $type="invoice";
+    public $search = "", $direction = 'asc', $order = "date", $icon_order = 'fa-sort-up', $amount=10, $type="cotize";
     public $is_active = 1, $title = 'Facturas activas', $icon = "fa-trash text-red-500", $confirm = '¿Eliminar factura?', $button = 'fa-recycle';
     protected $listeners = ['update_invoice_table' => 'render'];
     public $client_id;
-    
     public function render()
     {
-     
         if ($this->client_id>0) {
             if ($this->is_active == 1) {
-                $invoices = Invoice::with('client','salor')->search($this->search)
+                $invoices = Cotize::with('client','salor')->search($this->search)
+                ->where('client_id','=',$this->client_id)
                 ->where('place_id','=',Auth::user()->place_id)->where(function ($query)
                 {
                     $query->orderBy($this->order, $this->direction);
                 })->paginate($this->amount);
 
             } else {
-                $invoices = Invoice::with('client', 'salor')->onlyTrashed()->search($this->search)
+                $invoices = Cotize::with('client', 'salor')->onlyTrashed()->search($this->search)
                 ->where('client_id','=',$this->client_id)
                 ->where('place_id','=',Auth::user()->place_id)->where(function ($query)
                 {
                     $query->orderBy($this->order, $this->direction);
                 })->paginate($this->amount);
+                
+                    
             }
         } else {
             if ($this->is_active == 1) {
-                $invoices = Invoice::search($this->search)
+                $invoices = Cotize::with('client', 'salor')->search($this->search)
                 ->where('place_id','=',Auth::user()->place_id)->where(function ($query)
                 {
                     $query->orderBy($this->order, $this->direction);
-                    
-                })
-                ->where('type','=','sale')
-                ->where('place_id','=',Auth::user()->place_id)
-                ->paginate($this->amount);
+                })->paginate($this->amount);
                     
             } else {
-                $invoices = Invoice::with('client','salor')->onlyTrashed()->search($this->search)
-                ->where('type','=','sale')
+                $invoices = Cotize::with('client','salor')->onlyTrashed()->search($this->search)
                 ->where('place_id','=',Auth::user()->place_id)->where(function ($query)
                 {
                     $query->orderBy($this->order, $this->direction);
@@ -60,7 +57,6 @@ class InvoiceTable extends Component
         
         return view('livewire.invoice-table')->with(['invoices'=>$invoices]);
     }
-    
     public function toggle()
     {
         if ($this->is_active == 1) {

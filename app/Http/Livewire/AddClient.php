@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 class AddClient extends Component
 {
     public $name, $phone, $debt=0, $rnc;
-    protected $listeners=['multi'=>'multi'];
     protected $rules=[
         "name"=>"required|unique:clients,name",
         "rnc"=>"required|unique:clients,rnc",

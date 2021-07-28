@@ -9,6 +9,12 @@
             @livewire('product-table', key('1'))
             @if (isset($error))
             <div class="alert alert-danger">{{ $error }}</div>
-            @endif       
+            @endif    
+          {{--   @foreach ( as $detail)
+            <span>{{$detail}}</span><br>
+            @endforeach --}}
+            
+            {{\App\Models\Detail::groupBy('product_id')->sum('cant')}}
     </div>
+    
 </x-app-layout>
