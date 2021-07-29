@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Str;
 
 class EditUser extends Component
 {
@@ -38,6 +39,7 @@ class EditUser extends Component
         if (Auth::user()->can('Gestionar Usuarios')) {
             $user = $this->user;
             $user->name = $this->name;
+            $user->slug=Str::slug($this->name);
             $user->email = $this->email;
             $user->place_id = $this->place_id;
 

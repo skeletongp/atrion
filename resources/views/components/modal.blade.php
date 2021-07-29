@@ -11,7 +11,7 @@
                 <label for="excel"
                     class="bg-transparent border border-gray-500 hover:border-indigo-500 text-gray-500 hover:text-indigo-500 font-bold  rounded-full cursor-pointer hidden lg:block">
                     <span class="mx-4 py-2">Importar de Excel</span></label></label>
-                <input type="file" name="excel" id="excel" hidden>
+                <input type="file" name="excel" id="excel" hidden accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
             @endif
         </div>
 

@@ -35,6 +35,6 @@ class EditCompany extends Component
         $this->company->rnc=$this->rnc;
         $this->company->logo="https://ui-avatars.com/api/?name=".$this->logo."&color=FFFFFF&background=000000";
         $this->company->save();
-        $this->render();
+        return redirect()->route('user.company');
     }
 }

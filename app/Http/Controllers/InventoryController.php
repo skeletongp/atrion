@@ -25,12 +25,17 @@ class InventoryController extends Controller
    
     public function products_upload()
     {
-        move_uploaded_file($_FILES["file"]["tmp_name"], public_path('storage/avatars.xlsx'));
+        try {
+            $ruta=public_path('storage/avatars.xlsx');
+        move_uploaded_file($_FILES["file"]["tmp_name"],$ruta );
         $import= new ProductsImport;
-        Excel::import($import, public_path('storage/avatars.xlsx'));
+        Excel::import($import, $ruta);
         
         $totalRows = $import->getRowCount();
         return $totalRows;
+        } catch (\Throwable $th) {
+            return "Verifique los datos e intente nuevamente";
+        }
     }
    
 }

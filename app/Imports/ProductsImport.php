@@ -53,10 +53,11 @@ class ProductsImport implements ToModel,  SkipsOnError
     }
     public function onError(\Throwable $e)
     {
+       return $e;
         --$this->rows;
     }
     public function getRowCount():int
     {
-       return $this->rows;
+       return "Se ha insertado ".$this->rows." filas ";
     }
 }

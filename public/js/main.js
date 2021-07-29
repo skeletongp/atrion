@@ -133,7 +133,7 @@ window.addEventListener('load', function () {
       data: formData,
       type: 'post',
       success: function success(result) {
-        alert('Se han insertado ' + result + ' filas');
+        alert(result);
         window.location.href = "/inventory/products";
       }
     });
