@@ -12,10 +12,7 @@ use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Illuminate\Routing\Route;
-
-
-
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ProductsImport implements ToModel,  SkipsOnError
@@ -40,15 +37,17 @@ class ProductsImport implements ToModel,  SkipsOnError
         return new Product([
 
             'name'=>$row[0],
+            'code'=>str_pad(rand(1,1500), 10, '0', STR_PAD_LEFT),
              'meta'=>$row[1],
              'stock'=>$row[2],
              'price'=>$row[3],
              'cost'=>$row[4],
              'slug'=>Str::slug($row[0]),
-             'place_id'=>1,
+             'place_id'=>Auth::user()->place_id,
              'is_product'=>$type,
              'category_id'=>$cat_id,
         ]);
+       
         
     }
     public function onError(\Throwable $e)
@@ -58,6 +57,6 @@ class ProductsImport implements ToModel,  SkipsOnError
     }
     public function getRowCount():int
     {
-       return "Se ha insertado ".$this->rows." filas ";
+       return $this->rows;
     }
 }

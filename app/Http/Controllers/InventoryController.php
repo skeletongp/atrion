@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Imports\ProductsImport;
 use App\Models\Place;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class InventoryController extends Controller
 {
@@ -32,10 +34,16 @@ class InventoryController extends Controller
         Excel::import($import, $ruta);
         
         $totalRows = $import->getRowCount();
-        return $totalRows;
+        return 'Se han insertado '.$totalRows.' Filas';
         } catch (\Throwable $th) {
-            return "Verifique los datos e intente nuevamente";
+            return $th;
         }
+    }
+    public function printCodes()
+    {
+        $products = Product::get();
+        $pdf = PDF::loadview('pdfs.codes', ['products' => $products]);
+        return $pdf->stream('codes.pdf');
     }
    
 }

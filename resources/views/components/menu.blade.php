@@ -27,12 +27,13 @@
                 <li class="flex justify-between items-center">
                     <a href="{{ route('dashboard') }}"><i class="fas fa-home"></i><span>Panel</span></a>
                 </li>
+                {{-- Cuenta Principal --}}
                 <li class="sub-menu {{ request()->is('account/*') ? 'active' : '' }}">
                     <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>Mi cuenta</span><i
                             class="arrow fa fa-angle-right pull-right"></i></a>
                     <ul>
-                        <li class="{{ request()->routeIs('user.show') ? 'active' : '' }}"><a
-                                href="{{ route('user.show', Auth::user()) }}"><i class="fas fa-user"></i><span>Mi
+                        <li class="{{ request()->routeIs('users_show') ? 'active' : '' }}"><a
+                                href="{{ route('users_show', Auth::user()) }}"><i class="fas fa-user"></i><span>Mi
                                     perfil</span></a>
                         </li>
                         @role('Admin')
@@ -53,6 +54,7 @@
                         </li>
                     </ul>
                 </li>
+                {{-- Área de facturación --}}
                 @can('Vender', User::class)
                     <li class="sub-menu {{ request()->is('invoice/*') ? 'active' : '' }}">
                         <a href="javascript:void(0);"><i class="fa fa-table"></i><span>Facturación</span><i
@@ -76,6 +78,7 @@
                         </ul>
                     </li>
                 @endcan
+                {{-- Área de compras --}}
                 @can('Comprar', User::class)
                     <li class="sub-menu ">
                         <a href="javascript:void(0);"><i class="fa fa-cart-arrow-down"></i><span>Compras</span><i
@@ -90,6 +93,7 @@
                         </ul>
                     </li>
                 @endcan
+                {{-- Sección de personas --}}
                 <li class="sub-menu {{ request()->is('persons/*') ? 'active' : '' }}">
                     <a href="javascript:void(0);"><i class="fa fa fa-users"></i><span>Personas</span><i
                             class="arrow fa fa-angle-right pull-right"></i></a>
@@ -105,8 +109,8 @@
                         <li><a href="forms-mask.html"><i class="fas fa-user-tag"></i><span>Proveedores</span></a>
                         </li>
                         @can('Gestionar Usuarios', User::class)
-                            <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"><a
-                                    href="{{ route('users.index') }}"><i
+                            <li class="{{ request()->routeIs('users_*') ? 'active' : '' }}"><a
+                                    href="{{ route('users_index') }}"><i
                                         class="fas fa-user-tie"></i><span>Usuarios</span></a>
                             </li>
                         @endcan
@@ -128,7 +132,7 @@
 
                             @can('Gestionar Ingresos', User::class)
                                 <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"><a
-                                        href="{{ route('users.index') }}"><i
+                                        href="{{ route('users_index') }}"><i
                                             class="fas fa-dollar-sign"></i><span>Valor</span></a>
                                 </li>
 

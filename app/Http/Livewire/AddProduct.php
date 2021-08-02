@@ -12,7 +12,7 @@ use Livewire\WithPagination;
 class AddProduct extends Component
 {
     use WithPagination;
-    public $name, $meta, $category_id=1, $place_id, $stock, $price, $cost, $is_product;
+    public $name, $meta, $category_id=1, $place_id, $stock, $price, $cost, $is_product, $code;
     public $message;
     protected $listeners=['update_add_product'=>'render', 'store_product'=>'store'];
     public function render()
@@ -38,6 +38,7 @@ class AddProduct extends Component
         $this->validate();
         $product= new Product();
         $product->name=$this->name;
+        $product->code=$this->code;
         $product->meta=$this->meta;
         $product->category_id=$this->category_id;
         $product->place_id=$this->place_id;

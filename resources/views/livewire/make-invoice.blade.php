@@ -10,15 +10,15 @@
         <div class="absolute top-2 left-1/3 flex space-x-2 items-center">
 
             @if ($cotize == 0)
-                <x-jet-input type="checkbox" value="1" id="is_ncf" wire:model="is_ncf">NCF</x-jet-input>
-                <x-jet-label for="is_ncf">NCF</x-jet-label>
+            <x-jet-input type="checkbox" value="1" id="is_ncf" wire:model="is_ncf">NCF</x-jet-input>
+            <x-jet-label for="is_ncf">NCF</x-jet-label>
             @endif
             @if ($is_ncf == 1)
-                <x-input_select label="Tipo" name="typeFiscal" model="typeFiscal" oldValue="" placeholder="Tipo">
-                    @foreach ($tipos as $tipo)
-                        <option value="{{ $tipo->type }}">{{ $tipo->type }}</option>
-                    @endforeach
-                </x-input_select>
+            <x-input_select label="Tipo" name="typeFiscal" model="typeFiscal" oldValue="" placeholder="Tipo">
+                @foreach ($tipos as $tipo)
+                <option value="{{ $tipo->type }}">{{ $tipo->type }}</option>
+                @endforeach
+            </x-input_select>
             @endif
         </div>
         <div class="md:w-max h-40 py-4 px-1 shadow-sm rounded-xl flex flex-col">
@@ -28,15 +28,16 @@
             </x-jet-label>
             <div class="flex space-x-3 items-center " id="div_select" wire:ignore>
                 <div>
-                    <select class="chosen-select client_id select2" data-placeholder="Selecciona un cliente" wire:ignore.self>
+                    <select class="chosen-select client_id select2" data-placeholder="Selecciona un cliente"
+                        wire:ignore.self>
                         <option value=""></option>
                         @foreach ($clients->chunk(50) as $array)
 
-                            @foreach ($array as $client)
-                                <option value="{{ $client->id }}">
-                                    {{ $client->name }}
-                                </option>
-                            @endforeach
+                        @foreach ($array as $client)
+                        <option value="{{ $client->id }}">
+                            {{ $client->name }}
+                        </option>
+                        @endforeach
                         @endforeach
                     </select>
                 </div>
@@ -85,11 +86,12 @@
                         id="product_id">
                         <option value=""></option>
                         @foreach ($products->chunk(50) as $array)
-                            @foreach ($array as $product)
-                                <option value="{{ $product->id }}">
-                                    {{ $product->name }} - ${{ $product->price }} ({{ $product->stock }})
-                                </option>
-                            @endforeach
+                        @foreach ($array as $product)
+                        <option value="{{ $product->id }}">
+                            {{$product->code}} - {{ $product->name }} - ${{ $product->price }} ({{ $product->stock }}) -
+                            {{$product->is_product==1? 'P':'S'}}
+                        </option>
+                        @endforeach
                         @endforeach
                     </select>
                 </div>
@@ -111,13 +113,13 @@
 
                     </div>
                     @can('Descontar')
-                        <div class="lg:w-1/4">
-                            <x-jet-label for="discount">Descuento</x-jet-label>
-                            <x-jet-input type="number" placeholder="Descuento" wire:model.defer="discount"
-                                class="py-0 w-full enter_input">
-                            </x-jet-input>
+                    <div class="lg:w-1/4">
+                        <x-jet-label for="discount">Descuento</x-jet-label>
+                        <x-jet-input type="number" placeholder="Descuento" wire:model.defer="discount"
+                            class="py-0 w-full enter_input">
+                        </x-jet-input>
 
-                        </div>
+                    </div>
                     @endcan
                     <div class="lg:w-1/4 mt-4">
                         <x-jet-button class="py-1" wire:click="addDetail" id="addDetail"><span
@@ -145,92 +147,93 @@
                         </thead>
                         <tbody class="text-sm font-normal text-gray-900 overflow-auto ">
                             @if (count($list) > 0)
-                                @foreach ($list as $item)
-                                    <tr
-                                        class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
-                                        <td class="px-4 py-2 max-w-16">{{ $item['cant'] }}</td>
-                                        <td class="px-4 py-2 lg:w-72 lg:max-w-72">{{ $item['name'] }}</td>
-                                        <td class="px-4 py-2 text-center">${{ sprintf('%0.2f', $item['price']) }}
-                                        </td>
-                                        <td class="px-4 py-2 text-center">${{ sprintf('%0.2f', $item['tax']) }}</td>
-                                        <td class="px-4 py-2 text-center">${{ sprintf('%0.2f', $item['subtotal']) }}
-                                        </td>
-                                        <td class="px-4 py-2 text-center">${{ sprintf('%0.2f', $item['discount']) }}
-                                        </td>
-                                        <td class="px-4 py-2 text-center">
-                                            ${{ sprintf('%0.2f', $item['total'] - $item['discount']) }}
-                                        </td>
-                                        <td class=" py-2 text-center">
-                                            <span class="fas fa-pen text-blue-400 cursor-pointer"
-                                                wire:click="charge('{{ $item['id'] }}')">
-                                            </span>
-                                        </td>
-                                        <td class=" py-2 text-center">
-                                            <span class="fas fa-times text-red-400 cursor-pointer"
-                                                wire:click="getTotals(null, '{{ $item['id'] }}')"
-                                                onclick="confirm('¿Desea borrar este producto?')|| event.stopImmediatePropagation()">
-                                            </span>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                <tr>
+                            @foreach ($list as $item)
+                            <tr class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
+                                <td class="px-4 py-2 max-w-16">{{ $item['cant'] }}</td>
+                                <td class="px-4 py-2 lg:w-72 lg:max-w-72">{{ $item['name'] }}</td>
+                                <td class="px-4 py-2 text-center">${{ sprintf('%0.2f', $item['price']) }}
+                                </td>
+                                <td class="px-4 py-2 text-center">${{ sprintf('%0.2f', $item['tax']) }}</td>
+                                <td class="px-4 py-2 text-center">${{ sprintf('%0.2f', $item['subtotal']) }}
+                                </td>
+                                <td class="px-4 py-2 text-center">${{ sprintf('%0.2f', $item['discount']) }}
+                                </td>
+                                <td class="px-4 py-2 text-center">
+                                    ${{ sprintf('%0.2f', $item['total'] - $item['discount']) }}
+                                </td>
+                                <td class=" py-2 text-center">
+                                    <span class="fas fa-pen text-blue-400 cursor-pointer"
+                                        wire:click="charge('{{ $item['id'] }}')">
+                                    </span>
+                                </td>
+                                <td class=" py-2 text-center">
+                                    <span class="fas fa-times text-red-400 cursor-pointer"
+                                        wire:click="getTotals(null, '{{ $item['id'] }}')"
+                                        onclick="confirm('¿Desea borrar este producto?')|| event.stopImmediatePropagation()">
+                                    </span>
+                                </td>
+                            </tr>
+                            @endforeach
+                            <tr>
 
-                                </tr>
-                                <tr
-                                    class=" border-white hover:border-gray-200 py-4 text-base font-bold sticky bottom-0 bg-gray-600 text-white">
-                                    <td class="px-4 py-1 max-w-16 text-center font-bold uppercase sticky bottom-0 bg-gray-600"
-                                        colspan="3">Totales</td>
-                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
-                                        ${{ sprintf('%0.2f', $totales['tax']) }}</td>
-                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
-                                        ${{ sprintf('%0.2f', $totales['subtotal']) }}</td>
-                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
-                                        ${{ sprintf('%0.2f', $totales['discount']) }}</td>
-                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
-                                        ${{ sprintf('%0.2f', $totales['total']) }}</td>
-                                    <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600" colspan="2"></td>
+                            </tr>
+                            <tr
+                                class=" border-white hover:border-gray-200 py-4 text-base font-bold sticky bottom-0 bg-gray-600 text-white">
+                                <td class="px-4 py-1 max-w-16 text-center font-bold uppercase sticky bottom-0 bg-gray-600"
+                                    colspan="3">Totales</td>
+                                <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
+                                    ${{ sprintf('%0.2f', $totales['tax']) }}</td>
+                                <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
+                                    ${{ sprintf('%0.2f', $totales['subtotal']) }}</td>
+                                <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
+                                    ${{ sprintf('%0.2f', $totales['discount']) }}</td>
+                                <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600">
+                                    ${{ sprintf('%0.2f', $totales['total']) }}</td>
+                                <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-600" colspan="2"></td>
 
-                                </tr>
+                            </tr>
                             @endif
 
 
                         </tbody>
                     </table>
                 </div>
+
                 <div class="py-2 flex justify-end mr-8 space-y-4">
                     @if ($cotize == 0)
-                        <x-modal modalId="cobrar">
-                            <x-slot name='title'>
-                                <div
-                                    class="font-bold text-lg flex items-center cursor-pointer bg-gray-900 text-white px-2  rounded-xl">
-                                    <span class="fas fa-money mx-2"></span> Facturar
-                                </div>
-                            </x-slot>
-                            <div>
-                                <x-jet-label for="cashMoney">Efectivo</x-jet-label>
-                                <x-jet-input type='number' placeholder="Efectivo" wire:model.defer="cashMoney"
-                                    class="text-center mb-2" id="input-payed"></x-jet-input>
-                                <x-jet-label for="other">Otro</x-jet-label>
-                                <x-jet-input type='number' placeholder="otro" wire:model.defer="other"
-                                    class="text-center mb-2" id="input-payed"></x-jet-input>
-                                <br>
-                                <x-jet-label for="other">Vendedor</x-jet-label>
-                                <select class="chosen-select w-52 select2" data-placeholder="Selecciona un vendedor"
-                                    name="salor" id="salor" wire:model.defer="salor_id">
-                                    <option value=""></option>
-                                    @foreach ($salor as $salo)
-                                        <option value="{{ $salo->id }}">{{ $salo->name }}</option>
-                                    @endforeach
-                                </select>
-                                <br> <br>
-                                <x-jet-button wire:click="facturar" id="btn-facturar">Cobrar</x-jet-button>
+                    <x-modal modalId="cobrar">
+                        <x-slot name='title'>
+                            <div
+                                class="font-bold text-lg flex items-center cursor-pointer bg-gray-900 text-white px-2  rounded-xl">
+                                <span class="fas fa-money mx-2"></span> Facturar
                             </div>
-                        </x-modal>
-                    @else
-                        <div
-                            class="font-bold text-lg flex items-center cursor-pointer bg-gray-900 text-white px-2  rounded-xl" wire:click="cotizar">
-                            <span class="fas fa-money mx-2"></span> Cotizar
+                        </x-slot>
+                        <div>
+                            <x-jet-label for="cashMoney">Efectivo</x-jet-label>
+                            <x-jet-input type='number' placeholder="Efectivo" wire:model.defer="cashMoney"
+                                class="text-center mb-2" id="cash"></x-jet-input>
+                            <x-jet-label for="other">Otro</x-jet-label>
+                            <x-jet-input type='number' placeholder="otro" wire:model.defer="other"
+                                class="text-center mb-2" id="other"></x-jet-input>
+                            <br>
+                            <input type="text" name="total" id="hTotal" wire:model="payed">
+                            <x-jet-label for="other">Vendedor</x-jet-label>
+                            <select class="chosen-select w-52 select2" data-placeholder="Selecciona un vendedor"
+                                name="salor" id="salor" wire:model.defer="salor_id">
+                                <option value=""></option>
+                                @foreach ($salor as $salo)
+                                <option value="{{ $salo->id }}">{{ $salo->name }}</option>
+                                @endforeach
+                            </select>
+                            <br> <br>
+                            <x-jet-button wire:click="facturar" id="btn-facturar">Cobrar</x-jet-button>
                         </div>
+                    </x-modal>
+                    @else
+                    <div class="font-bold text-lg flex items-center cursor-pointer bg-gray-900 text-white px-2  rounded-xl"
+                        wire:click="cotizar">
+                        <span class="fas fa-money mx-2"></span> Cotizar
+                    </div>
                     @endif
                 </div>
 
@@ -247,5 +250,7 @@
                 $('#div_select').toggle('', false);
                 $('#hide_select').show('', false)
             })
+           
+            
         </script>
     </div>

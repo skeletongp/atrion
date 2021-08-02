@@ -121,7 +121,7 @@ class MakeInvoice extends Component
             }
             $this->payed=$this->totales['total'];
         }
-        $this->cashMoney=$this->totales['total'];
+        $this->cashMoney=round($this->totales['total'], 2);
     }
     /* Carga el producto a los inputs para editarlo y lo borra de la lista */
     public function charge($id)
@@ -133,6 +133,11 @@ class MakeInvoice extends Component
                 $this->cant = $productDetail['cant'];
                 $this->discount = $productDetail['discount'];
                 array_splice($this->list, array_search($productDetail, $this->list), 1);
+                $this->totales['subtotal'] -= $productDetail['subtotal'];
+                    $this->totales['tax'] -= $productDetail['tax'];
+                    $this->totales['total'] -= $productDetail['total'];
+                    $this->totales['discount'] -= $productDetail['discount'];
+                    $this->payed=round($this->totales['total'],2);
             }
         }
     }
@@ -142,7 +147,7 @@ class MakeInvoice extends Component
         if ($this->client_id > 0 && $this->totales['total'] > 0) {
             $this->cobrar();
             $this->createAccount();
-            if ($this->typeFiscal==1) {
+            if ($this->is_ncf==1) {
                 $type=Fiscal::where('type',"=",$this->typeFiscal)->orderBy('ncf','asc')->first();
                 $this->ncf_id=$type->id;
                 $type->delete();
@@ -171,6 +176,7 @@ class MakeInvoice extends Component
         return redirect()->route('preview', $invoice);
         }
     }
+    /* Crea una cotización a partir de los productos listados */
     public function cotizar()
     {
         if ($this->client_id > 0 && $this->totales['total'] > 0) {
@@ -227,6 +233,7 @@ class MakeInvoice extends Component
         }
     }
 
+    /* Registra los detalles de la cotización */
     public function fillCotDetail($cotize)
     {
         if ($cotize->save()) {
@@ -250,7 +257,7 @@ class MakeInvoice extends Component
     public function upCash($cash, $total)
     {
         $cash=Cash::find($cash);
-        $cash->end+=$this->payed;
+        $cash->end+=$this->cashMoney;
         $cash->save();
     }
     
@@ -259,6 +266,10 @@ class MakeInvoice extends Component
     public function cobrar()
     {
         $this->payed=$this->cashMoney+$this->other;
+        if ($this->payed>$this->totales['total']) {
+           $this->cashMoney=$this->totales['total']-$this->other;
+           $this->payed=$this->cashMoney+$this->other;
+        }
         if ($this->totales['total']>$this->payed) {
             $this->rest=$this->totales['total']-$this->payed;
         } elseif ($this->totales['total']<$this->payed) {
@@ -288,4 +299,5 @@ class MakeInvoice extends Component
     {
         $this->clients = Client::orderBy('name')->get();
     }
+   
 }

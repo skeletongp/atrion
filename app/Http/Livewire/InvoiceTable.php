@@ -22,6 +22,7 @@ class InvoiceTable extends Component
         if ($this->client_id>0) {
             if ($this->is_active == 1) {
                 $invoices = Invoice::with('client','salor')->search($this->search)
+                ->where('client_id','=',$this->client_id)
                 ->where('place_id','=',Auth::user()->place_id)->where(function ($query)
                 {
                     $query->orderBy($this->order, $this->direction);

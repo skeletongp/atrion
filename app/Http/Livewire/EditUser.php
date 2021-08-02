@@ -9,6 +9,7 @@ use Livewire\Component;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class EditUser extends Component
 {
@@ -35,9 +36,9 @@ class EditUser extends Component
     public function update()
     {
         $this->validate();
+        $user = $this->user;
 
-        if (Auth::user()->can('Gestionar Usuarios')) {
-            $user = $this->user;
+        if (Auth::user()->can('Gestionar Usuarios') || $user->id==Auth::user()->id) {
             $user->name = $this->name;
             $user->slug=Str::slug($this->name);
             $user->email = $this->email;
@@ -61,6 +62,7 @@ class EditUser extends Component
             }
             session()->flash('success', 'Datos actualizados');
             $this->reset('name', 'role', 'email', 'place_id');
+            Alert::info('Datos Actualizados', 'Se han actualizado los datos del usuario', 'success');
            return redirect()->route('users_show',$user);
 
         }

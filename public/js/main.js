@@ -156,7 +156,7 @@ window.addEventListener('load', function () {
   $('.draggable').draggable();
   /* Formatea los selects a select2 */
 
-  $(".O").select2();
+  $(".select2").select2();
   /* Oculta el botón de editar cliente */
 
   $('#hide_select').hide('', false);
