@@ -1,6 +1,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <h3 class="h-info" style="float: right">{{ date('d M, Y', strtotime($invoice->date)) }}</h3>
 </head>
 <div class="body">
 
@@ -19,7 +20,7 @@
     <div class="info">
         <table style="width: 70mm; margin: 0 auto 0 auto">
             <tr>
-                <td style="width:30mm; text-align:left">
+                <td style="width:30mm; text-align:center">
                     @if ($invoice->cash)
                     <h3 class="h-name">Facturado a:</h3>
                     @else
@@ -29,19 +30,29 @@
                     <h3 class="h-info">Tel.: {{ $invoice->client->phone }}</h3>
                     <h3 class="h-info">RNC: {{ $invoice->client->rnc }}</h3>
                 </td>
-                <td style="width:30mm; text-align:right">
+                <td style="width:30mm; text-align:center; border-left: dotted 0.3px black;">
                     @if ($invoice->cash)
                     <h3 class="h-name">Factura:</h3>
                     @else
                     <h3 class="h-name">Cotización:</h3>
                     @endif
                     <h3 class="h-info">No {{ $invoice->number }}</h3>
-                    <h3 class="h-info">{{ date('d M, Y', strtotime($invoice->date)) }}</h3>
+
                     @if ($invoice->fiscal)
-                        <h3 class="h-info">NCF: {{ $invoice->fiscal->ncf }}</h3>
+                    <h3 class="h-info">NCF: {{ $invoice->fiscal->ncf }}</h3>
                     @else
                     <h3 class="h-info">-----</h3>
                     @endif
+                    @if ($invoice->cash>0 && $invoice->other==0)
+                        <h3 class="h-info">EFECTIVO</h3>
+                    @else
+                        @if ($invoice->cash>0 && $invoice->other>0)
+                            <h3 class="h-info">MIXTO</h3>
+                        @else
+                            <h3 class="h-info">TARJETA</h3>
+                        @endif
+                    @endif
+
                 </td>
             </tr>
         </table>
@@ -59,12 +70,12 @@
             </thead>
             <tbody class="tbody">
                 @foreach ($details as $detail)
-                    <tr class="trbody">
-                        <td style="max-width: 18mm">{{ $detail->product->name }}</td>
-                        <td style="max-width: 5mm">{{ $detail->cant }}</td>
-                        <td style="max-width: 10mm">${{ $detail->price }}</td>
-                        <td style="max-width: 10mm">${{ $detail->subtotal }}</td>
-                    </tr>
+                <tr class="trbody">
+                    <td style="max-width: 18mm">{{ strtoupper($detail->product->meta) }}</td>
+                    <td style="max-width: 5mm">{{ $detail->cant }}</td>
+                    <td style="max-width: 10mm">${{ $detail->price }}</td>
+                    <td style="max-width: 10mm">${{ $detail->subtotal }}</td>
+                </tr>
                 @endforeach
 
                 <tr style="margin-top:10rem; background-color: #fff">
@@ -84,12 +95,12 @@
                             style="font-size: 12px">+</b></td>
                 </tr>
                 @if ($details->sum('discount') > 0)
-                    <tr>
-                        <td style="background-color: white"></td>
-                        <td colspan="2" class="td-total">Descuento </td>
-                        <td class="td-total" style="text-align: right; padding-right:10p">
-                            ${{ round($details->sum('discount'), 0, 2) }} <b style="font-size: 12px">-</b></td>
-                    </tr>
+                <tr>
+                    <td style="background-color: white"></td>
+                    <td colspan="2" class="td-total">Descuento </td>
+                    <td class="td-total" style="text-align: right; padding-right:10p">
+                        ${{ round($details->sum('discount'), 0, 2) }} <b style="font-size: 12px">-</b></td>
+                </tr>
 
                 @endif
                 <tr>
@@ -104,32 +115,32 @@
                 </tr>
 
                 @if ($invoice->cash)
-                    <tr>
-                        <td style="background-color: white"></td>
-                        <td colspan="2" class="td-total">Efectivo</td>
-                        <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->cash }}
-                        </td>
-                    </tr>
+                <tr>
+                    <td style="background-color: white"></td>
+                    <td colspan="2" class="td-total">Efectivo</td>
+                    <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->cash }}
+                    </td>
+                </tr>
                 @endif
                 @if ($invoice->other > 0){
-                    <tr>
-                        <td style="background-color: white"></td>
-                        <td colspan="2" class="td-total">Otro</td>
-                        <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->other }}
-                        </td>
-                    </tr>
-                    }
+                <tr>
+                    <td style="background-color: white"></td>
+                    <td colspan="2" class="td-total">Otro</td>
+                    <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->other }}
+                    </td>
+                </tr>
+                }
 
                 @endif
                 @if ($invoice->cash)
-                    <tr>
-                        <td style="background-color: white"></td>
-                        <td colspan="2" class="td-total">Balance</td>
-                        <td class="td-total" style="text-align: right; padding-right:10px">
-                            <span style="{{ $invoice->rest > 0 ? 'color:red' : '' }}">
-                                ${{ $invoice->rest }}</span>
-                        </td>
-                    </tr>
+                <tr>
+                    <td style="background-color: white"></td>
+                    <td colspan="2" class="td-total">Balance</td>
+                    <td class="td-total" style="text-align: right; padding-right:10px">
+                        <span style="{{ $invoice->rest > 0 ? 'color:red' : '' }}">
+                            ${{ $invoice->rest }}</span>
+                    </td>
+                </tr>
                 @endif
             </tbody>
         </table>
@@ -144,12 +155,12 @@
                     </div>
                 </td>
                 @if ($invoice->salor)
-                    <td>
-                        <div class="firm">
-                            <h3>Vendedor: </h3>
-                            <span>{{ $invoice->salor->name }}</span>
-                        </div>
-                    </td>
+                <td>
+                    <div class="firm">
+                        <h3>Vendedor: </h3>
+                        <span>{{ $invoice->salor->name }}</span>
+                    </div>
+                </td>
                 @endif
             </tr>
         </tbody>
@@ -166,7 +177,9 @@
         @endif
     </div>
 </div>
-<script type="text/javascript"> try { this.print(); } catch (e) { window.onload = window.print; } </script>
+<script type="text/javascript">
+    try { this.print(); } catch (e) { window.onload = window.print; } 
+</script>
 
 
 <style>
@@ -339,5 +352,4 @@
         font-size: 1.5rem;
         cursor: pointer;
     }
-
 </style>

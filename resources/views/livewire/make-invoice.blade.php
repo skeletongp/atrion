@@ -3,14 +3,16 @@
         <x-jet-input-error for="cant" class="text-xl"></x-jet-input-error>
         <x-jet-input-error for="price" class="text-xl"></x-jet-input-error>
         <x-jet-input-error for="discount" class="text-xl"></x-jet-input-error>
+        <x-jet-input-error for="cashMoney" class="text-xl"></x-jet-input-error>
+        <x-jet-input-error for="other" class="text-xl"></x-jet-input-error>
     </div>
 
     <div
         class="md:flex justify-between items-center px-4 md:w-11/12 lg:w-10/12 xl:w-2/3 mx-auto bg-gradient-to-b from-blue-50 to-blue-200 relative">
         <div class="absolute top-2 left-1/3 flex space-x-2 items-center">
 
-            @if ($cotize == 0)
-                <x-jet-input type="checkbox" value="1" id="is_ncf" wire:model="is_ncf">NCF</x-jet-input>
+            @if ($cotize == 0 && $tipos->count())
+                <x-jet-input type="checkbox" value="1" id="is_ncf" wire:model="is_ncf"></x-jet-input>
                 <x-jet-label for="is_ncf">NCF</x-jet-label>
             @endif
             @if ($is_ncf == 1)
@@ -28,7 +30,8 @@
             </x-jet-label>
             <div class="flex space-x-3 items-center " id="div_select" wire:ignore>
                 <div>
-                    <select class="chosen-select client_id select2" data-placeholder="Selecciona un cliente" wire:ignore.self>
+                    <select class="chosen-select client_id select2" data-placeholder="Selecciona un cliente"
+                        wire:ignore.self>
                         <option value=""></option>
                         @foreach ($clients->chunk(50) as $array)
 
@@ -87,7 +90,9 @@
                         @foreach ($products->chunk(50) as $array)
                             @foreach ($array as $product)
                                 <option value="{{ $product->id }}">
-                                    {{ $product->name }} - ${{ $product->price }} ({{ $product->stock }})
+                                    {{ $product->code }} - {{ $product->meta }} - ${{ $product->price }}
+                                    ({{ $product->stock }}) -
+                                    {{ $product->is_product == 1 ? 'P' : 'S' }}
                                 </option>
                             @endforeach
                         @endforeach
@@ -197,6 +202,7 @@
                         </tbody>
                     </table>
                 </div>
+
                 <div class="py-2 flex justify-end mr-8 space-y-4">
                     @if ($cotize == 0)
                         <x-modal modalId="cobrar">
@@ -209,10 +215,12 @@
                             <div>
                                 <x-jet-label for="cashMoney">Efectivo</x-jet-label>
                                 <x-jet-input type='number' placeholder="Efectivo" wire:model.defer="cashMoney"
-                                    class="text-center mb-2" id="input-payed"></x-jet-input>
+                                    class="text-center mb-2" id="cash"></x-jet-input>
+
                                 <x-jet-label for="other">Otro</x-jet-label>
                                 <x-jet-input type='number' placeholder="otro" wire:model.defer="other"
-                                    class="text-center mb-2" id="input-payed"></x-jet-input>
+                                    class="text-center mb-2" id="other"></x-jet-input>
+
                                 <br>
                                 <x-jet-label for="other">Vendedor</x-jet-label>
                                 <select class="chosen-select w-52 select2" data-placeholder="Selecciona un vendedor"
@@ -227,8 +235,8 @@
                             </div>
                         </x-modal>
                     @else
-                        <div
-                            class="font-bold text-lg flex items-center cursor-pointer bg-gray-900 text-white px-2  rounded-xl" wire:click="cotizar">
+                        <div class="font-bold text-lg flex items-center cursor-pointer bg-gray-900 text-white px-2  rounded-xl"
+                            wire:click="cotizar">
                             <span class="fas fa-money mx-2"></span> Cotizar
                         </div>
                     @endif
@@ -239,7 +247,7 @@
         </div>
         <script>
             /* No puedo pasar esta función al main porque tiene un método
-                    de Livewire @this.set() */
+                                    de Livewire @this.set() */
             /* Detecta la selección del cliente */
             $('.client_id').change(function(e) {
                 var value = $('.client_id').select2("val");

@@ -14,7 +14,7 @@
             <span>{{$detail}}</span><br>
             @endforeach --}}
             
-            {{\App\Models\Detail::groupBy('product_id')->sum('cant')}}
+            {{\App\Models\Product::sum('stock')}}
     </div>
     
 </x-app-layout>

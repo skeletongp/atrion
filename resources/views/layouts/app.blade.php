@@ -35,15 +35,16 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @laravelPWA
 
+
 </head>
 
 <body class="font-sans antialiased h-screen">
     <x-jet-banner />
     @php
-        date_default_timezone_set('America/Santo_Domingo');
-        // Unix
-        setlocale(LC_ALL, 'es_ES.UTF-8');
-        
+    date_default_timezone_set('America/Santo_Domingo');
+    // Unix
+    setlocale(LC_ALL, 'es_ES.UTF-8');
+
     @endphp
     <div class=" mx-auto bg-gray-100" id="body">
 
@@ -51,36 +52,39 @@
 
         <!-- Page Heading -->
         @if (isset($header))
-            <header class="bg-white shadow fixed w-full top-0 left-0 " style="z-index: 60">
-                <div class="mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                    <div class="lg:ml-56 w-full uppercase">
-                        {{ $header }}
-                    </div>
-                    {{-- Funciones del perfil --}}
-                    <div class="flex  text-gray-900 uppercase font-bold items-center space-x-2 w-1/2 justify-end ">
-                        <a href="{{ url()->previous() }}" class="absolute top-1 right-2 "><span
-                                class="fas fa-angle-double-left text-2xl"></span></a>
-                        <a href="{{ route('user.show', Auth::user()) }}" class="profile-photo w-12 h-12 rounded-full">
+        <header class="bg-white shadow fixed w-full top-0 left-0 " style="z-index: 60">
+            <div class="mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <div class="lg:ml-56 w-full uppercase">
+                    {{ $header }}
+                </div>
+                {{-- Funciones del perfil --}}
+                <label class="flex  text-gray-900 uppercase font-bold items-center space-x-2 w-1/2 justify-end " for="openProfile">
+                    <a href="{{ url()->previous() }}" class="absolute top-1 right-2 "><span
+                            class="fas fa-angle-double-left text-2xl"></span></a>
+                    <div class="flex items-center space-x-2 " id="profile-photo">
+                        <a href="{{ route('users_show', Auth::user()) }}" class=" w-12 h-12 rounded-full">
                             <img src="{{ Auth::user()->profile_photo_url }}" alt=""
-                                class=" rounded-full mr-2 profile-photo">
+                                class=" rounded-full mr-2 ">
                         </a>
-                        <span class="hidden lg:block profile-photo cursor-pointer">{{ Auth::user()->name }}</span>
-                        <div
-                            class="fixed -top-8 right-2 lg:right-auto opacity-0 div-perfil px-2 py-1 z-20 bg-white rounded-md">
-                            <a href="{{ route('user.show', Auth::user()) }}"><span class="fas fa-user"></span>
-                                Perfil</a><br>
-                            <form method="POST" action="{{ route('logout') }}" id="form2">
-                                @csrf
-                                <a type="submit" id='sub2' class=" text-gray-900 hover:text-gray-900 cursor-pointer">
-                                    <span class=""><i class="fas fa-sign-out-alt  "></i><span
-                                            class="font-bold ml-1">Salir</span></span>
-                                </a>
-                            </form>
-                        </div>
+                        <span class="hidden lg:block cursor-pointer">{{ Auth::user()->name }}</span>
+                    </label>
+                    <input type="checkbox" id="openProfile" name="openProfile" class="hidden">
+                    <div
+                        class="fixed -top-8 right-2 lg:left-auto opacity-0 div-perfil px-2 py-1 z-20 bg-white rounded-md">
+                        <a href="{{ route('users_show', Auth::user()) }}"><span class="fas fa-user"></span>
+                            Perfil</a><br>
+                        <form method="POST" action="{{ route('logout') }}" id="form2">
+                            @csrf
+                            <a type="submit" id='sub2' class=" text-gray-900 hover:text-gray-900 cursor-pointer">
+                                <span class=""><i class="fas fa-sign-out-alt  "></i><span
+                                        class="font-bold ml-1">Salir</span></span>
+                            </a>
+                        </form>
                     </div>
                 </div>
+            </div>
 
-            </header>
+        </header>
         @endif
 
         <!-- Cuerpo de la página -->
@@ -96,12 +100,12 @@
             </div>
         </main>
     </div>
-   
+
     @stack('modals')
 
     @livewireScripts
     <script src="{{ mix('js/main.js') }}" defer></script>
-
+    @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
 </body>
 
 

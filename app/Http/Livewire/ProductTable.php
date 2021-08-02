@@ -83,4 +83,8 @@ class ProductTable extends Component
     {
         $this->emit('store_product');
     }
+    public function printCodes()
+    {
+        return redirect()->route('printCodes');
+    }
 }

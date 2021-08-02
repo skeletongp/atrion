@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Company;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Str;
 
@@ -33,6 +34,7 @@ class EditCompany extends Component
         $this->company->phone=$this->phone;
         $this->company->location=$this->location;
         $this->company->rnc=$this->rnc;
+        $this->company->edited_by =Auth::user()->id;
         $this->company->logo="https://ui-avatars.com/api/?name=".$this->logo."&color=FFFFFF&background=000000";
         $this->company->save();
         return redirect()->route('user.company');

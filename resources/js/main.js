@@ -113,12 +113,10 @@ window.addEventListener('load', function () {
     /* Importar productos desde Excel */
     $('#excel').on('change', function (e) {
         let file = $('#excel').prop('files')[0];
-        console.log(file)
         let formData = new FormData();
         formData.append('file', file);
         $.ajax({
             url: 'products/upload', // <-- point to server-side PHP script 
-            dataType: 'text',  // <-- what to expect back from the PHP script, if anything
             cache: false,
             contentType: false,
             processData: false,
@@ -128,16 +126,14 @@ window.addEventListener('load', function () {
             data: formData,
             type: 'post',
             success: function (result) {
-                alert( result);
-                window.location.href = "/inventory/products"
+               console.log(result)
+             /*    alert( result);
+                window.location.href = "/inventory/products" */
             }
         });
     })
    
-    function hideMessage(sp) {
-        $(sp).slideUp();
-
-    }
+    
     $('.front').each(function () {
         $(this).click(function () {
             $(this).parent().toggleClass('rotar')
@@ -152,7 +148,7 @@ window.addEventListener('load', function () {
         $('.draggable').draggable();
       
       /* Formatea los selects a select2 */
-      $(".O").select2();
+      $(".select2").select2();
 
       /* Oculta el botón de editar cliente */
       $('#hide_select').hide('', false)

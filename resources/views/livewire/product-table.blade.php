@@ -5,6 +5,9 @@
         <div class="flex justify-end w-full">
         <span class="fa {{ $button }} cursor-pointer text-2xl right-2" wire:click='toggle'></span>
         </div>
+        <div class="absolute left-2">
+            <x-jet-button wire:click="printCodes">Imprimir Códigos</x-jet-button>
+        </div>
         <div class=" mx-auto">
             <x-modal modalId="md_add">
                 @slot('title')
@@ -86,13 +89,13 @@
                                 @foreach ($array as $product)
                                     <tr
                                         class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
-                                        <td class="px-4 py-2 lg:w-72 lg:max-w-72">{{ $product->name }}</td>
-                                        <td class="px-4 py-2 text-center w-24">${{ $product->cost }}</td>
-                                        <td class="px-4 py-2 text-center">${{ $product->price }}</td>
+                                        <td class="px-4 py-1 ">{{ $product->name }}</td>
+                                        <td class="px-4 py-1 text-center w-24">${{ $product->cost }}</td>
+                                        <td class="px-4 py-1 text-center">${{ $product->price }}</td>
                                         @if ($type==1)
-                                        <td class="px-4 py-2 text-center">{{ $product->stock }}</td>
+                                        <td class="px-4 py-1 text-center">{{ $product->stock }}</td>
                                         @endif
-                                        <td class="px-4 py-2 text-center">{{ $product->category->name }}</td>
+                                        <td class="px-4 py-1 text-center">{{ $product->category->name }}</td>
                                         <td class=" py-2 text-center">
                                             <x-modal modalId="edit{{ $product->id }}">
                                                 <x-slot name="title">

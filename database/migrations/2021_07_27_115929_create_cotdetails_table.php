@@ -29,7 +29,11 @@ class CreateCotdetailsTable extends Migration
             $table->foreign('cotize_id')
             ->references('id')
             ->on('cotizes');
+            $table->unsignedBigInteger('edited_by')->nullable();
             $table->timestamps();
+            $table->foreign('edited_by')
+            ->references('id')
+            ->on('users');
         });
     }
 

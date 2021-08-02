@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Category;
 use App\Models\Place;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Str;
 
@@ -44,6 +45,7 @@ class EditProduct extends Component
         $product->stock=$this->stock;
         $product->price=$this->price;
         $product->cost=$this->cost;
+        $product->edited_by =Auth::user()->id;
         $product->slug=Str::slug($this->name);
         $product->save();
         $this->message="Producto editado";

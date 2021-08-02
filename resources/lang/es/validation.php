@@ -152,6 +152,7 @@ return [
         'category_id'=>'Categoría',
         'price'=>'Precio',
         'description'=>'Descripción',
+        'meta'=>'Descripción',
         'cost'=>"Costo",
         'image'=>"Imagen",
         'quantity'=>"Cantidad",
@@ -175,11 +176,12 @@ return [
         'shortname'=>"Nombre",
         'type_id'=>"Categoría",
         'stock'=>"Stock",
-        'meta'=>"Descripción",
         'place_id'=>"Sucursal",
         'amount'=>"Balance",
         'cant'=>"Cantidad",
         'rnc'=>"RNC/ID",
+        'cashMoney'=>"Efectivo",
+        'other'=>"Otro",
     ],
 
 ];

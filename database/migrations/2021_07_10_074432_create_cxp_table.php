@@ -21,7 +21,12 @@ class CreateCxpTable extends Migration
             $table->foreign('provider_id')
             ->references('id')
             ->on('providers');
+            $table->unsignedBigInteger('edited_by')->nullable();
             $table->timestamps();
+            $table->foreign('edited_by')
+            ->references('id')
+            ->on('users');
+           
         });
     }
 

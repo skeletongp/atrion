@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
-
+use RealRashid\SweetAlert\Facades\Alert;
 use Livewire\Component;
 
 class AddUser extends Component
@@ -39,12 +39,18 @@ class AddUser extends Component
             $user->place_id = $this->place_id;
             $user->slug = Str::slug($this->name);
             $user->password = Hash::make("user1234");
-            $user->save();
-            $user->syncRoles($this->role);
+           
+            if ( $user->save()) {
+                $user->syncRoles($this->role);
             $user->syncPermissions($this->permissions);
             session()->flash('added', 'Usuario añadido');
             $this->reset('name', 'email', 'place_id', 'role', 'permissions');
+            alert('Usuario registrado','El usuario se ha registrado con éxito', 'success');
             $this->emit('update_user_table');
+            } else {
+                alert('Ha ocurrido un error','Revise e intente nuevamente', 'error');
+            }
+            
         }
     }
     public function multi($value)

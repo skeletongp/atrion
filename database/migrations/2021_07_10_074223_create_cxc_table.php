@@ -18,10 +18,15 @@ class CreateCxcTable extends Migration
             $table->unsignedBigInteger('client_id');
             $table->decimal('amount', 18,2);
             $table->decimal('balance', 18,2);
+          
             $table->foreign('client_id')
             ->references('id')
             ->on('clients');
+            $table->unsignedBigInteger('edited_by')->nullable();
             $table->timestamps();
+            $table->foreign('edited_by')
+            ->references('id')
+            ->on('users');
         });
     }
 

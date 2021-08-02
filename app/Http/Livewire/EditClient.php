@@ -30,6 +30,7 @@ class EditClient extends Component
         $client->name = $this->name;
         $client->phone = $this->phone;
         $client->rnc = $this->rnc;
+        $client->edited_by =Auth::user()->id;
         $client->slug = Str::slug($this->name);
         $client->save();
 

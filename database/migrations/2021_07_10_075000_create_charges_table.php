@@ -20,7 +20,11 @@ class CreateChargesTable extends Migration
             $table->foreign('cxp_id', 18,2)
             ->references('id')
             ->on('cxps');
+            $table->unsignedBigInteger('edited_by')->nullable();
             $table->timestamps();
+            $table->foreign('edited_by')
+            ->references('id')
+            ->on('users');
         });
     }
 

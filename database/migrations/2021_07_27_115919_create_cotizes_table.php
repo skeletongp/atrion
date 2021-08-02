@@ -38,7 +38,11 @@ class CreateCotizesTable extends Migration
             $table->foreign('place_id')
             ->references('id')
             ->on('places');
+            $table->unsignedBigInteger('edited_by')->nullable();
             $table->timestamps();
+            $table->foreign('edited_by')
+            ->references('id')
+            ->on('users');
         });
     }
 

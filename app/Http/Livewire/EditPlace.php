@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Place;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Str;
 
@@ -33,6 +34,7 @@ class EditPlace extends Component
         $place->phone=$this->phone;
         $place->location=$this->location;
         $place->slug=Str::slug($this->name);
+        $place->edited_by =Auth::user()->id;
         $place->save();
         $this->place=$place;
         $this->render();

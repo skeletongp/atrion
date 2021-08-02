@@ -20,7 +20,11 @@ class CreatePaymentsTable extends Migration
             $table->foreign('cxc_id')
             ->references('id')
             ->on('cxcs');
+            $table->unsignedBigInteger('edited_by')->nullable();
             $table->timestamps();
+            $table->foreign('edited_by')
+            ->references('id')
+            ->on('users');
         });
     }
 

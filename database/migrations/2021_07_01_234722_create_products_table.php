@@ -16,11 +16,13 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
+            $table->string('code', 100)->unique()->nullable();
             $table->string('meta');
             $table->integer('stock');
             $table->decimal('cost');
             $table->decimal('price');
             $table->string('slug');
+           
             $table->unsignedBigInteger('place_id');
             $table->unsignedBigInteger('category_id');
             $table->softDeletes();
@@ -32,7 +34,11 @@ class CreateProductsTable extends Migration
             ->references('id')
             ->on('categories');
             
+            $table->unsignedBigInteger('edited_by')->nullable();
             $table->timestamps();
+            $table->foreign('edited_by')
+            ->references('id')
+            ->on('users');
         });
     }
 

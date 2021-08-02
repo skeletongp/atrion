@@ -20,6 +20,7 @@ class CreateInvoicesTable extends Migration
             $table->decimal('subtotal', 18,2);
             $table->decimal('tax', 18,2);
             $table->decimal('total', 18,2);
+        
             $table->tinyInteger('is_fiscal')->default(0);
             $table->string('type')->default('sale');
             $table->softDeletes();
@@ -37,7 +38,11 @@ class CreateInvoicesTable extends Migration
             ->references('id')
             ->on('places');
             
+            $table->unsignedBigInteger('edited_by')->nullable();
             $table->timestamps();
+            $table->foreign('edited_by')
+            ->references('id')
+            ->on('users');
         });
     }
 
