@@ -17,11 +17,11 @@ class ProviderTable extends Component
     {
         if ($this->is_active == 1) {
             $providers = Provider::search($this->search)
-                ->where('id','!=',1)
+                
                 ->orderBy($this->order, $this->direction)->paginate(10);
         } else {
             $providers = Provider::onlyTrashed()->search($this->search)
-                ->where('id','!=',1)
+               
                 ->orderBy($this->order, $this->direction)->paginate(10);
         }
         return view('livewire.provider-table')->with(['providers'=>$providers]);
