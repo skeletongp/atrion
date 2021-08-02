@@ -43,7 +43,7 @@
                                 </div>
                             </template>
                             <div x-show="selected.length== 0" class="flex-1 w-full">
-                                <input placeholder="Permisos de usuario"
+                                <input placeholder="{{$placeholder}}"
                                     class="bg-transparent p-1 px-2 appearance-none outline-none h-full w-full text-gray-800"
                                     x-bind:value="selectedValues()"  
                                 >

@@ -106,7 +106,7 @@
                                         class="fas fa-user"></i><span>Clientes</span></a>
                             @endcan
                         </li>
-                        <li><a href="forms-mask.html"><i class="fas fa-user-tag"></i><span>Proveedores</span></a>
+                        <li><a href="{{route('providers_index')}}"><i class="fas fa-user-tag"></i><span>Proveedores</span></a>
                         </li>
                         @can('Gestionar Usuarios', User::class)
                             <li class="{{ request()->routeIs('users_*') ? 'active' : '' }}"><a

@@ -3067,6 +3067,26 @@ select {
 		width: 18rem;
 	}
 
+	.lg\:w-full {
+		width: 100%;
+	}
+
+	.lg\:w-8\/12 {
+		width: 66.666667%;
+	}
+
+	.lg\:w-4\/12 {
+		width: 33.333333%;
+	}
+
+	.lg\:w-9\/12 {
+		width: 75%;
+	}
+
+	.lg\:w-3\/12 {
+		width: 25%;
+	}
+
 	.lg\:max-w-screen-sm {
 		max-width: 640px;
 	}

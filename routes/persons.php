@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/users/show/{user}', [PersonController::class,'users_show'])->name('users_show');
 Route::middleware('auth:sanctum', 'permission:Gestionar Usuarios')->get('/users', [PersonController::class,'index'])->name('users_index');
+Route::middleware('auth:sanctum', 'permission:Gestionar Suplidores')->get('/providers', [PersonController::class,'providers_index'])->name('providers_index');
 Route::middleware('auth:sanctum', 'permission:Gestionar Clientes')->get('/clients/show/{client}', [PersonController::class,'clients_show'])->name('clients_show');
 Route::middleware('auth:sanctum', 'permission:Gestionar Clientes')->get('/clients/{query?}/', [PersonController::class,'clients_index'])->name('clients_index');
 Route::middleware('auth:sanctum', 'permission:Gestionar Clientes')->get('/trash/clients/{query?}/{is_active?}', [PersonController::class,'clients_index'])->name('clients_trash');

@@ -10,10 +10,10 @@
         <div class=" mx-auto">
             <x-modal modalId="md_add">
                 @slot('title')
-                    <span class="px-4 my-2"><span class="fas fa-plus font-bold"></span> Nuevo Usuario</span>
+                    <span class="px-4 my-2"><span class="fas fa-plus font-bold"></span> Nuevo Suplidor</span>
                 @endslot
                 <div class=" select-none ">
-                    @livewire('add-user')
+                    @livewire('add-provider')
                 </div>
 
             </x-modal>
@@ -25,14 +25,16 @@
                     class="text-sm border-none rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-2/6 lg:w-1/6">Búsqueda:</span>
                 <input name="search"
                     class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm -ml-1 w-4/6 lg:w-5/6 overflow-auto"
-                    id="search" type="search" placeholder="Buscar usuario" value="{{ old('search') }}"
+                    id="search" type="search" placeholder="Buscar suplidor" value="{{ old('search') }}"
                     wire:model.defer="search" />
             </div>
             <div>
                 <span class="fas fa-search ml-2 text-xl cursor-pointer" wire:click="search" id="sp-search"></span>
             </div>
         </div>
-
+<div>
+    
+</div>
         <div class=" mx-auto sm:px-6 lg:px-8 flex-1 justify-center ">
             <div>
 
@@ -44,15 +46,18 @@
                                 <th class="px-4 py-2 cursor-pointer" wire:clicK="order('name')">Nombre
                                     <span class="fas {{ $order == 'name' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
-                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('email')">Correo
-                                    <span class="fas {{ $order == 'email' ? $icon_order : 'fa-sort' }}"></span>
+                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('phone')">
+                                    Teléfono
+                                    <span class="fas {{ $order == 'phone' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
-                                <th class="px-4 py-2  text-center ">Rol</th>
-                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('updated_at')">
-                                    Registrado
-                                    <span class="fas {{ $order == 'updated_at' ? $icon_order : 'fa-sort' }}"></span>
+                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('debt')">
+                                    Deuda <span class="fas {{ $order == 'debt' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
-                                <th class="px-4 py-2  text-center ">Sucursal
+                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('meta')">
+                                    Descripción
+                                    <span class="fas {{ $order == 'meta' ? $icon_order : 'fa-sort' }}"></span>
+                                </th>
+                                <th class="px-4 py-2  text-center ">Días
 
                                 </th>
 
@@ -60,28 +65,35 @@
                             </tr>
                         </thead>
                         <tbody class="text-sm font-normal text-gray-900">
-                            @foreach ($users->chunk(50) as $array)
-                                @foreach ($array as $user)
+                            @foreach ($providers->chunk(50) as $array)
+                                @foreach ($array as $provider)
                                     <tr
                                         class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
-                                        <td class="px-4 py-2 lg:w-72 lg:max-w-72 cursor-pointer"><a
-                                                href="{{ route('users_show', $user) }}">{{ $user->name }}</a></td>
-                                        <td class="px-4 py-2 text-center">{{ $user->email }}</td>
-                                        <td class="px-4 py-2 text-center">{{ $user->getRoleNames()[0] }}</td>
-                                        <td class="px-4 py-2 text-center">{{ substr($user->created_at, 0, 10) }}</td>
-                                        <td class="px-4 py-2 text-center">{{ $user->place->name }}</td>
+                                        <td class="px-4 py-2 cursor-pointer"><a
+                                                href="{{-- {{ route('users_show', $provider) }} --}}">{{ $provider->name }}</a></td>
+                                        <td class="px-4 py-2 text-center">{{ str_replace('-','',$provider->phone) }}</td>
+                                        <td class="px-4 py-2 text-center">{{ $provider->debt }}</td>
+                                        <td class="px-4 py-2 text-center">{{ $provider->meta}}
+                                        </td>
+                                        <td class="px-4 py-2 text-center" style="max-width: 6rem" >
+                                            @if ($provider->days)
+                                                @foreach ($provider->days as $day)
+                                                    <span>{{ substr($day->name, 0, 2)}}-</span>
+                                                @endforeach
+                                            @endif
+                                        </td>
                                         <td class="px-2  text-center">
-                                            <x-modal modalId="edit{{ $user->id }}">
+                                            <x-modal modalId="edit{{ $provider->id }}">
                                                 <x-slot name="title">
                                                     <span class="fas fa-pen mx-2"></span>
                                                 </x-slot>
-                                                @livewire('edit-user', ['user' => $user], key($user->id))
+                                                {{-- @livewire('edit-user', ['user' => $provider], key($provider->id)) --}}
                                             </x-modal>
                                         </td>
                                         <td class="px-2 py-2 text-center">
                                             <span class="fas {{ $icon }} text-red-400 cursor-pointer"
                                                 onclick="confirm('{{ $confirm }}')|| event.stopImmediatePropagation()"
-                                                wire:click="softdelete('{{ $user->slug }}')">
+                                                wire:click="softdelete('{{ $provider->slug }}')">
                                             </span>
                                         </td>
                                     </tr>
@@ -92,7 +104,7 @@
                     </table>
                 </div>
                 <div class="py-2 lg:w-2/3 mx-auto  text-red-400">
-                    {!! $users->links() !!}
+                    {!! $providers->links() !!}
                 </div>
             </div>
         </div>

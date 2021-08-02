@@ -19,6 +19,10 @@ class PersonController extends Controller
     
         return view('users.index');
     }
+    public function providers_index()
+    {
+        return view('persons.providers_index');
+    }
     public function users_show(User $user)
     {
         

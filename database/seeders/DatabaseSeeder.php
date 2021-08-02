@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Company;
+use App\Models\Day;
 use App\Models\Place;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -65,5 +66,13 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        $days=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+        foreach ($days as $day) {
+            Day::create([
+                'name'=>$day,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }
