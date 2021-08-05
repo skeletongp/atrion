@@ -27,3 +27,12 @@ Atrion es un sistema de facturación pensado para negocios que tienen varias suc
 <p align="justify">
 <b> <u>Ingresos </u></b>: Gestionar la entidad homómina, permitiendo darle mantenimiento en cuanto a: ingresar nuevo registro, actualizar datos de los registros existentes, dar de baja a los proveedores (softdelete), consultar los datos registrados y relacionarlos con otras entidades, tales como: productos y cuentas por pagar.
 </p>
+
+### Funciones CRUD
+<p align="justify">
+<b> <u>Descripción </u></b>: Para cada una de las funciones crud de los modelos, se utilizan los mismos estándares, de modo que lo único que cambia son los campos a intervenir y, en el caso de algunos modelos, ciertas variables en la edicación que serán explicadas en su momento.
+</p>
+
+<p align="justify">
+<b> <u>Crear Registro </u></b>: Gestionar la entidad homómina, permitiendo darle mantenimiento en cuanto a: ingresar nuevo registro, actualizar datos de los registros existentes, dar de baja a los proveedores (softdelete), consultar los datos registrados y relacionarlos con otras entidades, tales como: productos y cuentas por pagar.
+</p>
