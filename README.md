@@ -2,6 +2,7 @@
 - [1. INTRODUCCIÓN](#1-introducción)
     - [1.0.1. Funciones](#101-funciones)
     - [1.0.2. Funciones CRUD](#102-funciones-crud)
+      - [1.0.2.1. Crear](#1021-crear)
 # 1. INTRODUCCIÓN
 
 <p align="justify">
@@ -35,7 +36,10 @@ Atrion es un sistema de facturación pensado para negocios que tienen varias suc
 </p>
 
 <p align="justify">
-<b> <u>Crear Registro </u></b>: Para la creaciónd de nuevos registros, se utiliza un componente Livewire, con su correspondiente clase de PHP. El Blade del componente contiene la vista con el formulario de los campos a enviar, los botones correspondientes y demás. Dicho formulario es enviado a la vista correspondiente del modelo mediante el componente de blade llamado <b style="color:#990000; font-size:medium">Modal</b>, el cual recibe como principal slot la instancia del componente "add-<i>modelo</i>".
+
+#### 1.0.2.1. Crear
+
+<b> <u>Crear Registro </u></b>: Para la creaciónd de nuevos registros, se utiliza un componente Livewire, con su correspondiente clase de PHP. El Blade del componente contiene la vista con el formulario de los campos a enviar, los botones correspondientes y demás. Dicho formulario es enviado a la vista correspondiente del modelo mediante el componente de blade llamado <b style="color:yellow; font-size:medium">Modal</b>, el cual recibe como principal slot la instancia del componente "add-<i>modelo</i>".
 
 Por ejemplo, en el caso de los productos, se utilizará el siguiente formato:
 ~~~
