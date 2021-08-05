@@ -15,15 +15,6 @@ class AddProduct extends Component
     public $name, $meta, $category_id=1, $place_id, $stock, $price, $cost, $is_product, $code;
     public $message;
     protected $listeners=['update_add_product'=>'render', 'store_product'=>'store'];
-    public function render()
-    {
-        if ($this->is_product==null) {
-            $this->is_product=1;
-        }
-        $places=Place::orderBy('name')->get();
-        $categories=Category::orderBy('name')->get();
-        return view('livewire.add-product', compact('places', 'categories'));
-    }
     protected $rules=[
         'name'=>'required|unique_with:products,place_id|max:40',
         'meta'=>'required|max:100',
@@ -33,6 +24,17 @@ class AddProduct extends Component
         'price'=>'required|min:0|numeric',
         'cost'=>'required|min:0|numeric',
     ];
+    
+    public function render()
+    {
+        if ($this->is_product==null) {
+            $this->is_product=1;
+        }
+        $places=Place::orderBy('name')->get();
+        $categories=Category::orderBy('name')->get();
+        return view('livewire.add-product', compact('places', 'categories'));
+    }
+   
     public function store()
     {
         $this->validate();

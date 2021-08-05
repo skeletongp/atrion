@@ -35,5 +35,42 @@ Atrion es un sistema de facturación pensado para negocios que tienen varias suc
 </p>
 
 <p align="justify">
-<b> <u>Crear Registro </u></b>: Gestionar la entidad homómina, permitiendo darle mantenimiento en cuanto a: ingresar nuevo registro, actualizar datos de los registros existentes, dar de baja a los proveedores (softdelete), consultar los datos registrados y relacionarlos con otras entidades, tales como: productos y cuentas por pagar.
+<b> <u>Crear Registro </u></b>: Para la creaciónd de nuevos registros, se utiliza un componente Livewire, con su correspondiente clase de PHP. El Blade del componente contiene la vista con el formulario de los campos a enviar, los botones correspondientes y demás. Dicho formulario es enviado a la vista correspondiente del modelo mediante el componente de blade llamado <b style="color:#990000; font-size:medium">Modal</b>, el cual recibe como principal slot la instancia del componente "add-<i>modelo</i>".
+
+Por ejemplo, en el caso de los productos, se utilizará el siguiente formato:
+~~~
+public $name, $meta, $category_id=1, $place_id, $stock, $price, $cost, $is_product, $code;
+    public $message;
+    protected $listeners=['update_add_product'=>'render', 'store_product'=>'store'];
+~~~
 </p>
+<p align="justify">En esta porción de código declaramos las variables a utilizar dentro del componente, tales como los campos que vamos a guargar.
+También se declaran los <i style="color:yellow">listeners</i> para los eventos correspondientes. Luego de esto, declaramos las reglas de validaciones:
+
+~~~
+ protected $rules=[
+        'name'=>'required|unique_with:products,place_id|max:40',
+        'meta'=>'required|max:100',
+        'category_id'=>'required',
+        'place_id'=>'required',
+        'stock'=>'required|min:0|numeric',
+        'price'=>'required|min:0|numeric',
+        'cost'=>'required|min:0|numeric',
+    ];
+~~~
+</p>
+<p align="justify"> El siguiente paso es declarar el método <i style="color:yellow">render</i>, donde cargamos los datos iniciales necesarios para el componente. Dicho método suele tener la siguiente forma:
+
+~~~
+ public function render()
+    {
+        if ($this->is_product==null) {
+            $this->is_product=1;
+        }
+        $places=Place::orderBy('name')->get();
+        $categories=Category::orderBy('name')->get();
+        return view('livewire.add-product', compact('places', 'categories'));
+    }
+~~~
+</p>
+
