@@ -3,7 +3,7 @@
     - [1.0.1. Funciones](#101-funciones)
     - [1.0.2. Funciones CRUD](#102-funciones-crud)
       - [1.0.2.1. Crear](#1021-crear)
-      - [Leer](#leer)
+      - [1.0.2.2. Leer](#1022-leer)
 # 1. INTRODUCCIÓN
 
 <p align="justify">
@@ -101,7 +101,7 @@ También se declaran los <i style="color:yellow">listeners</i> para los eventos 
 <p align="justify"> Después de esto añadimos métodos adicionales necesarios para funcionalidades específicas de cada modelo, como el de selección múltiple que se usa en el caso de los proveedores y los usuarios:
 </p>
 
-#### Leer
+#### 1.0.2.2. Leer
 <p align="justify"> Cada modelo o entidad del proyecto se lista en una vista blade mediante una tabla, con excepción de las sucursales, que se muestran en un Grid. Para eso, utilizamos un componente livewire, cuyo esquema de nombre es <i style="color:yellow">modelo-table</i>, con su correspondiente clase en PHP.
 
 Al principio de la clase de cada vista se incluyen las declaraciones necesarias para su funcionamiento, incluyendo el <i style="color:yellow">use Pagination</i>, para poder paginar los registros. El esquema de dichas declaraciones es:
