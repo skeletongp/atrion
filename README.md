@@ -3,6 +3,7 @@
     - [1.0.1. Funciones](#101-funciones)
     - [1.0.2. Funciones CRUD](#102-funciones-crud)
       - [1.0.2.1. Crear](#1021-crear)
+      - [Leer](#leer)
 # 1. INTRODUCCIÓN
 
 <p align="justify">
@@ -48,7 +49,7 @@ public $name, $meta, $category_id=1, $place_id, $stock, $price, $cost, $is_produ
     protected $listeners=['update_add_product'=>'render', 'store_product'=>'store'];
 ~~~
 </p>
-<p align="justify">En esta porción de código declaramos las variables a utilizar dentro del componente, tales como los campos que vamos a guargar.
+<p align="justify">En esta porción de código declaramos las variables a utilizar dentro del componente, tales como los campos que vamos a guardar.
 También se declaran los <i style="color:yellow">listeners</i> para los eventos correspondientes. Luego de esto, declaramos las reglas de validaciones:
 
 ~~~
@@ -77,4 +78,42 @@ También se declaran los <i style="color:yellow">listeners</i> para los eventos 
     }
 ~~~
 </p>
+<p align="justify"> En el método <i style="color:yellow">store</i>, se realiza la validación, creamos una instancia del modelo con el que estamos trabajando, le pasamos los valores de cada campo correspondiente y guardamos. También reseteamos las variables a su valor inicial. Al guardar, es importante ejecutar el método <i style="color:yellow">$this->emit('update_model_table')</i>, el cual es escuchado por la clase que corresponde a la vista del modelo, la cual se renderiza con el nuevo registro:
+
+~~~
+ $this->validate();
+        $product= new Product();
+        $product->name=$this->name;
+        $product->code=$this->code;
+        $product->meta=$this->meta;
+        $product->category_id=$this->category_id;
+        $product->place_id=$this->place_id;
+        $product->stock=$this->stock;
+        $product->price=$this->price;
+        $product->cost=$this->cost;
+        $product->is_product=$this->is_product;
+        $product->slug=Str::slug($this->name);
+        $product->save();
+        $this->reset('name','meta','category_id','place_id','stock','price','cost');
+        $this->emit('update_product_table');
+~~~
+</p>
+<p align="justify"> Después de esto añadimos métodos adicionales necesarios para funcionalidades específicas de cada modelo, como el de selección múltiple que se usa en el caso de los proveedores y los usuarios:
+</p>
+
+#### Leer
+<p align="justify"> Cada modelo o entidad del proyecto se lista en una vista blade mediante una tabla, con excepción de las sucursales, que se muestran en un Grid. Para eso, utilizamos un componente livewire, cuyo esquema de nombre es <i style="color:yellow">modelo-table</i>, con su correspondiente clase en PHP.
+
+Al principio de la clase de cada vista se incluyen las declaraciones necesarias para su funcionamiento, incluyendo el <i style="color:yellow">use Pagination</i>, para poder paginar los registros. El esquema de dichas declaraciones es:
+
+~~~
+ public $search = "", $direction = 'asc', $order = "name", $icon_order = 'fa-sort-up'; //Campos para ordenar los registros
+
+    public $is_active = 1, $title = 'Usuarios activos', $icon = "fa-trash text-red-500", $confirm = '¿Eliminar usuario?', $button = 'fa-recycle';//Campos que varían al abrir papelera.
+
+    protected $listeners = ['update_provider_table' => 'render']; // Escucha el evento que se envía desde el componente add-model y renderiza la vista.
+~~~
+
+</p>
+
 

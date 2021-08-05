@@ -24,10 +24,14 @@ class AddProvider extends Component
         
         return view('livewire.add-provider');
     }
+    
+    /* Proviene el componente multiselect y carga los
+    valores señalados a la variable days*/
     public function multi($value)
     {
         $this->days = $value;
     }
+
     public function store()
     {
         if (Auth::user()->can('Gestionar Suplidores')) {
