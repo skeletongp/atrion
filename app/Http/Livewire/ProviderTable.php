@@ -13,6 +13,7 @@ class ProviderTable extends Component
     public $search = "", $direction = 'asc', $order = "name", $icon_order = 'fa-sort-up';
     public $is_active = 1, $title = 'Usuarios activos', $icon = "fa-trash text-red-500", $confirm = '¿Eliminar usuario?', $button = 'fa-recycle';
     protected $listeners = ['update_provider_table' => 'render'];
+    
     public function render()
     {
         if ($this->is_active == 1) {
@@ -26,6 +27,7 @@ class ProviderTable extends Component
         }
         return view('livewire.provider-table')->with(['providers'=>$providers]);
     }
+    
     public function toggle()
     {
         if ($this->is_active == 1) {

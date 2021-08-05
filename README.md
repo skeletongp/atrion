@@ -102,6 +102,7 @@ También se declaran los <i style="color:yellow">listeners</i> para los eventos 
 </p>
 
 #### 1.0.2.2. Leer
+
 <p align="justify"> Cada modelo o entidad del proyecto se lista en una vista blade mediante una tabla, con excepción de las sucursales, que se muestran en un Grid. Para eso, utilizamos un componente livewire, cuyo esquema de nombre es <i style="color:yellow">modelo-table</i>, con su correspondiente clase en PHP.
 
 Al principio de la clase de cada vista se incluyen las declaraciones necesarias para su funcionamiento, incluyendo el <i style="color:yellow">use Pagination</i>, para poder paginar los registros. El esquema de dichas declaraciones es:
@@ -119,11 +120,32 @@ Al principio de la clase de cada vista se incluyen las declaraciones necesarias 
 ~~~
 
 </p>
+<p align="justify"> El método <i style="color:yellow">render</i> es el encargado de cargar la vista con la lista de registros pertinentes, buscando los registros en el modelo según si se trata de los datos activos o de la papelera, usando la variable <i style="color:yellow">$is_active</i>  para controlar esto.:
+
+~~~
+  public function render()
+    {
+        if ($this->is_active == 1) {
+            $providers = Provider::search($this->search)
+                
+                ->orderBy($this->order, $this->direction)->paginate(10);
+        } else {
+            $providers = Provider::onlyTrashed()->search($this->search)
+               
+                ->orderBy($this->order, $this->direction)->paginate(10);
+        }
+        return view('livewire.provider-table')->with(['providers'=>$providers]);
+    }
+~~~
+El método <i style="color:yellow">search()</i> corresponde al paquete <i style="color:yellow">Nicolaslopezj\Searchable\SearchableTrait;</i>, instalado mediante Composer y que permite hacer una búsqueda profunda en el modelo y sus relaciones.
+</p>
 
 <p align="justify"> El método <i style="color:yellow">toggle</i>, es utilizado en cada vista para alternar entre la lista de registros activos y los que han sido borrados por medio del <i style="color:yellow">softdelete</i>. Dicho método actualiza el título de la vista, el ícono al lado de cada registro, el texto del botón confirmar y el ícono del botón que lo ejecuta:
 
 ~~~
- if ($this->is_active == 1) {
+public function toggle()
+    {
+        if ($this->is_active == 1) {
             $this->is_active = 0;
             $this->title = 'Usuarios eliminados';
             $this->icon = 'fa-sync-alt text-blue-500';
@@ -133,6 +155,7 @@ Al principio de la clase de cada vista se incluyen las declaraciones necesarias 
             $this->reset('is_active', 'title', 'icon', 'confirm', 'button');
         }
         $this->resetPage(); //Refresca la paginación
+    }
 ~~~
 
 </p>
