@@ -107,11 +107,31 @@ También se declaran los <i style="color:yellow">listeners</i> para los eventos 
 Al principio de la clase de cada vista se incluyen las declaraciones necesarias para su funcionamiento, incluyendo el <i style="color:yellow">use Pagination</i>, para poder paginar los registros. El esquema de dichas declaraciones es:
 
 ~~~
- public $search = "", $direction = 'asc', $order = "name", $icon_order = 'fa-sort-up'; //Campos para ordenar los registros
+ public $search = "", $direction = 'asc', $order = "name", $icon_order = 'fa-sort-up'; 
+ //Campos para ordenar los registros
 
-    public $is_active = 1, $title = 'Usuarios activos', $icon = "fa-trash text-red-500", $confirm = '¿Eliminar usuario?', $button = 'fa-recycle';//Campos que varían al abrir papelera.
+    public $is_active = 1, $title = 'Usuarios activos', $icon = "fa-trash text-red-500", $confirm = '¿Eliminar usuario?', $button = 'fa-recycle';
+    //Campos que varían al abrir papelera.
 
-    protected $listeners = ['update_provider_table' => 'render']; // Escucha el evento que se envía desde el componente add-model y renderiza la vista.
+    protected $listeners = ['update_provider_table' => 'render']; 
+    // Escucha el evento que se envía desde el componente add-model y renderiza la vista.
+~~~
+
+</p>
+
+<p align="justify"> El método <i style="color:yellow">toggle</i>, es utilizado en cada vista para alternar entre la lista de registros activos y los que han sido borrados por medio del <i style="color:yellow">softdelete</i>. Dicho método actualiza el título de la vista, el ícono al lado de cada registro, el texto del botón confirmar y el ícono del botón que lo ejecuta:
+
+~~~
+ if ($this->is_active == 1) {
+            $this->is_active = 0;
+            $this->title = 'Usuarios eliminados';
+            $this->icon = 'fa-sync-alt text-blue-500';
+            $this->confirm = '¿Restaurar producto?';
+            $this->button = 'fa-reply-all';
+        } else {
+            $this->reset('is_active', 'title', 'icon', 'confirm', 'button');
+        }
+        $this->resetPage(); //Refresca la paginación
 ~~~
 
 </p>
