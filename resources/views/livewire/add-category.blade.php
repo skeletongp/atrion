@@ -6,6 +6,7 @@
                 
             @endslot
             @slot('content')
+            <form action="javascript:void(0);">
                 <div class="lg:flex">
                     <div class="lg:w-1/2 mx-1 my-2">
                         <x-input_text name="name" label="Nombre" :oldValue="''" placeholder="Ingrese el nombre" type="text"
@@ -18,6 +19,8 @@
                     <x-jet-input-error for="meta"></x-jet-input-error>
                     </div>
                 </div>
+            </form>
+               
             @endslot
             @slot('footer')
                 <x-jet-button wire:click="store">Guardar</x-jet-button>

@@ -23,6 +23,6 @@ class Provider extends Model
     ];
     public function days()
     {
-        return $this->belongsToMany(Day::class, 'day_provider', 'provider_id','day_id');
+        return $this->belongsToMany(Day::class, 'day_provider', 'provider_id','day_id')->orderBY('id', 'asc');
     }
 }

@@ -11,17 +11,17 @@ use Illuminate\Support\Str;
 class AddProvider extends Component
 {
     public $roles, $name, $phone, $meta, $days = [], $debt=0;
-    protected $listeners = ['multi' => 'multi'];
+    protected $listeners = ['multi' => 'multi', ];
     
     protected $rules = [
         "name" => "required|max:50:unique:providers, name",
-        "phone" => "required|",
+        "phone" => "required|regex:/[0-9]{3}-[0-9]{3}-[0-9]{4}/",
         "meta" => "required",
 
     ];
     public function render()
     {
-        $this->days=json_decode(json_encode($this->days));
+        
         return view('livewire.add-provider');
     }
     public function multi($value)

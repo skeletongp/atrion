@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientsTable extends Migration
+class AddEditedByToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,8 @@ class CreateClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('clients', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('reference');
-            $table->string('phone');
-            $table->string('rnc');
-            $table->string('slug');
-            $table->decimal('debt');
-            $table->softDeletes();
+        Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('edited_by')->nullable();
-            $table->timestamps();
             $table->foreign('edited_by')
             ->references('id')
             ->on('users');
@@ -37,6 +28,9 @@ class CreateClientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clients');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('users_edited_by_foreign');
+            $table->dropColumn('edited_by');
+        });
     }
 }

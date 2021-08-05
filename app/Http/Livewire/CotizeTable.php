@@ -13,7 +13,7 @@ class CotizeTable extends Component
 {
     use WithPagination;
     public $search = "", $direction = 'asc', $order = "date", $icon_order = 'fa-sort-up', $amount=10, $type="cotize";
-    public $is_active = 1, $title = 'Facturas activas', $icon = "fa-trash text-red-500", $confirm = '¿Eliminar factura?', $button = 'fa-recycle';
+    public $is_active = 1, $icon = "fa-trash text-red-500", $confirm = '¿Eliminar cotización?', $button = 'fa-recycle';
     protected $listeners = ['update_invoice_table' => 'render'];
     public $client_id;
     public function render()
@@ -61,12 +61,11 @@ class CotizeTable extends Component
     {
         if ($this->is_active == 1) {
             $this->is_active = 0;
-            $this->title = 'Facturas Eliminadas';
             $this->icon = 'fa-sync-alt text-blue-500';
-            $this->confirm = '¿Restaurar factura?';
+            $this->confirm = '¿Restaurar cotización?';
             $this->button = 'fa-reply-all';
         } else {
-            $this->reset('is_active', 'title', 'icon', 'confirm', 'button');
+            $this->reset('is_active',  'icon', 'confirm', 'button');
         }
         $this->resetPage();
     }
@@ -76,7 +75,7 @@ class CotizeTable extends Component
     }
     public function softdelete($invoice)
     {
-        $invoice=Invoice::withTrashed()->where('number','=',$invoice)->first();
+        $invoice=Cotize::withTrashed()->where('id','=',$invoice)->first();
         if($invoice->deleted_at==null){
             $invoice->delete();
         } else{

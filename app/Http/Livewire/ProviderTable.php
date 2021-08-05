@@ -43,13 +43,14 @@ class ProviderTable extends Component
     {
         $this->resetPage();
     }
-    public function softdelete($user)
+    public function softdelete($provider)
     {
-        $user=User::withTrashed()->where('slug','=',$user)->first();
-        if($user->deleted_at==null){
-            $user->delete();
+        $provider=Provider::withTrashed()->where('slug','=',$provider)->first();
+
+        if($provider->deleted_at==null){
+            $provider->delete();
         } else{
-            $user->restore();
+            $provider->restore();
         }
         $this->render();
     }

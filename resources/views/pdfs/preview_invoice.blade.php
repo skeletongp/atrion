@@ -22,34 +22,36 @@
             <tr>
                 <td style="width:30mm; text-align:center">
                     @if ($invoice->cash)
-                    <h3 class="h-name">Facturado a:</h3>
+                        <h3 class="h-name">Facturado a:</h3>
                     @else
-                    <h3 class="h-name">Cotizado a:</h3>
+                        <h3 class="h-name">Cotizado a:</h3>
                     @endif
                     <h3 class="h-info">{{ $invoice->client->name }}</h3>
                     <h3 class="h-info">Tel.: {{ $invoice->client->phone }}</h3>
-                    <h3 class="h-info">RNC: {{ $invoice->client->rnc }}</h3>
+                    <h3 class="h-info">ID: {{ $invoice->client->rnc }}</h3>
                 </td>
                 <td style="width:30mm; text-align:center; border-left: dotted 0.3px black;">
                     @if ($invoice->cash)
-                    <h3 class="h-name">Factura:</h3>
+                        <h3 class="h-name">Factura:</h3>
                     @else
-                    <h3 class="h-name">Cotización:</h3>
+                        <h3 class="h-name">Cotización:</h3>
                     @endif
                     <h3 class="h-info">No {{ $invoice->number }}</h3>
 
                     @if ($invoice->fiscal)
-                    <h3 class="h-info">NCF: {{ $invoice->fiscal->ncf }}</h3>
+                        <h3 class="h-info">NCF: {{ $invoice->fiscal->ncf }}</h3>
                     @else
-                    <h3 class="h-info">-----</h3>
+                        <h3 class="h-info">-----</h3>
                     @endif
-                    @if ($invoice->cash>0 && $invoice->other==0)
-                        <h3 class="h-info">EFECTIVO</h3>
-                    @else
-                        @if ($invoice->cash>0 && $invoice->other>0)
-                            <h3 class="h-info">MIXTO</h3>
+                    @if ($invoice->cash)
+                        @if ($invoice->cash > 0 && $invoice->other == 0)
+                            <h3 class="h-info">EFECTIVO</h3>
                         @else
-                            <h3 class="h-info">TARJETA</h3>
+                            @if ($invoice->cash > 0 && $invoice->other > 0)
+                                <h3 class="h-info">MIXTO</h3>
+                            @else
+                                <h3 class="h-info">TARJETA</h3>
+                            @endif
                         @endif
                     @endif
 
@@ -70,12 +72,12 @@
             </thead>
             <tbody class="tbody">
                 @foreach ($details as $detail)
-                <tr class="trbody">
-                    <td style="max-width: 18mm">{{ strtoupper($detail->product->meta) }}</td>
-                    <td style="max-width: 5mm">{{ $detail->cant }}</td>
-                    <td style="max-width: 10mm">${{ $detail->price }}</td>
-                    <td style="max-width: 10mm">${{ $detail->subtotal }}</td>
-                </tr>
+                    <tr class="trbody">
+                        <td style="max-width: 18mm">{{ strtoupper($detail->product->meta) }}</td>
+                        <td style="max-width: 5mm">{{ $detail->cant }}</td>
+                        <td style="max-width: 10mm">${{ $detail->price }}</td>
+                        <td style="max-width: 10mm">${{ $detail->subtotal }}</td>
+                    </tr>
                 @endforeach
 
                 <tr style="margin-top:10rem; background-color: #fff">
@@ -95,12 +97,12 @@
                             style="font-size: 12px">+</b></td>
                 </tr>
                 @if ($details->sum('discount') > 0)
-                <tr>
-                    <td style="background-color: white"></td>
-                    <td colspan="2" class="td-total">Descuento </td>
-                    <td class="td-total" style="text-align: right; padding-right:10p">
-                        ${{ round($details->sum('discount'), 0, 2) }} <b style="font-size: 12px">-</b></td>
-                </tr>
+                    <tr>
+                        <td style="background-color: white"></td>
+                        <td colspan="2" class="td-total">Descuento </td>
+                        <td class="td-total" style="text-align: right; padding-right:10p">
+                            ${{ round($details->sum('discount'), 0, 2) }} <b style="font-size: 12px">-</b></td>
+                    </tr>
 
                 @endif
                 <tr>
@@ -115,32 +117,32 @@
                 </tr>
 
                 @if ($invoice->cash)
-                <tr>
-                    <td style="background-color: white"></td>
-                    <td colspan="2" class="td-total">Efectivo</td>
-                    <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->cash }}
-                    </td>
-                </tr>
+                    <tr>
+                        <td style="background-color: white"></td>
+                        <td colspan="2" class="td-total">Efectivo</td>
+                        <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->cash }}
+                        </td>
+                    </tr>
                 @endif
                 @if ($invoice->other > 0){
-                <tr>
-                    <td style="background-color: white"></td>
-                    <td colspan="2" class="td-total">Otro</td>
-                    <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->other }}
-                    </td>
-                </tr>
-                }
+                    <tr>
+                        <td style="background-color: white"></td>
+                        <td colspan="2" class="td-total">Otro</td>
+                        <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->other }}
+                        </td>
+                    </tr>
+                    }
 
                 @endif
                 @if ($invoice->cash)
-                <tr>
-                    <td style="background-color: white"></td>
-                    <td colspan="2" class="td-total">Balance</td>
-                    <td class="td-total" style="text-align: right; padding-right:10px">
-                        <span style="{{ $invoice->rest > 0 ? 'color:red' : '' }}">
-                            ${{ $invoice->rest }}</span>
-                    </td>
-                </tr>
+                    <tr>
+                        <td style="background-color: white"></td>
+                        <td colspan="2" class="td-total">Balance</td>
+                        <td class="td-total" style="text-align: right; padding-right:10px">
+                            <span style="{{ $invoice->rest > 0 ? 'color:red' : '' }}">
+                                ${{ $invoice->rest }}</span>
+                        </td>
+                    </tr>
                 @endif
             </tbody>
         </table>
@@ -155,12 +157,12 @@
                     </div>
                 </td>
                 @if ($invoice->salor)
-                <td>
-                    <div class="firm">
-                        <h3>Vendedor: </h3>
-                        <span>{{ $invoice->salor->name }}</span>
-                    </div>
-                </td>
+                    <td>
+                        <div class="firm">
+                            <h3>Vendedor: </h3>
+                            <span>{{ $invoice->salor->name }}</span>
+                        </div>
+                    </td>
                 @endif
             </tr>
         </tbody>
@@ -169,16 +171,20 @@
     <div class="footer">
         <h3>¡GRACIAS POR PREFERIRNOS!</h3>
         @if ($invoice->cash)
-        <h4>** Favor revisar su factura al momento de pagar.**</h4>
-        <h4>** No se aceptan devoluciones.**</h4>
+            <h4>** Favor revisar su factura al momento de pagar.**</h4>
+            <h4>** No se aceptan devoluciones.**</h4>
         @else
-        <h4>** Ticket para fines de estimación.**</h4>
-        <h4>** Los precios pueden variar al momento de la compra.**</h4>
+            <h4>** Ticket para fines de estimación.**</h4>
+            <h4>** Los precios pueden variar al momento de la compra.**</h4>
         @endif
     </div>
 </div>
 <script type="text/javascript">
-    try { this.print(); } catch (e) { window.onload = window.print; } 
+    try {
+        this.print();
+    } catch (e) {
+        window.onload = window.print;
+    }
 </script>
 
 
@@ -352,4 +358,5 @@
         font-size: 1.5rem;
         cursor: pointer;
     }
+
 </style>

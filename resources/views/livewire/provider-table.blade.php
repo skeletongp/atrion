@@ -39,6 +39,11 @@
             <div>
 
                 <div class="overflow-x-auto mt-3 select-none" style="height: 34rem">
+                    @if ($is_active==1)
+                    <h1 class="text-center font-bold text-xl lg:text-2xl my-2">Lista de suplidores</h1>
+                    @else
+                    <h1 class="text-center font-bold text-xl lg:text-2xl my-2">Papelera de suplidores</h1>
+                    @endif
                     <table class="table-auto  lg:w-2/3 mx-auto table">
                         <thead>
                             <tr class="bg-gray-900 text-base font-bold text-white text-left"
@@ -75,11 +80,18 @@
                                         <td class="px-4 py-2 text-center">{{ $provider->debt }}</td>
                                         <td class="px-4 py-2 text-center">{{ $provider->meta}}
                                         </td>
-                                        <td class="px-4 py-2 text-center" style="max-width: 6rem" >
-                                            @if ($provider->days)
+                                        <td class="px-4 py-2 text-center" style="max-width: 10rem" >
+                                            
+                                            @if ($provider->days->count())
                                                 @foreach ($provider->days as $day)
-                                                    <span>{{ substr($day->name, 0, 2)}}-</span>
+                                                    @if ($day->name=="Sábado")
+                                                    <span>Sá</span>
+                                                    @else
+                                                    <span>{{ substr($day->name, 0, 2)}}</span>
+                                                    @endif
                                                 @endforeach
+                                            @else
+                                            <span>N/A</span> 
                                             @endif
                                         </td>
                                         <td class="px-2  text-center">
@@ -87,7 +99,7 @@
                                                 <x-slot name="title">
                                                     <span class="fas fa-pen mx-2"></span>
                                                 </x-slot>
-                                                {{-- @livewire('edit-user', ['user' => $provider], key($provider->id)) --}}
+                                                @livewire('edit-provider', ['provider' => $provider], key($provider->id))
                                             </x-modal>
                                         </td>
                                         <td class="px-2 py-2 text-center">

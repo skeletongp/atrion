@@ -86,7 +86,7 @@
                          <tr class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
                              <td class="px-4 py-2  cursor-pointer">
                                  @role('Admin')
-                                 <span class="fas {{ $icon }} text-red-400 cursor-pointer"
+                                 <span class="fas {{ $icon }}  cursor-pointer"
                                      onclick="confirm('{{ $confirm }}')|| event.stopImmediatePropagation()"
                                      wire:click="softdelete('{{ $invoice->id }}')">
                                  </span>

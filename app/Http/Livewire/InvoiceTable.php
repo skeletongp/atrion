@@ -81,7 +81,7 @@ class InvoiceTable extends Component
     }
     public function softdelete($invoice)
     {
-        $invoice=Invoice::withTrashed()->where('number','=',$invoice)->first();
+        $invoice=Invoice::withTrashed()->where('id','=',$invoice)->first();
         if($invoice->deleted_at==null){
             $invoice->delete();
         } else{

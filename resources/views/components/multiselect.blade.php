@@ -9,7 +9,7 @@
               display: none;
           }
       </style>
-      <select x-cloak id="select" class="w-full hidden">
+      <select x-cloak id="select" class="w-full hidden" name="{{$name}}">
           @foreach ($object as $obj)
           <option value="{{$obj->name}}">{{$obj->name}}</option>
               
@@ -17,7 +17,6 @@
       </select>
   
   <div x-data="dropdown()" x-init="loadOptions()" class="w-full flex flex-col">
-    <form>
         <input name="{{$name}}" type="hidden" x-bind:value="selectedValues()" >
         <div class="inline-block relative w-full">
             <div class="flex flex-col items-center relative">
@@ -89,7 +88,6 @@
             </div>
           
         </div>
-        </form>
         </div>
         
   

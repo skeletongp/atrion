@@ -2,6 +2,7 @@
 
     <div>
         <h1 class="uppercase font-bold text-xl lg:text-2xl mb-4">Nuevo Cliente</h1>
+       <form action="javascript:void(0);">
         <div class="lg:flex">
             <div class="lg:w-7/12 mx-1 my-2">
                 <x-input_text name="name" label="Nombre" :oldValue="''" placeholder="Ingrese el nombre" type="text"
@@ -22,13 +23,11 @@
                 <x-jet-input-error for="rnc"></x-jet-input-error>
             </div>
         </div>
-
-       
+            
 
         <div class="flex justify-end m-2">
             <x-jet-button wire:click="store">Guardar</x-jet-button>
-          
         </div>
-
+    </form>
     </div>
 </div>
