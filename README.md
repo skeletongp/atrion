@@ -110,7 +110,8 @@ Al principio de la clase de cada vista se incluyen las declaraciones necesarias 
  public $search = "", $direction = 'asc', $order = "name", $icon_order = 'fa-sort-up'; 
  //Campos para ordenar los registros
 
-    public $is_active = 1, $title = 'Usuarios activos', $icon = "fa-trash text-red-500", $confirm = '¿Eliminar usuario?', $button = 'fa-recycle';
+    public $is_active = 1, $title = 'Usuarios activos', $icon = "fa-trash text-red-500", 
+    $confirm = '¿Eliminar usuario?', $button = 'fa-recycle';
     //Campos que varían al abrir papelera.
 
     protected $listeners = ['update_provider_table' => 'render']; 
