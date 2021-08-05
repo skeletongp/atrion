@@ -119,11 +119,8 @@ Al principio de la clase de cada vista se incluyen las declaraciones necesarias 
 ~~~
 
 </p>
-`` `HTML
 
 <p align="justify"> El método <i style="color:yellow">toggle</i>, es utilizado en cada vista para alternar entre la lista de registros activos y los que han sido borrados por medio del <i style="color:yellow">softdelete</i>. Dicho método actualiza el título de la vista, el ícono al lado de cada registro, el texto del botón confirmar y el ícono del botón que lo ejecuta:
-
-`` `
 
 ~~~
  if ($this->is_active == 1) {
@@ -136,6 +133,52 @@ Al principio de la clase de cada vista se incluyen las declaraciones necesarias 
             $this->reset('is_active', 'title', 'icon', 'confirm', 'button');
         }
         $this->resetPage(); //Refresca la paginación
+~~~
+
+</p>
+
+<p align="justify"> El método <i style="color:yellow">sofdelete</i>, que se encuentra en las vistas de modelos, sirve para inhabilitar si lo llamamos desde un registro activo, o para restaurar, si lo llamadamos desde un registro en papelera:
+
+~~~
+  public function softdelete($provider)
+    {
+        $provider=Provider::withTrashed()->where('slug','=',$provider)->first();
+
+        if($provider->deleted_at==null){
+            $provider->delete();
+        } else{
+            $provider->restore();
+        }
+        $this->render();
+    }
+
+    /* Realiza la búsqueda en el modelo
+    Se llamada desde el icono de la lupa al lado del
+    input texto o con el evento search del mismo */
+
+    public function search()
+    {
+        $this->render();
+    }
+~~~
+
+</p>
+<p align="justify"> El método <i style="color:yellow">order</i>, ordena los datos en la tabla de la vista, por campo y según cada dirección. También cambia los iconos correspondientes.:
+
+~~~
+   public function order($order)
+    {
+        $this->order = $order;
+        if ($this->direction == 'asc') {
+            $this->direction = "desc";
+            $this->icon_order='fa-sort-down';
+        } else {
+            $this->direction = "asc";
+            $this->icon_order='fa-sort-up';
+
+        }
+        $this->resetPage(); //Refresca la paginación
+    }
 ~~~
 
 </p>

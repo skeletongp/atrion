@@ -54,6 +54,10 @@ class ProviderTable extends Component
         }
         $this->render();
     }
+    
+    /* Realiza la búsqueda en el modelo
+    Se llamada desde el icono de la lupa al lado del
+    input texto o con el evento search del mismo */
     public function search()
     {
         $this->render();
