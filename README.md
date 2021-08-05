@@ -1,3 +1,4 @@
+<body style=" width:600px; margin:auto; background-color:#222; color:#fff ">
 
 - [1. INTRODUCCIÓN](#1-introducción)
     - [1.0.1. Funciones](#101-funciones)
@@ -207,3 +208,6 @@ public function toggle()
 </p>
 
 
+
+
+</body>
