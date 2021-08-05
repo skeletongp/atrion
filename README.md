@@ -119,8 +119,11 @@ Al principio de la clase de cada vista se incluyen las declaraciones necesarias 
 ~~~
 
 </p>
+`` `HTML
 
 <p align="justify"> El método <i style="color:yellow">toggle</i>, es utilizado en cada vista para alternar entre la lista de registros activos y los que han sido borrados por medio del <i style="color:yellow">softdelete</i>. Dicho método actualiza el título de la vista, el ícono al lado de cada registro, el texto del botón confirmar y el ícono del botón que lo ejecuta:
+
+`` `
 
 ~~~
  if ($this->is_active == 1) {
