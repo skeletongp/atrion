@@ -43,9 +43,15 @@ class InventoryController extends Controller
     }
     public function printCodes()
     {
-        $products = Product::get();
+        $products = Product::select('name', 'code')->get();
+      
         $pdf = PDF::loadview('pdfs.codes', ['products' => $products]);
+       
         return $pdf->stream('codes.pdf');
     }
    
+    public function products_value()
+    {
+        return view('inventory.value');
+    }
 }

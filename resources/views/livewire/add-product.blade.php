@@ -14,7 +14,8 @@
                 <div class="flex">
                     <div class="lg:w-1/3">
                         <x-input_text name="code" id="code" label="Código" :oldValue="''" placeholder="Ingrese el código"
-                            type="text" model="code"></x-input_text>
+                            type="number" model="code"></x-input_text>
+                            <x-jet-input-error for="code"></x-jet-input-error>
                     </div>
                 </div>
                 <div class="lg:flex">

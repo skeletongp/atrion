@@ -126,9 +126,9 @@ window.addEventListener('load', function () {
             data: formData,
             type: 'post',
             success: function (result) {
-               console.log(result)
-             /*    alert( result);
-                window.location.href = "/inventory/products" */
+               /* console.log(result) */
+                alert( result);
+                window.location.href = "/inventory/products"
             }
         });
     })

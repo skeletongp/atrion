@@ -15,7 +15,11 @@
         <h3 class="h-subtitle">Sucursal: {{ $invoice->user->place->name }}</h3>
     </div>
     <hr>
+    @if ($invoice->deleted_at!=null)
+        <div class="cancelado">
 
+        </div>
+    @endif
     {{ setlocale(LC_ALL, 'es_ES.UTF-8') }}
     <div class="info">
         <table style="width: 70mm; margin: 0 auto 0 auto">
@@ -141,6 +145,20 @@
                         <td class="td-total" style="text-align: right; padding-right:10px">
                             <span style="{{ $invoice->rest > 0 ? 'color:red' : '' }}">
                                 ${{ $invoice->rest }}</span>
+                        </td>
+                    </tr>
+                @endif
+                <tr style="margin-top:10rem; background-color: #fff">
+                    <td colspan="4" class="td-total" style="color: #fff">
+                        ------------------------------------------------------------------------------------</td>
+                </tr>
+                @if ($invoice->cash && $invoice->refund>0)
+                    <tr>
+                        <td style="background-color: white"></td>
+                        <td colspan="2" class="td-total">Devuelto</td>
+                        <td class="td-total" style="text-align: right; padding-right:10px">
+                            <span style="color:red">
+                                ${{ $invoice->refund }}</span>
                         </td>
                     </tr>
                 @endif
@@ -359,4 +377,16 @@
         cursor: pointer;
     }
 
+    .cancelado{
+        width: 50mm;
+        margin: auto;
+        z-index: 50;
+        top: 5mm;
+        height: 50mm;
+        position: fixed;
+        background-image: url('https://res.cloudinary.com/dboafhu31/image/upload/v1628405401/canceled_t4up6v.png');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-color: transparent;
+    }
 </style>

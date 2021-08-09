@@ -20,6 +20,7 @@ class CreateInvoicesTable extends Migration
             $table->decimal('subtotal', 18,2);
             $table->decimal('tax', 18,2);
             $table->decimal('total', 18,2);
+            $table->decimal('refund', 18,2);
         
             $table->tinyInteger('is_fiscal')->default(0);
             $table->string('type')->default('sale');

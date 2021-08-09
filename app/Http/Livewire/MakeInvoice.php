@@ -265,7 +265,7 @@ class MakeInvoice extends Component
     y actualiza la deuda del cliente*/
     public function cobrar()
     {
-        $this->payed=intval($this->cashMoney)+intval($this->other);
+        $this->payed=floatval($this->cashMoney)+floatval($this->other);
         $this->validate([
             'cashMoney'=>'required|min:0',
             'other'=>'required|min:0',
@@ -276,7 +276,7 @@ class MakeInvoice extends Component
         }
         if ($this->totales['total']>$this->payed) {
             $this->rest=$this->totales['total']-$this->payed;
-        } elseif ($this->totales['total']<$this->payed) {
+        } elseif ($this->totales['total']<=$this->payed) {
             $this->rest=0;
             $this->payed=$this->totales['total'];
         }

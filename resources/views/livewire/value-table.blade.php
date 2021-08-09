@@ -23,23 +23,22 @@
                         <div class="flex items-center border border-1 border-blue-200 rounded-md pr-1 w-full">
                             <span
                                 class="text-sm rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-3/6 md:w-2/6 hidden md:inline-block">Filtrar:</span>
-                            <select
-                                class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm w-4/6 overflow-auto "
-                                name="place_id" id="" wire:model="place_id">
-                                <option value="">Elija una sucursal</option>
-                                @foreach ($places as $place)
-                                    <option value="{{ $place->id }}">{{ $place->name }}</option>
-                                @endforeach
-                            </select>
+                            
                             <select
                                 class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm w-4/6 overflow-auto "
                                 name="" id="" wire:model="type">
                                 <option value="1">Producto</option>
                                 <option value="0">Servicio</option>
                             </select>
-                            
+                            <select
+                                class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm w-4/6 overflow-auto "
+                                name="" id="" wire:model="cant">
+                                <option value="5">Ver 5</option>
+                                <option value="10">Ver 10</option>
+                                <option value="25">Ver 25</option>
+                                <option value="{{$products->total()}}">Ver Todos</option>
+                            </select>
                         </div>
-
                     @endif
 
 
@@ -66,66 +65,62 @@
 
                 <div class="overflow-x-auto mt-3 select-none" style="height: 34rem">
                     <table class="  lg:w-2/3 mx-auto">
-                        <thead>
+                        <thead class="relative">
                             <tr class="bg-gray-900 text-base font-bold text-white text-left"
                                 style="font-size: 0.9674rem">
-                                <th class="px-4 py-2 cursor-pointer " wire:clicK="order('name')">Nombre
+                                <th class="px-4 py-2  text-center  sticky top-0 bg-gray-900">#</th>
+                                <th class="px-4 py-2 cursor-pointer  sticky top-0 bg-gray-900" wire:clicK="order('name')">Nombre
                                     <div class="hidden md:inline-block"><span
                                             class="hidden fas {{ $order == 'name' ? $icon_order : 'fa-sort' }} "></span>
                                     </div>
                                 </th>
-                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('cost')">Costo
-                                    <div class="hidden md:inline-block"><span
-                                            class="fas {{ $order == 'cost' ? $icon_order : 'fa-sort' }} hidden lg:inline-block"></span>
-                                    </div>
-                                </th>
-                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('price')">Precio
-                                    <div class="hidden md:inline-block"><span
-                                            class="fas {{ $order == 'price' ? $icon_order : 'fa-sort' }} hidden lg:inline-block"></span>
-                                    </div>
-                                </th>
-                                @if ($type == 1)
-                                    <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('stock')">Stock
-                                        <div class="hidden md:inline-block"> <span
-                                                class="fas {{ $order == 'stock' ? $icon_order : 'fa-sort' }} hidden lg:inline-block"></span>
-                                        </div>
-                                    </th>
-                                @endif
-                                <th class="px-4 py-2  text-center cursor-pointer">Categoría</th>
-                                <th class="py-2  text-center" colspan="2">Acciones</th>
+                                <th class="px-4 py-2  text-center  sticky top-0 bg-gray-900">Entrada</th>
+                                <th class="px-4 py-2  text-center sticky top-0 bg-gray-900" >Salida</th>
+                                    <th class="px-4 py-2  text-center cursor-pointer sticky top-0 bg-gray-900" wire:clicK="order('stock')">Valor</th>
+                                <th class="px-4 py-2  text-center cursor-pointer sticky top-0 bg-gray-900">Categoría</th>
+
                             </tr>
                         </thead>
                         <tbody class="text-sm font-normal text-gray-900">
+                            
                             @foreach ($products->chunk(50) as $array)
                                 @foreach ($array as $product)
                                     <tr
                                         class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
+                                        <td class="px-4 py-1 ">{{ $number++ }}</td>
                                         <td class="px-4 py-1 ">{{ $product->name }}</td>
-                                        <td class="px-4 py-1 text-center w-24">${{ $product->cost }}</td>
-                                        <td class="px-4 py-1 text-center">${{ $product->price }}</td>
+                                        <td class="px-4 py-1 text-center ">
+                                            ${{ floatval($product->cost * $product->stock) }}</td>
+                                        <td class="px-4 py-1 text-center">
+                                            ${{ floatval($product->price * $product->stock) }}</td>
                                         @if ($type == 1)
-                                            <td class="px-4 py-1 text-center">{{ $product->stock }}</td>
+                                            <td class="px-4 py-1 text-center">
+                                                ${{ floatval($product->price * $product->stock) - floatval($product->cost * $product->stock) }}
+                                            </td>
                                         @endif
                                         <td class="px-4 py-1 text-center">{{ $product->category->name }}</td>
-                                        <td class=" py-2 text-center">
-                                            <x-modal modalId="edit{{ $product->id }}">
-                                                <x-slot name="title">
-                                                    <span class="fas fa-pen mx-2"></span>
-                                                </x-slot>
-                                                @livewire('edit-product', ['product' => $product], key($product->id))
-                                            </x-modal>
-                                        </td>
-                                        <td class=" py-2 text-center">
-                                            <span class="fas fa-trash text-red-400 cursor-pointer"
-                                                onclick="confirm('¿Desea borrar este producto?')|| event.stopImmediatePropagation()"
-                                                wire:click="softdelete('{{ $product->slug }}')">
-                                            </span>
-                                        </td>
+
                                     </tr>
                                 @endforeach
                             @endforeach
-
+                           
                         </tbody>
+                        @foreach ($products->chunk(50) as $product)
+                        @foreach ($product as $item)
+                            <div class="hidden"> {{ $cost += $item->cost * $item->stock }}</div>
+                            <div class="hidden"> {{ $price += $item->price * $item->stock }}</div>
+                        @endforeach
+                        <tr class="bg-gray-900 text-base font-bold text-white">
+                            <td class="px-4 py-1 text-center font-bold sticky bottom-0 bg-gray-900" colspan="2">TOTALES</td>
+                            <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-900">${{ $cost }}</td>
+                            <td class="px-4 py-1 text-center  sticky bottom-0 bg-gray-900">${{ $price }}</td>
+                            @if ($type == 1)
+                                <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-900">${{ $price - $cost }}</td>
+                            @endif
+                            <td class="px-4 py-1 text-center sticky bottom-0 bg-gray-900"></td>
+
+                        </tr>
+                    @endforeach
                     </table>
                 </div>
                 <div class="py-2 lg:w-2/3 mx-auto  text-red-400">

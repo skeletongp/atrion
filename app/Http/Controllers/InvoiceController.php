@@ -24,16 +24,18 @@ class InvoiceController extends Controller
             return redirect()->route('home');
         }
     }
-    public function preview(Invoice $invoice)
+    public function preview($invoice)
     {
+        $invoice=Invoice::withTrashed()->find($invoice);
         $details = Detail::where('invoice_id', $invoice->id)->get();
         $company=Company::first();
         $pdf = PDF::loadview('pdfs.preview_invoice', ['details' => $details, 'invoice' => $invoice, 'company'=>$company]);
         return $pdf->stream('invoice.pdf');
 
     }
-    public function preview_cotize(Cotize $cotize)
+    public function preview_cotize($cotize)
     {
+        $cotize=Cotize::withTrashed()->find($cotize);
         $details = Cotdetail::where('cotize_id', $cotize->id)->get();
         $company=Company::first();
         $pdf = PDF::loadview('pdfs.preview_invoice', ['details' => $details, 'invoice' => $cotize, 'company'=>$company]);

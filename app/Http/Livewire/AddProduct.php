@@ -17,6 +17,7 @@ class AddProduct extends Component
     protected $listeners=['update_add_product'=>'render', 'store_product'=>'store'];
     protected $rules=[
         'name'=>'required|unique_with:products,place_id|max:40',
+        'code'=>'required|string|max:10|unique:products,code',
         'meta'=>'required|max:100',
         'category_id'=>'required',
         'place_id'=>'required',
@@ -37,6 +38,7 @@ class AddProduct extends Component
    
     public function store()
     {
+        $this->code=str_pad($this->code, 10, '0', STR_PAD_LEFT);
         $this->validate();
         $product= new Product();
         $product->name=$this->name;

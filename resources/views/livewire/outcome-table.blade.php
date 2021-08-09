@@ -3,17 +3,18 @@
     <!-- component -->
     <div class="bg-white py-3 px-4 rounded-md w-full  ">
         <div class="flex justify-end w-full">
-        
+
         </div>
         <div class=" mx-auto">
             <x-modal modalId="md_add">
                 @slot('title')
-                    <span class="px-4 my-2 text-xl"><span class="fas fa-plus font-bold "></span> Nuevo NCF </span>
+                    <span class="px-4 my-2 text-xl"><span class="fas fa-plus font-bold "></span> Registrar Egresos
+                    </span>
                 @endslot
-                <div class=" " id="div-add-fiscal">
-                    @livewire('add-fiscal')
+                <div class=" " id="div-add-outcome">
+                    @livewire('add-outcome')
                 </div>
-                
+
             </x-modal>
         </div>
 
@@ -38,40 +39,29 @@
                         <thead>
                             <tr class="bg-gray-900 text-base font-bold text-white text-left"
                                 style="font-size: 0.9674rem">
-                                <th class="px-4 py-2 cursor-pointer" >NCF</th>
-                                <th class="px-4 py-2  text-center cursor-pointer" >Fecha</th>
-                                <th class="px-4 py-2  text-center cursor-pointer" >Emitido A</th>
-                                <th class="px-4 py-2  text-center cursor-pointer" >Factura</th>
-                                
+                                <th class="px-4 py-2 cursor-pointer">Concepto</th>
+                                <th class="px-4 py-2  text-center cursor-pointer">Usuario</th>
+                                <th class="px-4 py-2  text-center cursor-pointer">Fecha</th>
+                                <th class="px-4 py-2  text-center cursor-pointer">Persona</th>
+
                                 <th class="px-4 py-2  text-center cursor-pointer">Monto</th>
                                 <th class="py-2  text-center hidden" colspan="2">Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm font-normal text-gray-900">
-                            @foreach ($fiscals->chunk(50) as $array)
-                                @foreach ($array as $fiscal)
+                            @foreach ($outcomes->chunk(50) as $array)
+                                @foreach ($array as $outcome)
                                     <tr
                                         class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
-                                        <td class="px-4 py-2 ">{{ $fiscal->serie }}-{{ $fiscal->type_number }}-{{ $fiscal->secuency }}</td>
-                                        <td class="px-4 py-2 text-center">{{ substr($fiscal->created_at,0,10 )}} </td>
-                                        
-                                       @if ($fiscal->invoice)
-                                       <td class="px-4 py-2 text-center">{{ $fiscal->invoice->client->name }}</td>
+                                        <td class="px-4 py-2 ">{{ $outcome->concept }}</td>
+                                        <td class="px-4 py-2 text-center">{{ $outcome->user->name }} </td>
+                                        <td class="px-4 py-2 text-center">{{ substr($outcome->created_at, 0, 15) }}</td>
+                                       @if ($outcome->provider)
+                                       <td class="px-4 py-2 text-center">{{ $outcome->provider->name }}</td>
                                        @else
-                                       <td class="px-4 py-2 text-center">N/A</td>
+                                       <td class="px-4 py-2 text-center">{{ $outcome->client->name }}</td>
                                        @endif
-                                       @if ($fiscal->invoice)
-                                       <td class="px-4 py-2 text-center"><a href="{{route('preview', $fiscal->invoice)}}">No. {{ $fiscal->invoice->number }}</a></td>
-                                       @else
-                                       <td class="px-4 py-2 text-center">N/A</td>
-                                       @endif
-                                       @if ($fiscal->invoice)
-                                       <td class="px-4 py-2 text-center">${{ $fiscal->invoice->total }}</td>
-                                       @else
-                                       <td class="px-4 py-2 text-center">N/A</td>
-                                       @endif
-                                       
-                                       
+                                        <td class="px-4 py-2 text-center">${{$outcome->amount}}</td>
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -80,8 +70,9 @@
                     </table>
                 </div>
                 <div class="py-2 lg:w-2/3 mx-auto  text-red-400">
-                    {!! $fiscals->links() !!}
+                    {!! $outcomes->links() !!}
                 </div>
+              
             </div>
         </div>
     </div>

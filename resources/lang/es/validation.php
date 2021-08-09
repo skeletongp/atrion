@@ -177,11 +177,15 @@ return [
         'type_id'=>"Categoría",
         'stock'=>"Stock",
         'place_id'=>"Sucursal",
+        'provider_id'=>"Proveedor",
+        'reference'=>"Referencia",
+        'concept'=>"Concepto",
         'amount'=>"Balance",
         'cant'=>"Cantidad",
         'rnc'=>"RNC/ID",
         'cashMoney'=>"Efectivo",
         'other'=>"Otro",
+        'code'=>"Código",
     ],
 
 ];

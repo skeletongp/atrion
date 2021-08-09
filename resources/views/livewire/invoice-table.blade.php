@@ -2,14 +2,12 @@
 
     <!-- component -->
     <div class="bg-white py-3 px-4 rounded-md w-full  ">
-        {{-- Btn Papelera --}}
-        @role('Admin')
-        <span class="fa {{ $button }} cursor-pointer text-2xl" wire:click='toggle'></span>
-        @endrole
+
 
         <h1 class="uppercase font-bold text-2xl text-center">
 
-            {{$is_active==0?'Papelera':'Historial'}} de {{$type=="invoice"?'Facturas':'Cotizaciones'}}
+            {{ $is_active == 0 ? 'Papelera' : 'Historial' }} de
+            {{ $type == 'invoice' ? 'Facturas' : 'Cotizaciones' }}
 
         </h1>
         <div class="  lg:w-2/3 mx-auto my-4 flex items-center justify-center ">
@@ -39,21 +37,20 @@
                 </div>
 
             </div>
-           
+
         </div>
 
         <div class=" mx-auto sm:px-6 lg:px-8 flex-1 justify-center ">
             @if ($client_id > 0 && $invoices->first())
-            <h1 class="font-bold text-center">Facturas de: <span
-                    class="text-lg uppercase">{{ $invoices->first()->client->name }}</span></h1>
+                <h1 class="font-bold text-center">Facturas de: <span
+                        class="text-lg uppercase">{{ $invoices->first()->client->name }}</span></h1>
             @endif
             <div>
 
                 <div class="overflow-x-auto mt-3 select-none" style="height: 34rem">
                     <table class="table-auto  lg:w-2/3 mx-auto table">
                         <thead>
-                            <tr class="text-base font-bold text-gray-900 text-left"
-                                style="font-size: 0.9674rem">
+                            <tr class="text-base font-bold text-gray-900 text-left" style="font-size: 0.9674rem">
                                 <th class="px-4 py-2 cursor-pointer" wire:clicK="order('clients.name')">Cliente
                                     <span class="fas {{ $order == 'clients.name' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
@@ -69,9 +66,9 @@
                                 </th>
 
                                 @if ($type == 'invoice')
-                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('rest')">Deuda
-                                    <span class="fas {{ $order == 'rest' ? $icon_order : 'fa-sort' }}"></span>
-                                </th>
+                                    <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('rest')">Deuda
+                                        <span class="fas {{ $order == 'rest' ? $icon_order : 'fa-sort' }}"></span>
+                                    </th>
                                 @else
 
                                 @endif
@@ -80,75 +77,74 @@
                             </tr>
                         </thead>
                         <tbody class="text-sm font-normal text-gray-900">
-                         @if ($invoices->count())
-                         @foreach ($invoices->chunk(50) as $array)
-                         @foreach ($array as $invoice)
-                         <tr class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
-                             <td class="px-4 py-2  cursor-pointer">
-                                 @role('Admin')
-                                 <span class="fas {{ $icon }}  cursor-pointer"
-                                     onclick="confirm('{{ $confirm }}')|| event.stopImmediatePropagation()"
-                                     wire:click="softdelete('{{ $invoice->id }}')">
-                                 </span>
-                                 @endrole
-                                 @if ($type=='invoice')
-                                 <a href="{{ route('invoices_filter', $invoice->client->id) }}">{{ $invoice->client->name }}
-                                 </a>
-                                 @else
-                                 {{ $invoice->client->name }}
-                                 @endif
-                             </td>
-                             <td class="px-4 py-2 text-center">{{ $invoice->date }}</td>
-                             <td class="px-4 py-2 text-center">${{ $invoice->total }}</td>
-                             <td class="px-4 py-2 text-center">{{ $invoice->salor->name }}</td>
-                             @if ($invoice->cash)
-                             <td class="px-4 py-2 text-center">
-                                 {{ $invoice->rest > 0 ? '$' . $invoice->rest : 'Saldada' }}</td>
-                             @endif
-                             <td class="px-2  text-center">
-                                 @if ($type=='invoice')
-                                 <a href="{{ route('preview', $invoice) }}">
-                                     <span class="fas fa-eye mx-2"></span>
-                                 </a>
-                                 @else
-                                 <a href="{{ route('preview_cotize', $invoice) }}">
-                                     <span class="fas fa-eye mx-2"></span>
-                                 </a>
-                                 @endif
+                            @if ($invoices->count())
+                                @foreach ($invoices->chunk(50) as $array)
+                                    @foreach ($array as $invoice)
+                                        <tr
+                                            class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base  {{ $invoice->deleted_at ? 'text-gray-400' : '' }}">
+                                            <td class="px-4 py-2  cursor-pointer ">
 
-                             </td>
+                                                @if ($type == 'invoice')
+                                                    <a href="{{ route('invoices_filter', $invoice->client->id) }}">{{ $invoice->client->name }}
+                                                    </a>
+                                                @else
+                                                    {{ $invoice->client->name }}
+                                                @endif
+                                            </td>
+                                            <td class="px-4 py-2 text-center ">{{ $invoice->date }}</td>
+                                            <td class="px-4 py-2 text-center ">${{ $invoice->total }}</td>
+                                            <td class="px-4 py-2 text-center ">{{ $invoice->salor->name }}</td>
+                                            @if ($invoice->cash)
+                                                <td class="px-4 py-2 text-center ">
+                                                    {{ $invoice->rest > 0 ? '$' . $invoice->rest : 'Saldada' }}</td>
+                                            @endif
+                                            <td class="px-2  text-center ">
+                                                @if ($type == 'invoice')
+                                                    <a href="{{ route('preview', $invoice) }}">
+                                                        <span class="fas fa-eye mx-2"></span>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ route('preview_cotize', $invoice) }}">
+                                                        <span class="fas fa-eye mx-2"></span>
+                                                    </a>
+                                                @endif
 
-                         </tr>
-                         @endforeach
-                         @endforeach
-                         <tr class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base text-white"
-                             style="background-color: black">
-                             <td class="px-4 py-2 lg:w-56 lg:max-w-56 text-center font-bold" colspan="2">
-                                 TOTALES
-                             </td>
-                             <td class="px-4 py-2 text-center font-bold">${{ $invoices->sum('total') }}</td>
-                             <td class="px-4 py-2 text-center font-bold"></td>
-                             @if ($type=="invoice")
-                             <td class="px-4 py-2 text-center font-bold">
-                                 ${{ $invoices->sum('rest') }}</td>
-                             @else
-                             <td class="px-4 py-2 text-center font-bold"></td>
-                             @endif
-                             @if ($type=="invoice")
-                             <td class="px-2  text-center">
+                                            </td>
 
-                             </td>
-                             @endif
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                                <tr class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base text-white"
+                                    style="background-color: black">
+                                    <td class="px-4 py-2 lg:w-56 lg:max-w-56 text-center font-bold" colspan="2">
+                                        TOTALES
+                                    </td>
+                                    <td class="px-4 py-2 text-center font-bold">${{ $invoices->sum('total') }}</td>
+                                    <td class="px-4 py-2 text-center font-bold"></td>
+                                    @if ($type == 'invoice')
+                                        <td class="px-4 py-2 text-center font-bold">
+                                            ${{ $invoices->sum('rest') }}</td>
+                                    @else
+                                        <td class="px-4 py-2 text-center font-bold"></td>
+                                    @endif
+                                    @if ($type == 'invoice')
+                                        <td class="px-2  text-center">
 
-                         </tr>
-                         @else
-                         <tr>
+                                        </td>
+                                    @endif
 
-                         </tr>
-                             <tr>
-                                 <td colspan="6" class="bg-gray-900 text-white uppercase text-center font-bold text-2xl">NO EXISTEN FACTURAS EN EL REGISTRO</td>
-                             </tr>
-                         @endif
+                                </tr>
+                            @else
+                                <tr>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="6"
+                                        class="bg-gray-900 text-white uppercase text-center font-bold text-2xl">
+                                        NO EXISTEN {{ $type == 'invoice' ? 'FACTURAS' : 'COTIZACIONES' }} EN EL
+                                        REGISTRO</td>
+                                </tr>
+                            @endif
 
                         </tbody>
                     </table>
@@ -193,6 +189,7 @@
             transition: all 1s ease-in-out;
 
         }
+
     </style>
     <script>
         $('#search').on('keypress', function(e) {

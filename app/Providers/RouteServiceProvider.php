@@ -38,36 +38,46 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
+        //Rutas de Api
             Route::prefix('api')
                 ->middleware('api')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
 
+        //Rutas web predeterminada
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
 
-           
-
+        //Rutas de personas
             Route::middleware(['web', 'auth:sanctum'])
                 ->prefix('persons')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/persons.php'));
-
+        
+            //Rutas de inventario
             Route::middleware(['web', 'auth:sanctum'])
                 ->prefix('inventory')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/inventory.php'));
 
+            //Rutas de factura
             Route::middleware(['web', 'auth:sanctum'])
                 ->prefix('invoice')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/invoice.php'));
 
+            //Rutas fiscales
             Route::middleware(['web', 'auth:sanctum'])
                 ->prefix('fiscal')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/fiscal.php'));
+            
+            //Rutas de cuentas
+            Route::middleware(['web', 'auth:sanctum'])
+                ->prefix('account')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/account.php'));
         });
     }
 

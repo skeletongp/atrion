@@ -17,7 +17,8 @@ class CreateOutcomesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('place_id');
-            $table->unsignedBigInteger('provider_id');
+            $table->unsignedBigInteger('provider_id')->nullable();
+            $table->unsignedBigInteger('client_id')->nullable();
             $table->decimal('amount', 18,2);
             $table->date('date');
             $table->foreign('user_id')
@@ -29,6 +30,9 @@ class CreateOutcomesTable extends Migration
             $table->foreign('provider_id')
             ->references('id')
             ->on('providers');
+            $table->foreign('client_id')
+            ->references('id')
+            ->on('clients');
             $table->softDeletes();
             $table->unsignedBigInteger('edited_by')->nullable();
             $table->timestamps();

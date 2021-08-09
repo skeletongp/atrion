@@ -72,27 +72,13 @@
                                         class="fas fa-refresh"></i><span>Facturas</span></a>
                             </li>
                             <li class="{{ request()->is('invoice/cotizes*') ? 'active' : '' }}"><a
-                                href="{{ route('cotizes') }}"><i
-                                    class="fas fa-refresh"></i><span>Cotizaciones</span></a>
-                        </li>
+                                    href="{{ route('cotizes') }}"><i
+                                        class="fas fa-refresh"></i><span>Cotizaciones</span></a>
+                            </li>
                         </ul>
                     </li>
                 @endcan
-                {{-- Área de compras --}}
-                @can('Comprar', User::class)
-                    <li class="sub-menu ">
-                        <a href="javascript:void(0);"><i class="fa fa-cart-arrow-down"></i><span>Compras</span><i
-                                class="arrow fa fa-angle-right pull-right"></i></a>
-                        <ul>
-                            <li><a href="tables-basic.html"><i
-                                        class="fas fa-file-invoice-dollar"></i><span>Comprar</span></a>
-                            </li>
-                            <li><a href="tables-basic.html"><i class="fas fa-file-invoice"></i><span>Registrar</span></a>
-                            </li>
-
-                        </ul>
-                    </li>
-                @endcan
+                
                 {{-- Sección de personas --}}
                 <li class="sub-menu {{ request()->is('persons/*') ? 'active' : '' }}">
                     <a href="javascript:void(0);"><i class="fa fa fa-users"></i><span>Personas</span><i
@@ -106,7 +92,8 @@
                                         class="fas fa-user"></i><span>Clientes</span></a>
                             @endcan
                         </li>
-                        <li><a href="{{route('providers_index')}}"><i class="fas fa-user-tag"></i><span>Proveedores</span></a>
+                        <li><a href="{{ route('providers_index') }}"><i
+                                    class="fas fa-user-tag"></i><span>Proveedores</span></a>
                         </li>
                         @can('Gestionar Usuarios', User::class)
                             <li class="{{ request()->routeIs('users_*') ? 'active' : '' }}"><a
@@ -124,15 +111,15 @@
                         <ul>
 
                             @can('Gestionar Productos', User::class)
-                                <li class="{{ request()->routeIs('products_*') ? 'active' : '' }}"><a
+                                <li class="{{ request()->routeIs('products_index') ? 'active' : '' }}"><a
                                         href="{{ route('products_index') }}"><i
                                             class="fas fa-tags"></i><span>Productos</span></a>
                                 </li>
                             @endcan
 
                             @can('Gestionar Ingresos', User::class)
-                                <li class="{{ request()->routeIs('users.*') ? 'active' : '' }}"><a
-                                        href="{{ route('users_index') }}"><i
+                                <li class="{{ request()->routeIs('products_value') ? 'active' : '' }}"><a
+                                        href="{{ route('products_value') }}"><i
                                             class="fas fa-dollar-sign"></i><span>Valor</span></a>
                                 </li>
 
@@ -167,7 +154,7 @@
                         <a href="javascript:void(0);"><i class="fas fa-arrow-up"></i><span>Egresos</span><i
                                 class="arrow fa fa-angle-right pull-right"></i></a>
                         <ul>
-                            <li class="active"><a href="mail-inbox.html"><i
+                            <li class="active"><a href="{{route('outcome_index')}}"><i
                                         class="fas fa-cart-arrow-down"></i><span>Compras</span></a>
                             </li>
                             <li><a href="mail-compose.html"><i class="fas fa-sync-alt"></i><span>Recurrentes</span></a>
@@ -177,20 +164,7 @@
                         </ul>
                     </li>
                 @endcan
-                @can('Gestionar Cuentas', Model::class)
-                    <li class="sub-menu">
-                        <a href="javascript:void(0);"><i class="fas fa-dollar-sign"></i><span>Contabilidad</span><i
-                                class="arrow fa fa-angle-right pull-right"></i></a>
-                        <ul>
-                            <li><a href="map-google.html"><i class="fas fa-arrow-down"></i><span>Cta. por
-                                        Cobrar</span></a>
-                            </li>
-                            <li><a href="map-vector.html"><i class="fas fa-arrow-up"></i><span>Cta. por
-                                        Pagar</span></a>
-                            </li>
-                        </ul>
-                    </li>
-                @endcan
+               
                 @can('Gestionar Ingresos', User::class)
                     <li class="sub-menu ">
                         <a href="javascript:void(0);"><i class="fas fa-donate"></i><span>Contabilidad</span><i

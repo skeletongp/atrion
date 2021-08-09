@@ -20,25 +20,18 @@ class InvoiceTable extends Component
     {
      
         if ($this->client_id>0) {
-            if ($this->is_active == 1) {
-                $invoices = Invoice::with('client','salor')->search($this->search)
+           
+                $invoices = Invoice::withTrashed()->with('client','salor')->search($this->search)
                 ->where('client_id','=',$this->client_id)
                 ->where('place_id','=',Auth::user()->place_id)->where(function ($query)
                 {
                     $query->orderBy($this->order, $this->direction);
                 })->paginate($this->amount);
 
-            } else {
-                $invoices = Invoice::with('client', 'salor')->onlyTrashed()->search($this->search)
-                ->where('client_id','=',$this->client_id)
-                ->where('place_id','=',Auth::user()->place_id)->where(function ($query)
-                {
-                    $query->orderBy($this->order, $this->direction);
-                })->paginate($this->amount);
-            }
+           
         } else {
-            if ($this->is_active == 1) {
-                $invoices = Invoice::search($this->search)
+           
+                $invoices = Invoice::withTrashed()->search($this->search)
                 ->where('place_id','=',Auth::user()->place_id)->where(function ($query)
                 {
                     $query->orderBy($this->order, $this->direction);
@@ -47,34 +40,13 @@ class InvoiceTable extends Component
                 ->where('type','=','sale')
                 ->where('place_id','=',Auth::user()->place_id)
                 ->paginate($this->amount);
-                    
-            } else {
-                $invoices = Invoice::with('client','salor')->onlyTrashed()->search($this->search)
-                ->where('type','=','sale')
-                ->where('place_id','=',Auth::user()->place_id)->where(function ($query)
-                {
-                    $query->orderBy($this->order, $this->direction);
-                })->paginate($this->amount);
-                    
-            }
+          
         }
         
         return view('livewire.invoice-table')->with(['invoices'=>$invoices]);
     }
     
-    public function toggle()
-    {
-        if ($this->is_active == 1) {
-            $this->is_active = 0;
-            $this->title = 'Facturas Eliminadas';
-            $this->icon = 'fa-sync-alt text-blue-500';
-            $this->confirm = '¿Restaurar factura?';
-            $this->button = 'fa-reply-all';
-        } else {
-            $this->reset('is_active', 'title', 'icon', 'confirm', 'button');
-        }
-        $this->resetPage();
-    }
+    
     public function updatedSearch()
     {
         $this->resetPage();
