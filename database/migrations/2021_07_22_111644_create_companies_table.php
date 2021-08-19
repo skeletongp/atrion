@@ -20,11 +20,8 @@ class CreateCompaniesTable extends Migration
             $table->string('phone');
             $table->string('rnc');
             $table->string('logo');
-            $table->unsignedBigInteger('edited_by')->nullable();
+            $table->foreignId('edited_by')->nullable()->constrained('users','id');
             $table->timestamps();
-            $table->foreign('edited_by')
-            ->references('id')
-            ->on('users');
         });
     }
 

@@ -14,10 +14,7 @@ class AddCashIdToInvoicesTable extends Migration
     public function up()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->unsignedBigInteger('cash_id');
-            $table->foreign('cash_id')
-                ->references('id')
-                ->on('cashes');
+          $table->foreignId('cash_id')->constrained();
         });
     }
 

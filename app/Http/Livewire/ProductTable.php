@@ -7,13 +7,13 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
-
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductTable extends Component
 {
     use WithPagination;
 
-    public $search = "", $direction = 'asc', $order = "name", $icon_order = 'fa-sort-up', $place_id, $type;
+    public $search = "", $direction = 'asc', $order = "name", $icon_order = 'fa-sort-up', $place_id, $type, $cant, $amount=10;
     public $is_active = 1, $title = 'Productos activos', $icon = "fa-trash text-red-500", $confirm = '¿Eliminar producto?', $button = 'fa-recycle';
     protected $listeners = ['update_product_table' => 'render'];
     public function render()
@@ -28,12 +28,12 @@ class ProductTable extends Component
             $products = Product::search($this->search)
                 ->where('is_product', '=', $this->type)
                 ->where('place_id', '=', $this->place_id)
-                ->orderBy($this->order, $this->direction, SORT_REGULAR, false)->paginate(10);
+                ->orderBy($this->order, $this->direction, SORT_REGULAR, false)->paginate($this->amount);
         } else {
             $products = Product::onlyTrashed()->search($this->search)
                 ->where('is_product', '=', $this->type)
                 ->where('place_id', '=', $this->place_id)
-                ->orderBy($this->order, $this->direction)->paginate(10);
+                ->orderBy($this->order, $this->direction)->paginate($this->amount);
         }
         $places = Place::all();
         return view('livewire.product-table', compact('products', 'places'));
@@ -50,17 +50,17 @@ class ProductTable extends Component
             $this->reset('is_active', 'title', 'icon', 'confirm', 'button');
         }
     }
-    public function updatedSearch()
+   
+        public function softdelete( $product)
     {
-        $this->resetPage();
-    }
-    public function updatedPlaceid()
-    {
-        $this->resetPage();
-    }
-    public function softdelete(Product $product)
-    {
-        $product->delete();
+        $product=Product::withTrashed()->where('slug','=',$product)->first();
+
+        if($product->deleted_at==null){
+            $product->delete();
+        } else{
+            $product->restore();
+        }
+        $this->render();
         $this->render();
     }
     public function search()
@@ -86,5 +86,14 @@ class ProductTable extends Component
     public function printCodes()
     {
         return redirect()->route('printCodes');
+    }
+    public function add(Product $product)
+    {
+        $this->validate([
+            'cant'=>'required|numeric|min:1'
+        ]);
+        $product->stock=$product->stock+$this->cant;
+        $product->save();
+        $this->reset('cant');
     }
 }

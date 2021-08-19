@@ -14,8 +14,7 @@ class ValueTable extends Component
     use WithPagination;
 
     public $search = "", $direction = 'asc', $order = "name", $icon_order = 'fa-sort-up', $number=1, $type, $cant=10;
-    public $is_active = 1, $title = 'Productos activos', $icon = "fa-trash text-red-500", $confirm = '¿Eliminar producto?', $button = 'fa-recycle';
-    public $cost, $price;
+    public $cost, $price, $place_id=1;
     protected $listeners = ['update_product_table' => 'render'];
     public function render()
     {
@@ -23,32 +22,16 @@ class ValueTable extends Component
             $this->type=1;
         }
         
-        if ($this->is_active == 1) {
             $products = Product::search($this->search)
                 ->where('is_product', '=', $this->type)
-                ->where('place_id', '=', Auth::user()->place_id)
+                ->where('place_id', '=',$this->place_id)
+                ->where('stock','>',0)
                 ->orderBy($this->order, $this->direction, SORT_REGULAR, false)->paginate($this->cant);
-        } else {
-            $products = Product::onlyTrashed()->search($this->search)
-                ->where('is_product', '=', $this->type)
-                ->where('place_id', '=', $this->place_id)
-                ->orderBy($this->order, $this->direction)->paginate($this->cant);
-        }
+        
         $places = Place::all();
         return view('livewire.value-table', compact('products', 'places'));
     }
-    public function toggle()
-    {
-        if ($this->is_active == 1) {
-            $this->is_active = 0;
-            $this->title = 'Productos eliminados';
-            $this->icon = 'fa-sync-alt text-blue-500';
-            $this->confirm = '¿Restaurar producto?';
-            $this->button = 'fa-reply-all';
-        } else {
-            $this->reset('is_active', 'title', 'icon', 'confirm', 'button');
-        }
-    }
+    
     public function updatedSearch()
     {
         $this->resetPage();
@@ -57,11 +40,7 @@ class ValueTable extends Component
     {
         $this->resetPage();
     }
-    public function softdelete(Product $product)
-    {
-        $product->delete();
-        $this->render();
-    }
+    
     public function search()
     {
         $this->render();
@@ -78,12 +57,5 @@ class ValueTable extends Component
         }
         $this->resetPage();
     }
-    public function store()
-    {
-        $this->emit('store_product');
-    }
-    public function printCodes()
-    {
-        return redirect()->route('printCodes');
-    }
+    
 }

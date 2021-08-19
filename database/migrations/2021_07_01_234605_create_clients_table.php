@@ -22,11 +22,9 @@ class CreateClientsTable extends Migration
             $table->string('slug');
             $table->decimal('debt');
             $table->softDeletes();
-            $table->unsignedBigInteger('edited_by')->nullable();
+            $table->foreignId('edited_by')->nullable()->constrained('users','id');
             $table->timestamps();
-            $table->foreign('edited_by')
-            ->references('id')
-            ->on('users');
+         
         });
     }
 

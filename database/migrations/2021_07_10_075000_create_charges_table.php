@@ -6,33 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateChargesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('charges', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cxp_id');
             $table->decimal('amount');
-            $table->foreign('cxp_id', 18,2)
-            ->references('id')
-            ->on('cxps');
-            $table->unsignedBigInteger('edited_by')->nullable();
+            $table->foreignId('cxp_id')->constrained();
+            $table->foreignId('edited_by')->nullable()->constrained('users','id');
             $table->timestamps();
-            $table->foreign('edited_by')
-            ->references('id')
-            ->on('users');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('charges');

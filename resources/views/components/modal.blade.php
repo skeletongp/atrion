@@ -1,17 +1,21 @@
-    <div class="z-50 mt-2  ">
+    <div class="z-50  ">
 
-        <div class="flex items-center justify-between lg:w-2/3 mx-auto">
+        <div class="flex items-center justify-start ">
             <button onclick="openModal('{{ $modalId }}')" title="Editar"
-                class="modal-open bg-transparent  text-gray-900 hover:text-indigo-500 font-bold  rounded-full outline-none ">
+                class="modal-open bg-transparent  text-gray-900 hover:text-indigo-500 font-bold  rounded-full outline-none">
                 {{ $title }}</button>
             @if (isset($excel))
-                <div class="w-3/5 lg:w-2/5">
-                    {{$excel}}
+
+                <div class="flex items-center justify-between  w-full">
+                    <label for="excel"
+                        class="bg-transparent border border-gray-500 hover:border-indigo-500 text-gray-500 hover:text-indigo-500 font-bold  rounded-full cursor-pointer hidden xl:block">
+                        <span class="mx-4 py-2">Importar de Excel</span></label>
+                    <input type="file" name="excel" id="excel" hidden
+                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                    <div class="mx-2">
+                        {{ $excel }}
+                    </div>
                 </div>
-                <label for="excel"
-                    class="bg-transparent border border-gray-500 hover:border-indigo-500 text-gray-500 hover:text-indigo-500 font-bold  rounded-full cursor-pointer hidden lg:block">
-                    <span class="mx-4 py-2">Importar de Excel</span></label></label>
-                <input type="file" name="excel" id="excel" hidden accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
             @endif
         </div>
 

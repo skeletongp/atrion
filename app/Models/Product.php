@@ -11,6 +11,8 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
     use SearchableTrait;
+    const PRODUCTO='PRODUCTO';
+    const SERVICIO='SERVICIO';
     public function getRouteKeyName()
     {
         return 'slug';

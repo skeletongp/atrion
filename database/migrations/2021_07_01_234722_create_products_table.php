@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,23 +23,13 @@ class CreateProductsTable extends Migration
             $table->decimal('cost');
             $table->decimal('price');
             $table->string('slug');
-           
-            $table->unsignedBigInteger('place_id');
-            $table->unsignedBigInteger('category_id');
+            $table->foreignId('place_id')->constrained();
+            $table->foreignId('category_id')->constrained();
+            $table->foreignId('edited_by')->nullable()->constrained('users','id');
             $table->softDeletes();
-            $table->tinyInteger('is_product')->default(1);
-            $table->foreign('place_id')
-            ->references('id')
-            ->on('places');
-            $table->foreign('category_id')
-            ->references('id')
-            ->on('categories');
-            
-            $table->unsignedBigInteger('edited_by')->nullable();
+            $table->enum('type',[Product::PRODUCTO, Product::SERVICIO])->default(Product::PRODUCTO);
             $table->timestamps();
-            $table->foreign('edited_by')
-            ->references('id')
-            ->on('users');
+            
         });
     }
 

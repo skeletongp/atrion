@@ -10,11 +10,7 @@
             @if (isset($error))
             <div class="alert alert-danger">{{ $error }}</div>
             @endif    
-          {{--   @foreach ( as $detail)
-            <span>{{$detail}}</span><br>
-            @endforeach --}}
-            
-            {{\App\Models\Product::sum('stock')}}
+          
     </div>
     
 </x-app-layout>

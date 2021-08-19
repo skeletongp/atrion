@@ -20,30 +20,20 @@ class CreateInvoicesTable extends Migration
             $table->decimal('subtotal', 18,2);
             $table->decimal('tax', 18,2);
             $table->decimal('total', 18,2);
+            $table->decimal('payed', 18,2);
+            $table->decimal('rest', 18,2);
+            $table->decimal('cash',18,2);
+            $table->decimal('other',18,2); 
             $table->decimal('refund', 18,2);
-        
             $table->tinyInteger('is_fiscal')->default(0);
             $table->string('type')->default('sale');
             $table->softDeletes();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('place_id');
-           
-            $table->foreign('user_id')
-            ->references('id')
-            ->on('users');
-            $table->foreign('client_id')
-            ->references('id')
-            ->on('clients');
-            $table->foreign('place_id')
-            ->references('id')
-            ->on('places');
-            
-            $table->unsignedBigInteger('edited_by')->nullable();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('client_id')->constrained();
+            $table->foreignId('seller_id')->constrained('users','id');
+            $table->foreignId('place_id')->constrained();     
+            $table->foreignId('edited_by')->nullable()->constrained('users','id');
             $table->timestamps();
-            $table->foreign('edited_by')
-            ->references('id')
-            ->on('users');
         });
     }
 

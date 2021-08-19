@@ -21,19 +21,9 @@ class CreateCotdetailsTable extends Migration
             $table->decimal('subtotal', 18,2);
             $table->decimal('total', 18,2);
             $table->decimal('price', 18,2);
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('cotize_id');
-            $table->foreign('product_id')
-            ->references('id')
-            ->on('products');
-            $table->foreign('cotize_id')
-            ->references('id')
-            ->on('cotizes');
-            $table->unsignedBigInteger('edited_by')->nullable();
+            $table->foreignId('product_id')->constrained();
+            $table->foreignId('cotize_id')->constrained();
             $table->timestamps();
-            $table->foreign('edited_by')
-            ->references('id')
-            ->on('users');
         });
     }
 

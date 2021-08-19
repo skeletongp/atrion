@@ -17,13 +17,9 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('meta');
-           
             $table->softDeletes();
-            $table->unsignedBigInteger('edited_by')->nullable();
             $table->timestamps();
-            $table->foreign('edited_by')
-            ->references('id')
-            ->on('users');
+            $table->foreignId('edited_by')->nullable()->constrained('users','id');
         });
     }
 

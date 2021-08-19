@@ -14,10 +14,8 @@ class AddPlaceIdToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('place_id')->default(1);
-            $table->foreign('place_id')
-            ->references('id')
-            ->on('places');
+            $table->foreignId('place_id')->nullable()->constrained();
+
         });
     }
 

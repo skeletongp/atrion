@@ -14,12 +14,7 @@ class AddMethodsToInvoicesTable extends Migration
     public function up()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->decimal('cash',18,2)->after('payed');
-            $table->decimal('other',18,2)->after('cash'); 
-            $table->unsignedBigInteger('fiscal_id')->nullable()->after('other');
-            $table->foreign('fiscal_id')
-            ->references('id')
-            ->on('fiscals'); 
+            $table->foreignId('fiscal_id')->nullable()->after('other');
         });
     }
 

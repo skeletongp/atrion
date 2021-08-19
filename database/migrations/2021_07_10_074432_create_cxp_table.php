@@ -15,18 +15,11 @@ class CreateCxpTable extends Migration
     {
         Schema::create('cxps', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('provider_id');
             $table->decimal('amount', 18,2);
             $table->decimal('balance', 18,2);
-            $table->foreign('provider_id')
-            ->references('id')
-            ->on('providers');
-            $table->unsignedBigInteger('edited_by')->nullable();
+           $table->foreignId('provider_id')->constrained();
+           $table->foreignId('edited_by')->nullable()->constrained('users','id');
             $table->timestamps();
-            $table->foreign('edited_by')
-            ->references('id')
-            ->on('users');
-           
         });
     }
 

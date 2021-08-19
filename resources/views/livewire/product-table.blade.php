@@ -6,47 +6,64 @@
             <span class="fa {{ $button }} cursor-pointer text-2xl right-2" wire:click='toggle'></span>
         </div>
         @if ($products->count())
-            <div class="absolute left-2">
-                <x-jet-button wire:click="printCodes">Imprimir Códigos</x-jet-button>
-            </div>
         @endif
-        <div class=" mx-auto">
-            <x-modal modalId="md_add">
-                @slot('title')
-                    <span class="px-4 my-2 text-xl"><span class="fas fa-plus font-bold "></span> Nuevo </span>
-                @endslot
-                <div class=" " id="div-add-product">
-                    @livewire('add-product')
-                </div>
-                <x-slot name="excel">
-                    @if (Auth::user()->id == 1)
-                        <div class="flex items-center border border-1 border-blue-200 rounded-md pr-1 w-full">
-                            <span
-                                class="text-sm rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-3/6 md:w-2/6 hidden md:inline-block">Filtrar:</span>
-                            <select
-                                class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm w-4/6 overflow-auto "
-                                name="place_id" id="" wire:model="place_id">
-                                <option value="">Elija una sucursal</option>
+        <div class="flex items-center lg:w-2/3 mx-auto ">
+            {{-- Sección de añadir y subir --}}
+            <div class=" w-full">
+                <x-modal modalId="md_add">
+                    @slot('title')
+                        <span class="px-4 my-2 text-xl flex items-center rounded-full"><span
+                                class="fas fa-plus font-bold mr-2"></span> <span class="hidden md:block">Nuevo</span> </span>
+                    @endslot
+                    <div class=" " id="div-add-product">
+                        @livewire('add-product')
+                    </div>
+                    <x-slot name="excel">
+                        {{-- Sección de filtrado --}}
+                        <div class="flex mx-auto pr-1 pb-4 ">
+                            <div class=" w-2/6 lg:w-48 mx-1">
+                                <x-jet-label for="type" class="text-lg text-left">Tipo</x-jet-label>
+                                <select
+                                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm  w-full overflow-auto "
+                                    name="" id="" wire:model="type">
+                                    <option value="1">Producto</option>
+                                    <option value="0">Servicio</option>
+                                </select>
+                            </div>
+                            <div class=" w-2/6 lg:w-48 mx-1">
+                                <x-jet-label for="place_id" class="text-lg text-left">Sucursal</x-jet-label>
+                                <select
+                                class="border-gray-300  focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full overflow-auto "
+                                name="" id="" wire:model="place_id">
                                 @foreach ($places as $place)
                                     <option value="{{ $place->id }}">{{ $place->name }}</option>
                                 @endforeach
+        
                             </select>
-                            <select
-                                class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm w-4/6 overflow-auto "
-                                name="" id="" wire:model="type">
-                                <option value="1">Producto</option>
-                                <option value="0">Servicio</option>
-                            </select>
-                            
+                            </div>
+                            <div class=" w-2/6 lg:w-28 mx-1 ">
+                                <x-jet-label for="cant" class="text-lg text-left">Mostrar</x-jet-label>
+                                <select
+                                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm  w-full overflow-auto text-left"
+                                    name="" id="" wire:model="amount">
+                                    <option value="5">5/{{ $products->total() }}</option>
+                                    <option value="10">10/{{ $products->total() }}</option>
+                                    <option value="25">25/{{ $products->total() }}</option>
+                                    <option value="{{ $products->total() }}">Todos</option>
+                                </select>
+                            </div>
+                           
                         </div>
+                        {{-- Fin de sección de filtrado --}}
+                    </x-slot>
+                </x-modal>
+            </div>
+            {{-- Fin de sección de añadir y subir --}}
 
-                    @endif
 
-
-                </x-slot>
-            </x-modal>
         </div>
 
+        {{-- Barra de Búsqueda --}}
         <div class="  lg:w-2/3 mx-auto mt-1 flex items-center justify-center ">
             <div class="flex border border-1 border-blue-200 rounded-md items-center w-11/12">
                 <span
@@ -60,47 +77,73 @@
                 <span class="fas fa-search ml-2 text-xl cursor-pointer" wire:click="search" id="sp-search"></span>
             </div>
         </div>
+        {{-- Fin de barra de búsqueda --}}
 
+        {{-- Contenedor de la tabla --}}
         <div class=" mx-auto sm:px-6 lg:px-8 flex-1 justify-center ">
             <div>
 
-                <div class="overflow-x-auto mt-3 select-none" style="height: 34rem">
+                <div class="overflow-x-auto mt-3 select-none" style="height: 28rem">
+                    <x-jet-input-error for="cant" class="text-center text-xl"></x-jet-input-error>
+
                     <table class="  lg:w-2/3 mx-auto">
                         <thead>
-                            <tr class="bg-gray-900 text-base font-bold text-white text-left"
-                                style="font-size: 0.9674rem">
-                                <th class="px-4 py-2 cursor-pointer " wire:clicK="order('name')">Nombre
+                            <tr class="bg-gray-900 text-base font-bold text-white text-left " 
+                                style="font-size: 0.9674rem; ">
+                                <th class="px-4 py-2 cursor-pointer   sticky top-0 bg-gray-900" wire:clicK="order('name')" >Nombre
                                     <div class="hidden md:inline-block"><span
                                             class="hidden fas {{ $order == 'name' ? $icon_order : 'fa-sort' }} "></span>
                                     </div>
                                 </th>
-                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('cost')">Costo
+                                <th class="px-4 py-2  text-center cursor-pointer    sticky top-0 bg-gray-900" wire:clicK="order('cost')">Costo
                                     <div class="hidden md:inline-block"><span
                                             class="fas {{ $order == 'cost' ? $icon_order : 'fa-sort' }} hidden lg:inline-block"></span>
                                     </div>
                                 </th>
-                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('price')">Precio
+                                <th class="px-4 py-2  text-center cursor-pointer   sticky top-0 bg-gray-900" wire:clicK="order('price')">Precio
                                     <div class="hidden md:inline-block"><span
                                             class="fas {{ $order == 'price' ? $icon_order : 'fa-sort' }} hidden lg:inline-block"></span>
                                     </div>
                                 </th>
                                 @if ($type == 1)
-                                    <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('stock')">Stock
+                                    <th class="px-4 py-2  text-center cursor-pointer  sticky top-0 bg-gray-900" wire:clicK="order('stock')">Stock
                                         <div class="hidden md:inline-block"> <span
                                                 class="fas {{ $order == 'stock' ? $icon_order : 'fa-sort' }} hidden lg:inline-block"></span>
                                         </div>
                                     </th>
                                 @endif
-                                <th class="px-4 py-2  text-center cursor-pointer">Categoría</th>
-                                <th class="py-2  text-center" colspan="2">Acciones</th>
+                                <th class="px-4 py-2  text-center cursor-pointer sticky top-0 bg-gray-900">Categoría</th>
+                                <th class="py-2  text-center sticky top-0 bg-gray-900" colspan="2">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody class="text-sm font-normal text-gray-900">
+                        <tbody class="text-sm font-normal text-gray-900 ">
                             @foreach ($products->chunk(50) as $array)
                                 @foreach ($array as $product)
                                     <tr
                                         class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
-                                        <td class="px-4 py-1 ">{{ $product->name }}</td>
+                                        <td class="px-4 py-1 flex items-center">
+                                            @if ($is_active == 1 && Auth::user()->id==1)
+                                                <x-modal modalId="{{ $product->id }}">
+                                                    <x-slot name="title"><span
+                                                            class="fas fa-plus text-gray-900 mr-4"></span></x-slot>
+                                                    <div>
+                                                        <h1 class="font-bold text-lg text-center">Añadir</h1>
+                                                        <form action="javascript:void(0)">
+                                                            <x-input_text type="number" name="cant" model="cant"
+                                                                label="Cantidad" placeholder="Cantidad a añadir"
+                                                                :oldValue="''"></x-input_text>
+                                                            <div class="flex justify-end">
+                                                                <x-jet-button class="mt-2 " onclick="confirm('¿Desea sumar estos productos al inventario?')|| event.stopImmediatePropagation()"
+                                                                    wire:click="add('{{ $product->slug }}')">Añadir
+                                                                </x-jet-button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </x-modal>
+                                            @endif
+
+                                            {{ $product->name }}
+                                        </td>
                                         <td class="px-4 py-1 text-center w-24">${{ $product->cost }}</td>
                                         <td class="px-4 py-1 text-center">${{ $product->price }}</td>
                                         @if ($type == 1)
@@ -112,12 +155,13 @@
                                                 <x-slot name="title">
                                                     <span class="fas fa-pen mx-2"></span>
                                                 </x-slot>
-                                                @livewire('edit-product', ['product' => $product], key($product->id))
+                                                @livewire('edit-product', ['product' => $product],
+                                                key($product->id.$product->stock))
                                             </x-modal>
                                         </td>
                                         <td class=" py-2 text-center">
-                                            <span class="fas fa-trash text-red-400 cursor-pointer"
-                                                onclick="confirm('¿Desea borrar este producto?')|| event.stopImmediatePropagation()"
+                                            <span class="fas {{ $icon }} cursor-pointer"
+                                                onclick="confirm('{{ $confirm }}')|| event.stopImmediatePropagation()"
                                                 wire:click="softdelete('{{ $product->slug }}')">
                                             </span>
                                         </td>
@@ -130,9 +174,11 @@
                 </div>
                 <div class="py-2 lg:w-2/3 mx-auto  text-red-400">
                     {!! $products->links() !!}
+                    <x-jet-button wire:click="printCodes"><span class="fas fa-print"></span></x-jet-button>
                 </div>
             </div>
         </div>
+        {{-- Fin del contenedor de la tabla --}}
     </div>
     <style>
         thead tr th:first-child {

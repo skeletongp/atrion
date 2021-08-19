@@ -41,10 +41,7 @@ class ProviderTable extends Component
         }
         $this->resetPage();
     }
-    public function updatedSearch()
-    {
-        $this->resetPage();
-    }
+    
     public function softdelete($provider)
     {
         $provider=Provider::withTrashed()->where('slug','=',$provider)->first();
@@ -58,7 +55,7 @@ class ProviderTable extends Component
     }
     
     /* Realiza la búsqueda en el modelo
-    Se llamada desde el icono de la lupa al lado del
+    Se llama desde el icono de la lupa al lado del
     input texto o con el evento search del mismo */
     public function search()
     {

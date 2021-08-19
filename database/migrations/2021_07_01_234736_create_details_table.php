@@ -21,14 +21,8 @@ class CreateDetailsTable extends Migration
             $table->decimal('subtotal', 18,2);
             $table->decimal('total', 18,2);
             $table->decimal('price', 18,2);
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('invoice_id');
-            $table->foreign('product_id')
-            ->references('id')
-            ->on('products');
-            $table->foreign('invoice_id')
-            ->references('id')
-            ->on('invoices');
+            $table->foreignId('product_id')->constrained();
+            $table->foreignId('invoice_id')->constrained();
             $table->timestamps();
         });
     }

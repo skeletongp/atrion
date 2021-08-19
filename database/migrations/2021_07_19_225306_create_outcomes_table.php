@@ -15,30 +15,17 @@ class CreateOutcomesTable extends Migration
     {
         Schema::create('outcomes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('place_id');
-            $table->unsignedBigInteger('provider_id')->nullable();
-            $table->unsignedBigInteger('client_id')->nullable();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('place_id')->constrained();
+            $table->foreignId('provider_id')->nullable()->constrained();
+            $table->foreignId('client_id')->nullable()->constrained();
+           $table->foreignId('edited_by')->nullable()->constrained('users','id');
             $table->decimal('amount', 18,2);
+            $table->string('concept');
+            $table->string('reference');
             $table->date('date');
-            $table->foreign('user_id')
-            ->references('id')
-            ->on('users');
-            $table->foreign('place_id')
-            ->references('id')
-            ->on('places');
-            $table->foreign('provider_id')
-            ->references('id')
-            ->on('providers');
-            $table->foreign('client_id')
-            ->references('id')
-            ->on('clients');
             $table->softDeletes();
-            $table->unsignedBigInteger('edited_by')->nullable();
             $table->timestamps();
-            $table->foreign('edited_by')
-            ->references('id')
-            ->on('users');
         });
     }
 

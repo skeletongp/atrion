@@ -14,7 +14,8 @@ class InventoryController extends Controller
 {
     public function places_index()
     {
-
+        $myIp = getHostByName(getHostName());
+        return $myIp;
         return view('inventory.places');
     }
     public function place_show(Place $place)
