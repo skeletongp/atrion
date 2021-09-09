@@ -30,7 +30,8 @@ class InvoiceController extends Controller
         $details = Detail::where('invoice_id', $invoice->id)->get();
         $company=Company::first();
         $pdf = PDF::loadview('pdfs.preview_invoice', ['details' => $details, 'invoice' => $invoice, 'company'=>$company]);
-        return $pdf->stream('invoice.pdf');
+        $name=substr($invoice->client->name,0,3).'-'.$invoice->created_at;
+        return $pdf->stream($name.'.pdf');
 
     }
     public function preview_cotize($cotize)

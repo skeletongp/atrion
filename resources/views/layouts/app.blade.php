@@ -102,7 +102,7 @@
     </div>
 
     @stack('modals')
-
+    @stack('js')
     @livewireScripts
     <script src="{{ mix('js/main.js') }}" defer></script>
     @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])

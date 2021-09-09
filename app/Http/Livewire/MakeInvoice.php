@@ -23,7 +23,7 @@ class MakeInvoice extends Component
     public $clients, $products, $product, $cotize=0;
     public $client_id, $name = "Nombre del Cliente", $phone = "000-000-0000";
     public $product_id, $price, $cant = 1, $discount = 0, $productName, $stock=0, $typeFiscal=0, $fiscal;
-    public $list = [], $payed=0.0, $rest , $cashMoney=0.0, $other=0.0, $is_ncf=0, $ncf_id=0, $salor_id;
+    public $list = [], $payed=0.0, $rest , $cashMoney=0.0, $other=0.0, $is_ncf=0, $ncf_id=0, $seller_id;
     public $totales = ['subtotal' => 0, 'discount' => 0, 'total' => 0, 'tax' => 0];
     protected $listeners = [
         'change'=>'change',
@@ -43,11 +43,11 @@ class MakeInvoice extends Component
             $this->phone = $client->phone;
         }
         $tipos=Fiscal::select('type')->groupBy('type')->get();
-        $this->salor_id=Auth::user()->id;
-        $salor=User::where('place_id',Auth::user()->place_id)
+        $this->seller_id=Auth::user()->id;
+        $seller=User::where('place_id',Auth::user()->place_id)
         ->orderBy('name')
         ->get();
-        return view('livewire.make-invoice')->with(['tipos'=>$tipos, 'salor'=>$salor]);
+        return view('livewire.make-invoice')->with(['tipos'=>$tipos, 'seller'=>$seller]);
     }
 
     /* Detecta la selección de un producto */
@@ -87,7 +87,6 @@ class MakeInvoice extends Component
         $productDetail->discount = $this->discount;
         $productDetail->name = $this->productName;
         $productDetail->cant = $this->cant;
-        $productDetail->name = $this->productName;
         $productDetail->total = (($this->price * $this->cant));
         $productDetail = json_decode(json_encode($productDetail), true);
         $this->getTotals($productDetail,$productDetail['id']);
@@ -128,6 +127,7 @@ class MakeInvoice extends Component
     {
         foreach ($this->list as $productDetail) {
             if ($productDetail['id'] == $id) {
+                $this->totales['total']+=$productDetail['discount'];
                 $this->change($productDetail['id']);
                 $this->product_id = $productDetail['id'];
                 $this->cant = $productDetail['cant'];
@@ -159,7 +159,7 @@ class MakeInvoice extends Component
             $invoice->tax = $this->totales['tax'];
             $invoice->total = $this->totales['total'];
             $invoice->user_id = Auth::user()->id;
-            $invoice->salor_id = $this->salor_id;
+            $invoice->seller_id = $this->seller_id;
             $invoice->place_id = Auth::user()->place_id;
             $invoice->client_id = $this->client_id;
             $invoice->payed = $this->payed;
@@ -203,7 +203,7 @@ class MakeInvoice extends Component
         $income->user_id=Auth::user()->id;
         $income->place_id=Auth::user()->place_id;
         $income->client_id=$this->client_id;
-        $income->cash_id=Auth::user()->place->cash->id;
+        $income->cash_id=Auth::user()->activeCash->id;
         $income->amount=$this->payed;
         $income->date=date('Y-m-d');
         $income->save();
@@ -229,7 +229,7 @@ class MakeInvoice extends Component
                 $product->save();
             }
             $this->upIncome();
-            $this->upCash(Auth::user()->place->cash->id, $invoice->total);
+            $this->upCash(Auth::user()->activeCash->id, $invoice->total);
         }
     }
 
@@ -299,7 +299,7 @@ class MakeInvoice extends Component
 
        }
     }
-    public function update_clients()
+    public function updatedClients()
     {
         $this->clients = Client::orderBy('name')->get();
     }

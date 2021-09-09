@@ -14,8 +14,7 @@ class InventoryController extends Controller
 {
     public function places_index()
     {
-        $myIp = getHostByName(getHostName());
-        return $myIp;
+       
         return view('inventory.places');
     }
     public function place_show(Place $place)
@@ -37,7 +36,7 @@ class InventoryController extends Controller
         ImportProduct::dispatch($import, $ruta);
         
         $totalRows = $import->getRowCount();
-        return 'Se han insertado '.$totalRows.' Filas';
+        return 'Se han insertado '.strval($totalRows).' Filas';
         } catch (\Throwable $th) {
             return "$th";
         }

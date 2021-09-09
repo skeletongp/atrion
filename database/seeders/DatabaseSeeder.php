@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('admin1234'), // password
                 'remember_token' => Str::random(10),
+                'place_id' => 1,
                 'slug' => Str::slug('Administrador'),
                 'created_at' => now(),
                 'updated_at' => now(),

@@ -12,8 +12,8 @@
                         <select
                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm  w-full overflow-auto "
                             name="" id="" wire:model="type">
-                            <option value="1">Producto</option>
-                            <option value="0">Servicio</option>
+                            <option value="PRODUCTO">Producto</option>
+                            <option value="SERVICIO">Servicio</option>
                         </select>
                     </div>
                     <div class=" w-2/6 lg:w-48 mx-1">

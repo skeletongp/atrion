@@ -20,17 +20,29 @@
                     </div>
                     <x-slot name="excel">
                         {{-- Sección de filtrado --}}
-                        <div class="flex mx-auto pr-1 pb-4 ">
-                            <div class=" w-2/6 lg:w-48 mx-1">
+                        <div class="flex mx-auto pr-1 pb-4 w-full ">
+                            <div class="hidden xl:block w-2/6 lg:w-48 mx-1">
+                                <x-jet-label for="type" class="text-lg text-left">Categoría</x-jet-label>
+                                <select
+                                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm  w-full overflow-auto "
+                                    name="" id="" wire:model="category">
+                                    <option value="Todas">Todas</option>
+                                   @foreach ($categories as $category)
+                                   <option value="{{$category->id}}">{{$category->name}}</option>
+                                   @endforeach
+                                </select>
+                            </div>
+                            <div class=" w-full lg:w-48 mx-1">
                                 <x-jet-label for="type" class="text-lg text-left">Tipo</x-jet-label>
                                 <select
                                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm  w-full overflow-auto "
                                     name="" id="" wire:model="type">
-                                    <option value="1">Producto</option>
-                                    <option value="0">Servicio</option>
+                                    <option value="PRODUCTO">Producto</option>
+                                    <option value="SERVICIO">Servicio</option>
+                                    <option value="Todos">Todos</option>
                                 </select>
                             </div>
-                            <div class=" w-2/6 lg:w-48 mx-1">
+                            <div class=" hidden md:block w-full lg:w-48 mx-1">
                                 <x-jet-label for="place_id" class="text-lg text-left">Sucursal</x-jet-label>
                                 <select
                                 class="border-gray-300  focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full overflow-auto "
@@ -41,7 +53,7 @@
         
                             </select>
                             </div>
-                            <div class=" w-2/6 lg:w-28 mx-1 ">
+                            <div class=" w-full lg:w-28 mx-1 ">
                                 <x-jet-label for="cant" class="text-lg text-left">Mostrar</x-jet-label>
                                 <select
                                     class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm  w-full overflow-auto text-left"
@@ -123,9 +135,9 @@
                                         class="hover:bg-blue-100 border-b border-white hover:border-gray-200 py-4 text-base">
                                         <td class="px-4 py-1 flex items-center">
                                             @if ($is_active == 1 && Auth::user()->id==1)
-                                                <x-modal modalId="{{ $product->id }}">
+                                                <x-modal modalId="{{ $product->id }}" class="z-10">
                                                     <x-slot name="title"><span
-                                                            class="fas fa-plus text-gray-900 mr-4"></span></x-slot>
+                                                            class="fas fa-plus text-gray-900 mr-4" ></span></x-slot>
                                                     <div>
                                                         <h1 class="font-bold text-lg text-center">Añadir</h1>
                                                         <form action="javascript:void(0)">

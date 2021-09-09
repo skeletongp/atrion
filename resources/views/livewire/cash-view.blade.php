@@ -17,7 +17,7 @@
             </span>
     </div>
     @if ($cash && $cash->status == 1)
-    <div class="relative pt-12 ">
+    <div class="relative pt-2 ">
         <div class="absolute top-0 left-2">
             @if ($cash->invoices->count())
             <div
@@ -51,26 +51,8 @@
                 'bg1'=>'bg-blue-100 hover:bg-blue-400',
                 'bg2'=>'bg-blue-900',
                 ], key(1))
-                @livewire('panel-data',
-                [
-                'title'=>'Ventas de Hoy',
-                'value'=>$cash->incomes->count(),
-                'icon1'=>'fas fa-cash-register text-white',
-                'icon2'=>'fas fa-sort-up',
-                'bg1'=>'bg-blue-100 hover:bg-blue-400',
-                'bg2'=>'bg-blue-900',
-                ], key(4))
-                <a href="{{route('products_index')}}">
-                    @livewire('panel-data',
-                    [
-                    'title'=>'Inventario',
-                    'value'=>$user->place->products->count(),
-                    'icon1'=>'fas fa-boxes text-white',
-                    'icon2'=>'fas fa-sort-up',
-                    'bg1'=>'bg-blue-100 hover:bg-blue-400',
-                    'bg2'=>'bg-blue-900',
-                    ], key(3))
-                </a>
+                
+                
                 @livewire('panel-data',
                 [
                 'title'=>'Dinero en Caja',
@@ -81,17 +63,7 @@
                 'bg2'=>'bg-green-700',
                 ], key(2))
 
-                <a href="{{route('invoices')}}">
-                    @livewire('panel-data',
-                    [
-                    'title'=>'Facturado',
-                    'value'=>$cash->invoices->sum('total'),
-                    'icon1'=>'fas fa-file-invoice-dollar text-white',
-                    'icon2'=>'fas fa-dollar-sign text-green-800',
-                    'bg1'=>'bg-green-300 hover:bg-blue-400',
-                    'bg2'=>'bg-green-700',
-                    ], key(5))
-                </a>
+               
                 @livewire('panel-data',
                 [
                 'title'=>'Ingreso Real',
@@ -135,83 +107,10 @@
         </div>
     </div>
     <button class="hidden" id="btn-reopen"
-        onclick="confirm('La cada de hoy fue cerrada. ¿Desea reabrirla?')||event.stopImmediatePropagation()"
+        onclick="confirm('La caja de hoy fue cerrada. ¿Desea reabrirla?')||event.stopInmediatePropagation()"
         wire:click="reopen({{ $cash }})"></button>
     @endif
-    <canvas id="myChart" width="280" height="50"></canvas>
-
-    <script>
-        /*  $(".sortable").toggle('fold', 500); */
-        var ctx = document.getElementById('myChart').getContext('2d');
-        let labels = [];
-        let sales = [];
-        <?php echo $dates; ?>.forEach(label => {
-            labels.push(label['date']);
-        });
-        <?php echo $sales; ?>.forEach(sale => {
-            sales.push(sale['end'])
-        });
-        let chartData = {
-            labels: labels,
-            datasets: [{
-                label: 'Ingresos Recientes',
-                data: sales,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                ],
-                borderWidth: 1
-            }]
-        }
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-
-            data: chartData,
-
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            // Include a dollar sign in the ticks
-                            callback: function(value, index, values) {
-                                return '$' + value;
-                            },
-                            beginAtZero: true
-                        },
-
-
-                    },
-                },
-
-
-            }
-        });
-        window.addEventListener('load', function() {
-            Livewire.on('reopenClick', function() {
-                $('#btn-reopen').trigger('click');
-            })
-        })
-        $('input[name="amount"').on('keypress', function(e) {
-            if (e.which == 13) {
-                $('#btnAbrir').trigger('click');
-            }
-        });
-    </script>
+    <div class="flex justify-start w-full mx-12 h-96">
+        <x-sales_chart ></x-sales_chart>
+    </div>
 </div>

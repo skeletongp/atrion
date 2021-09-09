@@ -14,7 +14,7 @@ class Cotize extends Model
     {
         return $this->belongsTo(User::class)->withTrashed();
     }
-    public function salor()
+    public function seller()
     {
         return $this->belongsTo(User::class, 'user_id')->withTrashed();
     }
@@ -33,8 +33,8 @@ class Cotize extends Model
             'clients.name' => 10,
             'places.name' => 10,
             'places.location' => 10,
-            'invoices.created_at' => 5,
-            'invoices.updated_At' => 2,
+            'cotizes.created_at' => 5,
+            'cotizes.updated_At' => 2,
 
 
         ],

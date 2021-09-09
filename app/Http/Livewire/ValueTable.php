@@ -19,11 +19,11 @@ class ValueTable extends Component
     public function render()
     {
         if ($this->type==null) {
-            $this->type=1;
+            $this->type="PRODUCTO";
         }
         
             $products = Product::search($this->search)
-                ->where('is_product', '=', $this->type)
+                ->where('type', '=', $this->type)
                 ->where('place_id', '=',$this->place_id)
                 ->where('stock','>',0)
                 ->orderBy($this->order, $this->direction, SORT_REGULAR, false)->paginate($this->cant);

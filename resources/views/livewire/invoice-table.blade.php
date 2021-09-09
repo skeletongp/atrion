@@ -18,7 +18,7 @@
                 <input name="search"
                     class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm -ml-1 w-4/6 lg:w-5/6 overflow-auto"
                     id="search" type="search" placeholder="Buscar factura" value="{{ old('search') }}"
-                    wire:model.defer="search" />
+                    wire:model="search" />
             </div>
 
             {{-- Filtrar --}}
@@ -51,8 +51,7 @@
                     <table class="table-auto  lg:w-2/3 mx-auto table">
                         <thead>
                             <tr class="text-base font-bold text-gray-900 text-left" style="font-size: 0.9674rem">
-                                <th class="px-4 py-2 cursor-pointer" wire:clicK="order('clients.name')">Cliente
-                                    <span class="fas {{ $order == 'clients.name' ? $icon_order : 'fa-sort' }}"></span>
+                                <th class="px-4 py-2">Cliente
                                 </th>
                                 <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('date')">Fecha
                                     <span class="fas {{ $order == 'date' ? $icon_order : 'fa-sort' }}"></span>
@@ -60,9 +59,8 @@
                                 <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('total')">Total
                                     <span class="fas {{ $order == 'total' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
-                                <th class="px-4 py-2  text-center cursor-pointer" wire:clicK="order('users.name')">
+                                <th class="px-4 py-2  text-center ">
                                     Vendedor
-                                    <span class="fas {{ $order == 'users.name' ? $icon_order : 'fa-sort' }}"></span>
                                 </th>
 
                                 @if ($type == 'invoice')
@@ -93,7 +91,7 @@
                                             </td>
                                             <td class="px-4 py-2 text-center ">{{ $invoice->date }}</td>
                                             <td class="px-4 py-2 text-center ">${{ $invoice->total }}</td>
-                                            <td class="px-4 py-2 text-center ">{{ $invoice->salor->name }}</td>
+                                            <td class="px-4 py-2 text-center ">{{ $invoice->seller->name }}</td>
                                             @if ($invoice->cash)
                                                 <td class="px-4 py-2 text-center ">
                                                     {{ $invoice->rest > 0 ? '$' . $invoice->rest : 'Saldada' }}</td>

@@ -18,9 +18,9 @@ class Invoice extends Model
     {
         return $this->belongsTo(Place::class)->withTrashed();
     }
-    public function salor()
+    public function seller()
     {
-        return $this->belongsTo(User::class, 'salor_id');
+        return $this->belongsTo(User::class, 'seller_id');
     }
     public function client()
     {

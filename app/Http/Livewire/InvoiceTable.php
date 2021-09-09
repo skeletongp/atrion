@@ -19,29 +19,14 @@ class InvoiceTable extends Component
     public function render()
     {
      
-        if ($this->client_id>0) {
-           
-                $invoices = Invoice::withTrashed()->with('client','salor')->search($this->search)
-                ->where('client_id','=',$this->client_id)
-                ->where('place_id','=',Auth::user()->place_id)->where(function ($query)
-                {
-                    $query->orderBy($this->order, $this->direction);
-                })->paginate($this->amount);
-
-           
-        } else {
-           
-                $invoices = Invoice::withTrashed()->search($this->search)
-                ->where('place_id','=',Auth::user()->place_id)->where(function ($query)
-                {
-                    $query->orderBy($this->order, $this->direction);
-                    
-                })
-                ->where('type','=','sale')
-                ->where('place_id','=',Auth::user()->place_id)
-                ->paginate($this->amount);
-          
-        }
+        $invoices=Invoice::with('client','seller')->search($this->search)
+        ->where('place_id','=',Auth::user()->place_id)
+        ->where(function($query){
+            $this->is_active==1?'':$query->onlyTrashed();
+            $this->client_id>0?$query->where('client_id','=',$this->client_id):'';
+        })
+        ->orderBy($this->order, $this->direction)
+        ->paginate($this->amount);
         
         return view('livewire.invoice-table')->with(['invoices'=>$invoices]);
     }

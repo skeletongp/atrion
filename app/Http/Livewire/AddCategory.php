@@ -23,7 +23,6 @@ class AddCategory extends Component
         $category= new Category();
         $category->name=$this->name;
         $category->meta=$this->meta;
-        $category->is_active=1;
         $category->save();
         $this->reset('name','meta');
         $this->open=false;

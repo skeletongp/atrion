@@ -111,7 +111,7 @@
                     <div class="lg:w-1/4">
                         <x-jet-label for="price">Precio</x-jet-label>
                         <x-jet-input type="number" placeholder="Precio" wire:model.defer="price" class="py-0 w-full"
-                            readonly>
+                            >
                         </x-jet-input>
 
                     </div>
@@ -224,9 +224,9 @@
                                 <br>
                                 <x-jet-label for="other">Vendedor</x-jet-label>
                                 <select class="chosen-select w-52 select2" data-placeholder="Selecciona un vendedor"
-                                    name="salor" id="salor" wire:model.defer="salor_id">
+                                    name="seller" id="seller" wire:model.defer="seller_id">
                                     <option value=""></option>
-                                    @foreach ($salor as $salo)
+                                    @foreach ($seller as $salo)
                                         <option value="{{ $salo->id }}">{{ $salo->name }}</option>
                                     @endforeach
                                 </select>

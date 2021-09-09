@@ -14,7 +14,7 @@
                     wire:click="softdelete">
                 </span>
             </div>
-            <a class="block relative  max-w-xs w-80 h-36 bg-gray-100 px-3 py-2 rounded-md no-underline z-0 overflow-hidden card-1 cursor-pointer relative"
+            <a class="block relative  max-w-xs w-80 h-36 bg-gray-100 px-3 py-2 rounded-md no-underline z-0 overflow-hidden card-1 cursor-pointer "
                 href="{{ route($route, $param) }}">
                 <h3 class="head text-xl font-bold"><span class="{{ $icon1 }} mr-2"></span>{{ $title }}
                 </h3>

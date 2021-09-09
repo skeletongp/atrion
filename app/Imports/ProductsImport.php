@@ -21,19 +21,15 @@ class ProductsImport implements ToModel,  SkipsOnError
    private $rows=0;
     public function model(array $row)
     {
-        ++$this->rows;
+       
         $category=Category::where('name','like','%'.$row[5].'%')->first();
         if ($category) {
            $cat_id=$category->id;
         } else {
             $cat_id=1;
         }
-        if (strtolower($row[6])=='producto') {
-           $type=1;
-        } else {
-           $type=0;
-        }
-        
+       $type=strtoupper($row[6]);
+         ++$this->rows;
         return new Product([
 
             'name'=>substr($row[0], 0, 25),
@@ -44,7 +40,7 @@ class ProductsImport implements ToModel,  SkipsOnError
              'cost'=>$row[4],
              'slug'=>Str::slug($row[0]),
              'place_id'=>Auth::user()->place_id,
-             'is_product'=>$type,
+             'type'=>$type,
              'category_id'=>$cat_id,
         ]);
        
@@ -58,6 +54,7 @@ class ProductsImport implements ToModel,  SkipsOnError
     }
     public function getRowCount():int
     {
+        
        return $this->rows;
     }
 }

@@ -12,7 +12,7 @@ use Livewire\WithPagination;
 class AddProduct extends Component
 {
     use WithPagination;
-    public $name, $meta, $category_id=1, $place_id, $stock, $price, $cost, $is_product, $code;
+    public $name, $meta, $category_id=1, $place_id, $stock, $price, $cost, $type, $code;
     public $message;
     protected $listeners=['update_add_product'=>'render', 'store_product'=>'store'];
     protected $rules=[
@@ -28,8 +28,11 @@ class AddProduct extends Component
     
     public function render()
     {
-        if ($this->is_product==null) {
-            $this->is_product=1;
+        if ($this->type==null) {
+            $this->type="PRODUCTO";
+        }
+        else{
+            $this->stock=1;
         }
         $places=Place::orderBy('name')->get();
         $categories=Category::orderBy('name')->get();
@@ -49,7 +52,7 @@ class AddProduct extends Component
         $product->stock=$this->stock;
         $product->price=$this->price;
         $product->cost=$this->cost;
-        $product->is_product=$this->is_product;
+        $product->type=$this->type;
         $product->slug=Str::slug($this->name);
         $product->save();
         $this->message="Producto añadido";
@@ -63,6 +66,6 @@ class AddProduct extends Component
     }
     public function updatedIsproduct()
     {
-       $this->is_product==1?'':$this->stock=1;
+       $this->type==1?'':$this->stock=1;
     }
 }

@@ -24,7 +24,7 @@
                             model="name"></x-input_text>
                         <x-jet-input-error for="name"></x-jet-input-error>
                     </div>
-                    <div class="lg:w-2/5 mx-1 my-2 ">
+                    <div class="lg:w-2/5 mx-1 my-2 z-40">
                         <x-input_select name="category_id" model="category_id" placeholder="Elige una categoría"
                             label="Categoría">
                             @foreach ($categories as $category)
@@ -44,7 +44,7 @@
                         <x-jet-input-error for="meta"></x-jet-input-error>
                     </div>
                     <div class=" mx-1 my-2 lg:w-2/6">
-                        @if ($is_product == 1)
+                        @if ($type == "PRODUCTO")
                             <x-input_text name="stock" label="Stock" :oldValue="''" placeholder="Cant" type="number"
                                 model="stock"></x-input_text>
                             <x-jet-input-error for="stock"></x-jet-input-error>
@@ -56,9 +56,9 @@
                                 class="text-sm rounded-l px-2 font-bold py-2 bg-white whitespace-no-wrap w-3/12">Tipo:</span>
                             <select
                                 class="text-center border-none outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md rounded-l-none shadow-sm w-9/12 overflow-auto "
-                                name="is_product" id="is_product    " wire:model="is_product">
-                                <option value="1">Producto</option>
-                                <option value="0">Servicio</option>
+                                name="type" id="type" wire:model="type">
+                                <option value="PRODUCTO">Producto</option>
+                                <option value="SERVICIO">Servicio</option>
                             </select>
                         </div>
                     </div>

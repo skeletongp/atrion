@@ -174,11 +174,11 @@
                         <span>{{ $invoice->user->name }}</span>
                     </div>
                 </td>
-                @if ($invoice->salor)
+                @if ($invoice->seller)
                     <td>
                         <div class="firm">
                             <h3>Vendedor: </h3>
-                            <span>{{ $invoice->salor->name }}</span>
+                            <span>{{ $invoice->seller->name }}</span>
                         </div>
                     </td>
                 @endif

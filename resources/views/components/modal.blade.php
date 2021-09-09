@@ -1,4 +1,4 @@
-    <div class="z-50  ">
+    <div {{$attributes->merge(["class"=>"z-50"])}}>
 
         <div class="flex items-center justify-start ">
             <button onclick="openModal('{{ $modalId }}')" title="Editar"
@@ -9,10 +9,10 @@
                 <div class="flex items-center justify-between  w-full">
                     <label for="excel"
                         class="bg-transparent border border-gray-500 hover:border-indigo-500 text-gray-500 hover:text-indigo-500 font-bold  rounded-full cursor-pointer hidden xl:block">
-                        <span class="mx-4 py-2">Importar de Excel</span></label>
+                        <span class="mx-4 py-2">Importar</span></label>
                     <input type="file" name="excel" id="excel" hidden
                         accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                    <div class="mx-2">
+                    <div class="mx-2 w-full">
                         {{ $excel }}
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                         </div>
 
 
-                        <div class="bg-gray-900 bg-opacity-40 px-12 pb-12 pt-8 rounded-xl">
+                        <div class="bg-gray-900 bg-opacity-40 px-3 xl:px-12 pb-12 pt-8 rounded-xl">
                             <div class="p-7 flex justify-end items-center w-full bg-white  shadow-xl">
                                 {{ $slot }}
 

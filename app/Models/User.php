@@ -103,10 +103,27 @@ class User extends Authenticatable
     }
     public function sales()
     {
-        return $this->hasMany(Invoice::class, 'salor_id');
+        return $this->hasMany(Invoice::class, 'seller_id');
     }
     public function cash()
     {
         return $this->hasOne(Cash::class)->where('date','=',date('Y-m-d'));
+    }
+    public function activeCash()
+    {
+        return $this->hasOne(Cash::class)->where('date','=',date('Y-m-d'))->where('local_ip','=', $this->getIp())->
+        where('status','=','1');
+    }
+    public function cashes()
+    {
+        return $this->hasMany(Cash::class);
+    }
+    public function getIp()
+    {
+        $myIp = md5(
+            $_SERVER['REMOTE_ADDR'] .
+            $_SERVER['HTTP_USER_AGENT']
+        );
+        return $myIp;
     }
 }
