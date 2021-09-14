@@ -15,7 +15,7 @@
         <h3 class="h-subtitle">Sucursal: {{ $invoice->user->place->name }}</h3>
     </div>
     <hr>
-    @if ($invoice->deleted_at!=null)
+    @if ($invoice->deleted_at != null)
         <div class="cancelado">
 
         </div>
@@ -76,43 +76,46 @@
             </thead>
             <tbody class="tbody">
                 @foreach ($details as $detail)
+                    @php
+                        $discount = $details->sum('discount');
+                        $total = $invoice->total ;
+                    @endphp
                     <tr class="trbody">
                         <td style="max-width: 18mm">{{ strtoupper($detail->product->meta) }}</td>
                         <td style="max-width: 5mm">{{ $detail->cant }}</td>
-                        <td style="max-width: 10mm">${{ $detail->price }}</td>
-                        <td style="max-width: 10mm">${{ $detail->subtotal }}</td>
+                        <td style="max-width: 10mm">${{ number_format($detail->total / $detail->cant, 2) }}</td>
+                        <td style="max-width: 10mm">${{ number_format($detail->total,2) }}</td>
                     </tr>
                 @endforeach
-
                 <tr style="margin-top:10rem; background-color: #fff">
                     <td colspan="4" class="td-total" style="color: #fff">
                         ------------------------------------------------------------------------------------</td>
                 </tr>
-
                 <tr>
                     <td style="background-color: white"></td>
                     <td colspan="2" class="td-total">Subtotal</td>
-                    <td class="td-total" style="text-align: right; padding-right:10px">${{ $invoice->subtotal }}</td>
+                    <td class="td-total" style="text-align: right; padding-right:10px">${{ number_format($total+$discount,2) }}</td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <td style="background-color: white"></td>
                     <td colspan="2" class="td-total">ITBIS</td>
                     <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->tax }} <b
                             style="font-size: 12px">+</b></td>
-                </tr>
+                </tr> --}}
                 @if ($details->sum('discount') > 0)
                     <tr>
                         <td style="background-color: white"></td>
                         <td colspan="2" class="td-total">Descuento </td>
                         <td class="td-total" style="text-align: right; padding-right:10p">
-                            ${{ round($details->sum('discount'), 0, 2) }} <b style="font-size: 12px">-</b></td>
+                            ${{ number_format($discount, 2) }} <b style="font-size: 12px">-</b></td>
                     </tr>
 
                 @endif
                 <tr>
                     <td style="background-color: white"></td>
                     <td colspan="2" class="td-total">Total</td>
-                    <td class="td-total" style="text-align: right; padding-right:10px">${{ $invoice->total }}</td>
+                    <td class="td-total" style="text-align: right; padding-right:10px">${{ number_format($total, 2) }}
+                    </td>
                 </tr>
 
                 <tr style="margin-top:10rem; background-color: #fff">
@@ -124,7 +127,8 @@
                     <tr>
                         <td style="background-color: white"></td>
                         <td colspan="2" class="td-total">Efectivo</td>
-                        <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->cash }}
+                        <td class="td-total" style="text-align: right; padding-right:10px">
+                            ${{ $invoice->cash }}
                         </td>
                     </tr>
                 @endif
@@ -132,7 +136,8 @@
                     <tr>
                         <td style="background-color: white"></td>
                         <td colspan="2" class="td-total">Otro</td>
-                        <td class="td-total" style="text-align: right; padding-right:10px"> ${{ $invoice->other }}
+                        <td class="td-total" style="text-align: right; padding-right:10px">
+                            ${{ number_format($invoice->other,2) }}
                         </td>
                     </tr>
                     }
@@ -144,7 +149,7 @@
                         <td colspan="2" class="td-total">Balance</td>
                         <td class="td-total" style="text-align: right; padding-right:10px">
                             <span style="{{ $invoice->rest > 0 ? 'color:red' : '' }}">
-                                ${{ $invoice->rest }}</span>
+                                ${{ number_format($invoice->rest,2) }}</span>
                         </td>
                     </tr>
                 @endif
@@ -152,7 +157,7 @@
                     <td colspan="4" class="td-total" style="color: #fff">
                         ------------------------------------------------------------------------------------</td>
                 </tr>
-                @if ($invoice->cash && $invoice->refund>0)
+                @if ($invoice->cash && $invoice->refund > 0)
                     <tr>
                         <td style="background-color: white"></td>
                         <td colspan="2" class="td-total">Devuelto</td>
@@ -377,7 +382,7 @@
         cursor: pointer;
     }
 
-    .cancelado{
+    .cancelado {
         width: 50mm;
         margin: auto;
         z-index: 50;
@@ -389,4 +394,5 @@
         background-size: contain;
         background-color: transparent;
     }
+
 </style>
