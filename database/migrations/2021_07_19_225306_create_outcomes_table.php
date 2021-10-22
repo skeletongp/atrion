@@ -21,8 +21,7 @@ class CreateOutcomesTable extends Migration
             $table->foreignId('client_id')->nullable()->constrained();
            $table->foreignId('edited_by')->nullable()->constrained('users','id');
             $table->decimal('amount', 18,2);
-            $table->string('concept');
-            $table->string('reference');
+        
             $table->date('date');
             $table->softDeletes();
             $table->timestamps();
