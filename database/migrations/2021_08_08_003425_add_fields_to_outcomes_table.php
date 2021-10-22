@@ -27,7 +27,7 @@ class AddFieldsToOutcomesTable extends Migration
     public function down()
     {
         Schema::table('outcomes', function (Blueprint $table) {
-            $table->dropColumn('concept','reference');
+            $table->dropColumns('concept','reference');
         });
     }
 }
